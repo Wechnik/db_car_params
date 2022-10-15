@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "db-car-params"
+version = "0.1.0"
+description = ""
+authors = ["Wechnik"]
+readme = "README.md"
+packages = [{include = "db_car_params"}]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+django = "^4.1.2"
+psycopg2 = "^2.9.4"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

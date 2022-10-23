@@ -10,7 +10,6 @@ packages = [{include = "db_car_params"}]
 python = "^3.9"
 django = "^4.1.2"
 psycopg2 = "^2.9.4"
-django-listing = "^0.0.12"
 django-rest-framework = "^0.1.0"
 
 

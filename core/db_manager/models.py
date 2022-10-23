@@ -3,9 +3,6 @@ from typing import Optional
 from django.db import models
 
 
-# Create your models here.
-
-
 class Vehicle(models.Model):
     """Автомобиль/транспорт."""
 
@@ -30,18 +27,9 @@ class Vehicle(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField(null=True, blank=True)
 
-    # start_year = models.IntegerField(null=True, blank=True)
-    # end_year = models.IntegerField(null=True, blank=True)
-
     attrs = models.JSONField(null=True, blank=True)
 
     def __str__(self):
-        # if self._type in (self.Type.BRAND, self.Type.MODEL):
-        #     return self.name
-        #
-        # elif self._type == self.Type.MODEL:
-        #     re
-
         display_name = self.name
 
         parent = self.parent

@@ -21,6 +21,6 @@ from django.urls.conf import include
 from core import settings
 
 urlpatterns = [
-    # path('admin/', admin.site.urls),
+    path('admin/', admin.site.urls),
     path('', include('db_manager.urls')),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

@@ -4,4 +4,5 @@ from db_manager import views
 
 urlpatterns = [
     path('', views.index, name='index'),
+    path('vehicle/', views.BasicUsageListingView.as_view(), name='vehicle'),
 ]

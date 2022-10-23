@@ -7,5 +7,5 @@ def index(request):
     """
     return render(
         request,
-        'registration/login.html',
+        'index.html',
     )

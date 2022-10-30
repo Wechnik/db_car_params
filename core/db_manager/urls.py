@@ -1,8 +1,8 @@
 from django.urls.conf import path, include
 
-from db_manager import views
+from db_manager.views import Index
 
 urlpatterns = [
-    path('', views.index, name='index'),
+    path('', Index.as_view()),
     path('accounts/', include('django.contrib.auth.urls')),
 ]

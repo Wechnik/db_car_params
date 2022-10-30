@@ -22,7 +22,7 @@
     <div class="card">
         <div class="card-body login-card-body">
             <p class="login-box-msg">Авторизуйтесь для доступа к БД</p>
-            <form method="post" action="{% url 'index' %}">
+            <form method="post" action="{% url 'login' %}">
                 {% csrf_token %}
                 <div class="input-group mb-3">
                     <input name="username" type="text" class="form-control" placeholder="Логин">

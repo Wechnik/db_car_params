@@ -420,9 +420,10 @@ table.dataTable td {
 .dataTables_wrapper .dataTables_length select {
   border: 1px solid #aaa;
   border-radius: 3px;
-  padding: 5px;
   background-color: #454d55;
   padding: 4px;
+  margin-left: 5px;
+  margin-right: 5px;
 }
 .dataTables_wrapper .dataTables_filter {
   float: right;

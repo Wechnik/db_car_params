@@ -1,6 +1,7 @@
 from typing import Optional
 
 from django.db import models
+from django.urls import reverse
 
 
 class Vehicle(models.Model):
@@ -44,3 +45,6 @@ class Vehicle(models.Model):
         """Годы производства."""
         years_of_production = self.attrs.get('YearsOfProduction', {})
         return years_of_production.get('Start'), years_of_production.get('End')
+
+    def get_absolute_url(self):
+        return reverse('index')

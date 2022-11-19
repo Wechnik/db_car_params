@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class='post-entry'>
+    <h2>{{ vehicle }}</h2>
+  </div>
+
+  <a href='{% url 'edit' vehicle.id %}'>Редактировать</a>
+{% endblock content %}

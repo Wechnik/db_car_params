@@ -249,3 +249,27 @@ $(document).ready(function () {
         }
     });
 });
+
+$(document).ready(function () {
+    url = document.location.href
+    if (document.location.pathname == "/")
+        $('a[href="/"]').addClass('active');
+    if (url.includes('brand'))
+        $('a[href="/brand/"]').addClass('active');
+    if (url.includes('model'))
+        $('a[href="/model/"]').addClass('active');
+    if (url.includes('generation'))
+        $('a[href="/generation/"]').addClass('active');
+    if (url.includes('restyling'))
+        $('a[href="/restyling/"]').addClass('active');
+    if (url.includes('configuration'))
+        $('a[href="/configuration/"]').addClass('active');
+})
+
+$('.menu_button').click(function () {
+    $(this).toggleClass('active');
+    $('.menu_button').not(this).removeClass('active');
+})
+
+
+

@@ -1,3 +1,5 @@
+from django.shortcuts import redirect
+
 from db_manager.forms.crud_forms import (
     BaseVehicleForm,
     BrandForm,
@@ -17,6 +19,11 @@ class BaseVehicleUpdateView(UpdateView):
     queryset = Vehicle.objects.all()
     template_name = 'crud/create.html'
     form_class = BaseVehicleForm
+    _url = NotImplemented
+
+    def post(self, request, *args, **kwargs):
+        super().post(request, *args, **kwargs)
+        return redirect(self._url)
 
 
 class VehicleUpdateView(BaseVehicleUpdateView):
@@ -25,6 +32,7 @@ class VehicleUpdateView(BaseVehicleUpdateView):
 
 class BrandUpdateView(BaseVehicleUpdateView):
     form_class = BrandForm
+    _url = 'brand'
 
     def form_valid(self, form):
         form.instance._type = 0
@@ -33,6 +41,7 @@ class BrandUpdateView(BaseVehicleUpdateView):
 
 class ModelUpdateView(BaseVehicleUpdateView):
     form_class = ModelForm
+    _url = 'model'
 
     def form_valid(self, form):
         form.instance._type = 1
@@ -41,6 +50,7 @@ class ModelUpdateView(BaseVehicleUpdateView):
 
 class GenerationUpdateView(BaseVehicleUpdateView):
     form_class = GenerationForm
+    _url = 'generation'
 
     def form_valid(self, form):
         form.instance._type = 2
@@ -49,6 +59,7 @@ class GenerationUpdateView(BaseVehicleUpdateView):
 
 class RestylingUpdateView(BaseVehicleUpdateView):
     form_class = RestylingForm
+    _url = 'restyling'
 
     def form_valid(self, form):
         form.instance._type = 3
@@ -57,6 +68,7 @@ class RestylingUpdateView(BaseVehicleUpdateView):
 
 class ConfigurationUpdateView(BaseVehicleUpdateView):
     form_class = ConfigurationForm
+    _url = 'configuration'
 
     def form_valid(self, form):
         form.instance._type = 4

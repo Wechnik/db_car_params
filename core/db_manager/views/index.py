@@ -13,16 +13,16 @@ class IndexView(LoginRequiredMixin, View):
         """
 
         data = Vehicle.objects.filter(_type=4)
-        data_list = []
+        structure_data = []
         for item in data:
-            data_list.append(item.get_structured_data())
-        print(data_list)
+            structure_data.append(item.get_structured_data())
+
         return render(
             request,
             'main.html',
             context={
                 'title': 'Главная страница',
-                'data': data_list,
+                'data': structure_data,
                 'type': '',
             }
         )

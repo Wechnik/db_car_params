@@ -1,5 +1,4 @@
 from typing import Optional, List
-from typing import Optional
 from dataclasses import dataclass, is_dataclass
 
 from django.db import models
@@ -9,8 +8,7 @@ from django.urls import reverse
 class BaseRestriction:
     @classmethod
     def from_json(cls, attrs: dict):
-        if not attrs:
-            return None
+        attrs = attrs or {}
 
         init_data = {}
         for cls_field_name, cls_field_type in cls.__annotations__.items():
@@ -18,9 +16,6 @@ class BaseRestriction:
                 init_data[cls_field_name] = cls_field_type.from_json(attrs.get(cls_field_name))
             else:
                 init_data[cls_field_name] = attrs.get(cls_field_name)
-
-        if not any(init_data.values()):
-            return None
 
         return cls(**init_data)
 
@@ -31,7 +26,6 @@ class BaseRestriction:
                 json[cls_field_name] = getattr(self, cls_field_name).to_json()
             else:
                 json[cls_field_name] = getattr(self, cls_field_name)
-
         return json
 
 
@@ -88,7 +82,8 @@ class Vehicle(models.Model):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.restrictions = Restriction.from_json(self.attrs.get('restrictions') if self.attrs else None)
+        self.attrs = self.attrs or {}
+        self.restrictions = Restriction.from_json(self.attrs.get('restrictions'))
 
     def save(
             self, force_insert=False, force_update=False, using=None, update_fields=None

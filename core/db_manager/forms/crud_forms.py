@@ -21,20 +21,45 @@ class BaseVehicleForm(ModelForm):
 
 
 class VehicleForm(BaseVehicleForm):
-    min = IntegerField(label='Мин.')
-    max = IntegerField(label='Макс.')
-    rec = IntegerField(label='Рекоменд.')
+    min_width = IntegerField(label='Минимальная ширина')
+    max_width = IntegerField(label='Максимальная ширина')
+    rec_width = IntegerField(label='Рекомендуемая ширина')
+
+    min_height = IntegerField(label='Минимальная высота профиля %')
+    max_height = IntegerField(label='Максимальная высота профиля %')
+    rec_height = IntegerField(label='Рекомендуемая высота профиля %')
+
+    min_diameter = IntegerField(label='Минимальный диаметр')
+    max_diameter = IntegerField(label='Максимальный диаметр')
+    rec_diameter = IntegerField(label='Рекомендуемый диаметр')
 
     def save(self, commit=True):
         print(self.cleaned_data)
-        self.instance.restrictions = Restriction(Tire(Measurement.from_json(self.cleaned_data), None, None))
+        self.instance.restrictions = Restriction(
+            Tire(
+                Measurement.from_json(self.cleaned_data),
+                None,
+                None,
+            ),
+        )
         return super().save(commit=commit)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['min'].initial = self.instance.restrictions.tire.width.min
-        self.fields['max'].initial = self.instance.restrictions.tire.width.max
-        self.fields['rec'].initial = self.instance.restrictions.tire.width.rec
+        self._set_initial_fields()
+
+    def _set_initial_fields(self):
+        self.fields['min_width'].initial = self.instance.restrictions.tire.width.min
+        self.fields['max_width'].initial = self.instance.restrictions.tire.width.max
+        self.fields['rec_width'].initial = self.instance.restrictions.tire.width.rec
+
+        self.fields['min_height'].initial = self.instance.restrictions.tire.height.min
+        self.fields['max_height'].initial = self.instance.restrictions.tire.height.max
+        self.fields['rec_height'].initial = self.instance.restrictions.tire.height.rec
+
+        self.fields['min_diameter'].initial = self.instance.restrictions.tire.diameter.min
+        self.fields['max_diameter'].initial = self.instance.restrictions.tire.diameter.max
+        self.fields['rec_diameter'].initial = self.instance.restrictions.tire.diameter.rec
 
 
 class BrandForm(BaseVehicleForm):

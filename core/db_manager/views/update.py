@@ -6,7 +6,7 @@ from db_manager.forms.crud_forms import (
     ConfigurationForm,
     GenerationForm,
     ModelForm,
-    RestylingForm
+    RestylingForm, VehicleForm
 )
 from db_manager.models import Vehicle
 from django.views.generic.edit import UpdateView
@@ -27,7 +27,8 @@ class BaseVehicleUpdateView(UpdateView):
 
 
 class VehicleUpdateView(BaseVehicleUpdateView):
-    pass
+    form_class = VehicleForm
+    _url = 'index'
 
 
 class BrandUpdateView(BaseVehicleUpdateView):

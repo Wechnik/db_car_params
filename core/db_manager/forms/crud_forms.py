@@ -1,11 +1,12 @@
 from django.forms.models import ModelForm
+from django.forms.fields import IntegerField
 
-from db_manager.models import Vehicle
+from db_manager.models import Vehicle, Restriction, Tire, Measurement
 
 
 class BaseVehicleForm(ModelForm):
     def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+        super(BaseVehicleForm, self).__init__(*args, **kwargs)
         for visible in self.visible_fields():
             visible.field.widget.attrs['class'] = 'form-control'
 
@@ -20,7 +21,19 @@ class BaseVehicleForm(ModelForm):
 
 
 class VehicleForm(BaseVehicleForm):
-    pass
+    min = IntegerField(label='Мин.')
+    max = IntegerField(label='Макс.')
+    rec = IntegerField(label='Рекоменд.')
+
+    def save(self, commit=True):
+        self.instance.restrictions = Restriction(Tire(Measurement.from_json(self.cleaned_data), None, None))
+        return super().save(commit=commit)
+
+    def __init__(self, *args, **kwargs):
+        super(VehicleForm, self).__init__(*args, **kwargs)
+        self.fields['min'].initial = self.instance.restrictions.tire.width.min
+        self.fields['max'].initial = self.instance.restrictions.tire.width.max
+        self.fields['rec'].initial = self.instance.restrictions.tire.width.rec
 
 
 class BrandForm(BaseVehicleForm):

@@ -11,12 +11,18 @@ class IndexView(LoginRequiredMixin, View):
         """
         Функция отображения для домашней страницы сайта.
         """
+
+        data = Vehicle.objects.filter(_type=4)
+        data_list = []
+        for item in data:
+            data_list.append(item.get_structured_data())
+        print(data_list)
         return render(
             request,
-            'index.html',
+            'main.html',
             context={
                 'title': 'Главная страница',
-                'data': Vehicle.objects.filter(_type=1),
+                'data': data_list,
                 'type': '',
             }
         )

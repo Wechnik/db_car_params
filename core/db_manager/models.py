@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, List
 
 from django.db import models
 from django.urls import reverse
@@ -48,3 +48,13 @@ class Vehicle(models.Model):
 
     def get_absolute_url(self):
         return reverse('index')
+
+    def get_structured_data(self) -> List[str]:
+        """Возвращает информация об авто в структурированном виде."""
+        structure_data = [self, self.name]
+        parent = self.parent
+        while parent:
+            structure_data.append(parent.name)
+            parent = parent.parent
+        structure_data.reverse()
+        return structure_data

@@ -15,7 +15,7 @@ class BaseVehicleDetailView(DetailView):
 
 
 class VehicleDetailView(BaseVehicleDetailView):
-    pass
+    template_name = 'crud/detail_vehicle.html'
 
 
 class BrandDetailView(BaseVehicleDetailView):

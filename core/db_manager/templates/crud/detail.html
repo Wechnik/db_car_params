@@ -1,39 +1,6 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <div class='post-entry'>
-        <h3 style="margin-bottom: 40px"><b>Ограничения</b></h3>
-        <h4>Шины</h4>
-    </div>
-    <table class="table">
-        <thead>
-        <tr>
-            <th scope="col">Тип</th>
-            <th scope="col">Ширина</th>
-            <th scope="col">Высота</th>
-            <th scope="col">Диаметр</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <th scope="row">Мин.</th>
-            <td>{{ vehicle.restrictions.tire.width.min }}</td>
-            <td>{{ vehicle.restrictions.tire.height.min }}</td>
-            <td>{{ vehicle.restrictions.tire.diameter.min }}</td>
-        </tr>
-        <tr>
-            <th scope="row">Макс.</th>
-            <td>{{ vehicle.restrictions.tire.width.max }}</td>
-            <td>{{ vehicle.restrictions.tire.height.max }}</td>
-            <td>{{ vehicle.restrictions.tire.diameter.max }}</td>
-        </tr>
-        <tr>
-            <th scope="row">Рекомендуемая</th>
-            <td>{{ vehicle.restrictions.tire.width.rec }}</td>
-            <td>{{ vehicle.restrictions.tire.height.rec }}</td>
-            <td>{{ vehicle.restrictions.tire.diameter.rec }}</td>
-        </tr>
-        </tbody>
-    </table>
-    <a class="btn btn-outline-primary" href='{% url 'edit' vehicle.id %}' role="button">Редактировать</a>
+    <div class='post-entry'></div>
+    <a class="btn btn-outline-primary" href='{% url 'edit' vehicle.id %}' role="button" style="color: white">Редактировать</a>
 {% endblock content %}

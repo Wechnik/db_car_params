@@ -7,12 +7,9 @@ from db_manager.forms.crud_forms import (
     GenerationForm,
     ModelForm,
     RestylingForm,
-    VehicleForm
 )
 from db_manager.models import Vehicle
 from django.views.generic.edit import CreateView
-
-__all__ = ['VehicleCreateView']
 
 
 class BaseVehicleCreateView(CreateView):
@@ -20,25 +17,24 @@ class BaseVehicleCreateView(CreateView):
     queryset = Vehicle.objects.all()
     template_name = 'crud/create.html'
     form_class = BaseVehicleForm
+
     _url = NotImplemented
+    _name = NotImplemented
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = f'Создать {self._name}'
+        return context
 
     def post(self, request, *args, **kwargs):
         super().post(request, *args, **kwargs)
         return redirect(self._url)
 
 
-class VehicleCreateView(BaseVehicleCreateView):
-    form_class = VehicleForm
-    _url = 'index'
-
-    def form_valid(self, form):
-        form.instance._type = 0
-        return super().form_valid(form)
-
-
 class BrandCreateView(BaseVehicleCreateView):
     form_class = BrandForm
     _url = 'brand'
+    _name = 'бренд'
 
     def form_valid(self, form):
         form.instance._type = 0
@@ -48,6 +44,7 @@ class BrandCreateView(BaseVehicleCreateView):
 class ModelCreateView(BaseVehicleCreateView):
     form_class = ModelForm
     _url = 'model'
+    _name = 'модель'
 
     def form_valid(self, form):
         form.instance._type = 1
@@ -57,6 +54,7 @@ class ModelCreateView(BaseVehicleCreateView):
 class GenerationCreateView(BaseVehicleCreateView):
     form_class = GenerationForm
     _url = 'generation'
+    _name = 'поколение'
 
     def form_valid(self, form):
         form.instance._type = 2
@@ -66,6 +64,7 @@ class GenerationCreateView(BaseVehicleCreateView):
 class RestylingCreateView(BaseVehicleCreateView):
     form_class = RestylingForm
     _url = 'restyling'
+    _name = 'рестайлинг'
 
     def form_valid(self, form):
         form.instance._type = 3
@@ -75,6 +74,7 @@ class RestylingCreateView(BaseVehicleCreateView):
 class ConfigurationCreateView(BaseVehicleCreateView):
     form_class = ConfigurationForm
     _url = 'configuration'
+    _name = 'комплектацию'
 
     def form_valid(self, form):
         form.instance._type = 4

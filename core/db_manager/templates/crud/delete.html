@@ -1,7 +1,6 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h1>Удалить авто </h1>
     <form action="" method="post">{% csrf_token %}
         <p>Вы уверены, что хотите удалить "{{ vehicle }}"?</p>
         <input class="btn btn-outline-danger" type="submit" value="Удалить"/>

@@ -1,4 +1,4 @@
-from db_manager.views import IndexView, VehicleCreateView, VehicleDeleteView, VehicleDetailView, VehicleUpdateView
+from db_manager.views import IndexView, VehicleDeleteView, VehicleDetailView, VehicleUpdateView
 from db_manager.views.create import (
     BrandCreateView,
     ConfigurationCreateView,
@@ -31,7 +31,6 @@ from db_manager.views.update import (
 from django.urls.conf import include, path
 
 crud_vehicle = [
-    path('new/', VehicleCreateView.as_view(), name='create'),
     path('<int:pk>/', VehicleDetailView.as_view(), name='detail'),
     path('<int:pk>/edit/', VehicleUpdateView.as_view(), name='edit'),
     path('<int:pk>/delete/', VehicleDeleteView.as_view(), name='delete'),

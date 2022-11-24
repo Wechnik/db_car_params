@@ -19,7 +19,14 @@ class BaseVehicleUpdateView(UpdateView):
     queryset = Vehicle.objects.all()
     template_name = 'crud/create.html'
     form_class = BaseVehicleForm
+
     _url = NotImplemented
+    _name = NotImplemented
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = f'Редактировать {self._name}'
+        return context
 
     def post(self, request, *args, **kwargs):
         super().post(request, *args, **kwargs)
@@ -29,11 +36,13 @@ class BaseVehicleUpdateView(UpdateView):
 class VehicleUpdateView(BaseVehicleUpdateView):
     form_class = VehicleForm
     _url = 'index'
+    _name = 'автомобиль'
 
 
 class BrandUpdateView(BaseVehicleUpdateView):
     form_class = BrandForm
     _url = 'brand'
+    _name = 'бренд'
 
     def form_valid(self, form):
         form.instance._type = 0
@@ -43,6 +52,7 @@ class BrandUpdateView(BaseVehicleUpdateView):
 class ModelUpdateView(BaseVehicleUpdateView):
     form_class = ModelForm
     _url = 'model'
+    _name = 'модель'
 
     def form_valid(self, form):
         form.instance._type = 1
@@ -52,6 +62,7 @@ class ModelUpdateView(BaseVehicleUpdateView):
 class GenerationUpdateView(BaseVehicleUpdateView):
     form_class = GenerationForm
     _url = 'generation'
+    _name = 'поколение'
 
     def form_valid(self, form):
         form.instance._type = 2
@@ -61,6 +72,7 @@ class GenerationUpdateView(BaseVehicleUpdateView):
 class RestylingUpdateView(BaseVehicleUpdateView):
     form_class = RestylingForm
     _url = 'restyling'
+    _name = 'рестайлинг'
 
     def form_valid(self, form):
         form.instance._type = 3
@@ -70,6 +82,7 @@ class RestylingUpdateView(BaseVehicleUpdateView):
 class ConfigurationUpdateView(BaseVehicleUpdateView):
     form_class = ConfigurationForm
     _url = 'configuration'
+    _name = 'комплектацию'
 
     def form_valid(self, form):
         form.instance._type = 4

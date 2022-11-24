@@ -9,6 +9,11 @@ class BaseVehicleDeleteView(DeleteView):
     model = Vehicle
     template_name = 'crud/delete.html'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = f'Удаление авто'
+        return context
+
 
 class VehicleDeleteView(BaseVehicleDeleteView):
     success_url = reverse_lazy('index')

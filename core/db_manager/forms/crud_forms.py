@@ -6,7 +6,7 @@ from db_manager.models import Vehicle, Restriction, Tire, Measurement
 
 class BaseVehicleForm(ModelForm):
     def __init__(self, *args, **kwargs):
-        super(BaseVehicleForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         for visible in self.visible_fields():
             visible.field.widget.attrs['class'] = 'form-control'
 
@@ -31,7 +31,7 @@ class VehicleForm(BaseVehicleForm):
         return super().save(commit=commit)
 
     def __init__(self, *args, **kwargs):
-        super(VehicleForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.fields['min'].initial = self.instance.restrictions.tire.width.min
         self.fields['max'].initial = self.instance.restrictions.tire.width.max
         self.fields['rec'].initial = self.instance.restrictions.tire.width.rec

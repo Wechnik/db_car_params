@@ -1,7 +1,63 @@
 from typing import Optional, List
+from typing import Optional
+from dataclasses import dataclass, is_dataclass
 
 from django.db import models
 from django.urls import reverse
+
+
+class BaseRestriction:
+    @classmethod
+    def from_json(cls, attrs: dict):
+        if not attrs:
+            return None
+
+        init_data = {}
+        for cls_field_name, cls_field_type in cls.__annotations__.items():
+            if is_dataclass(cls_field_type):
+                init_data[cls_field_name] = cls_field_type.from_json(attrs.get(cls_field_name))
+            else:
+                init_data[cls_field_name] = attrs.get(cls_field_name)
+
+        if not any(init_data.values()):
+            return None
+
+        return cls(**init_data)
+
+    def to_json(self) -> dict:
+        json = {}
+        for cls_field_name, cls_field_type in self.__annotations__.items():
+            if is_dataclass(cls_field_type) and isinstance(getattr(self, cls_field_name), cls_field_type):
+                json[cls_field_name] = getattr(self, cls_field_name).to_json()
+            else:
+                json[cls_field_name] = getattr(self, cls_field_name)
+
+        return json
+
+
+@dataclass
+class Measurement(BaseRestriction):
+    """Измерение."""
+
+    min: int
+    max: int
+    rec: int
+
+
+@dataclass
+class Tire(BaseRestriction):
+    """Покрышка."""
+
+    width: Measurement
+    height: Measurement
+    diameter: Measurement
+
+
+@dataclass
+class Restriction(BaseRestriction):
+    """Ограничение."""
+
+    tire: Tire
 
 
 class Vehicle(models.Model):
@@ -29,6 +85,16 @@ class Vehicle(models.Model):
     description = models.TextField(null=True, blank=True)
 
     attrs = models.JSONField(null=True, blank=True)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.restrictions = Restriction.from_json(self.attrs.get('restrictions') if self.attrs else None)
+
+    def save(
+            self, force_insert=False, force_update=False, using=None, update_fields=None
+    ):
+        self.attrs['restrictions'] = self.restrictions.to_json()
+        super().save(force_insert=False, force_update=False, using=None, update_fields=None)
 
     def __str__(self):
         display_name = self.name

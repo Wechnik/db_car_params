@@ -3,6 +3,12 @@
 {% block content %}
     <div class='post-entry'>
         <h2>{{ vehicle }}</h2>
+        <h3>Ограничения</h3>
+        <h4>Шины</h4>
+        <h5>Ширина</h5>
+        <p>Мин.: {{ vehicle.restrictions.tire.width.min }}</p>
+        <p>Макс.: {{ vehicle.restrictions.tire.width.max }}</p>
+        <p>Рекомендуемая: {{ vehicle.restrictions.tire.width.rec }}</p>
     </div>
     <a class="btn btn-outline-primary" href='{% url 'edit' vehicle.id %}' role="button">Редактировать</a>
 {% endblock content %}

@@ -29,6 +29,7 @@ class BaseVehicleCreateView(CreateView):
 
 class VehicleCreateView(BaseVehicleCreateView):
     form_class = VehicleForm
+    _url = 'index'
 
     def form_valid(self, form):
         form.instance._type = 0

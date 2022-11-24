@@ -1,12 +1,12 @@
-from django.forms.models import ModelForm
+from django.forms.models import ModelForm as ModelFormBase
 from django.forms.fields import IntegerField
 
 from db_manager.models import Vehicle, Restriction, Tire, Measurement
 
 
-class BaseVehicleForm(ModelForm):
+class BaseVehicleForm(ModelFormBase):
     def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+        ModelFormBase.__init__(self, *args, **kwargs)
         for visible in self.visible_fields():
             visible.field.widget.attrs['class'] = 'form-control'
 
@@ -20,46 +20,96 @@ class BaseVehicleForm(ModelForm):
         }
 
 
-class VehicleForm(BaseVehicleForm):
-    min_width = IntegerField(label='Минимальная ширина')
-    max_width = IntegerField(label='Максимальная ширина')
-    rec_width = IntegerField(label='Рекомендуемая ширина')
+def get(name: str, prefix: str, annotations: dict):
+    attrs = {
+        f'{prefix}_{cls_field_name}': cls_field_type(**cls_field_type_kwargs)
+        for cls_field_name, (cls_field_type, cls_field_type_kwargs) in annotations.items()
+    }
 
-    min_height = IntegerField(label='Минимальная высота профиля %')
-    max_height = IntegerField(label='Максимальная высота профиля %')
-    rec_height = IntegerField(label='Рекомендуемая высота профиля %')
+    def __init__(self: 'ModelFormBase', *args, **kwargs):
+        ModelFormBase.__init__(self, *args, **kwargs)
 
-    min_diameter = IntegerField(label='Минимальный диаметр')
-    max_diameter = IntegerField(label='Максимальный диаметр')
-    rec_diameter = IntegerField(label='Рекомендуемый диаметр')
+    def fill_initial(self: 'ModelFormBase'):
+        obj = getattr(self.instance.restrictions.tire, prefix)
+        for cls_field_name in annotations:
+            self.fields[f'{prefix}_{cls_field_name}'].initial = getattr(obj, cls_field_name)
+
+    return type(name, (ModelFormBase,), {
+        '__init__': __init__,
+
+        'fill_initial': fill_initial,
+
+        **attrs
+    })
+
+
+Width = get(
+    'Width',
+    'width',
+    {
+        'min': (IntegerField, {'label': 'Минимальная ширина'}),
+        'max': (IntegerField, {'label': 'Максимальная ширина'}),
+        'rec': (IntegerField, {'label': 'Рекомендуемая ширина'})
+    }
+)
+
+Height = get(
+    'Height',
+    'height',
+    {
+        'min': (IntegerField, {'label': 'Минимальная высота профиля, %'}),
+        'max': (IntegerField, {'label': 'Максимальная высота профиля, %'}),
+        'rec': (IntegerField, {'label': 'Рекомендуемая высота профиля, %'})
+    }
+)
+
+Diameter = get(
+    'Diameter',
+    'diameter',
+    {
+        'min': (IntegerField, {'label': 'Минимальный диаметр'}),
+        'max': (IntegerField, {'label': 'Максимальный диаметр'}),
+        'rec': (IntegerField, {'label': 'Рекомендуемый диаметр'})
+    }
+)
+
+
+def deep_set(base_dict: dict, keys: str, value) -> None:
+    _keys = keys.split('_')
+
+    last_level = base_dict
+    for i, key in enumerate(_keys[:-1]):
+        if key not in last_level or not isinstance(last_level[key], dict):
+            last_level[key] = {}
+        last_level = last_level[key]
+    last_level[_keys[-1]] = value
+
+
+def cleaned_data_to_json(cleaned_data: dict) -> dict:
+    json = {}
+    for field, value in cleaned_data.items():
+        deep_set(json, field, value)
+
+    return json
+
+
+class VehicleForm(BaseVehicleForm, Diameter, Width, Height):
 
     def save(self, commit=True):
-        print(self.cleaned_data)
         self.instance.restrictions = Restriction(
-            Tire(
-                Measurement.from_json(self.cleaned_data),
-                None,
-                None,
-            ),
+            Tire.from_json(cleaned_data_to_json(self.cleaned_data)),
         )
         return super().save(commit=commit)
 
     def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self._set_initial_fields()
+        Width.__init__(self, *args, **kwargs)
+        Height.__init__(self, *args, **kwargs)
+        Diameter.__init__(self, *args, **kwargs)
+        BaseVehicleForm.__init__(self, *args, **kwargs)
 
-    def _set_initial_fields(self):
-        self.fields['min_width'].initial = self.instance.restrictions.tire.width.min
-        self.fields['max_width'].initial = self.instance.restrictions.tire.width.max
-        self.fields['rec_width'].initial = self.instance.restrictions.tire.width.rec
-
-        self.fields['min_height'].initial = self.instance.restrictions.tire.height.min
-        self.fields['max_height'].initial = self.instance.restrictions.tire.height.max
-        self.fields['rec_height'].initial = self.instance.restrictions.tire.height.rec
-
-        self.fields['min_diameter'].initial = self.instance.restrictions.tire.diameter.min
-        self.fields['max_diameter'].initial = self.instance.restrictions.tire.diameter.max
-        self.fields['rec_diameter'].initial = self.instance.restrictions.tire.diameter.rec
+        for base_type in type(self).mro():
+            if hasattr(base_type, 'fill_initial'):
+                base_type.fill_initial(self)
 
 
 class BrandForm(BaseVehicleForm):

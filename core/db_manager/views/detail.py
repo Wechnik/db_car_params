@@ -8,6 +8,11 @@ class BaseVehicleDetailView(DetailView):
     model = Vehicle
     template_name = 'crud/detail.html'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = f'Просмотр - {context["vehicle"]}'
+        return context
+
 
 class VehicleDetailView(BaseVehicleDetailView):
     pass

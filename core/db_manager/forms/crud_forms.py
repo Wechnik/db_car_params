@@ -26,6 +26,7 @@ class VehicleForm(BaseVehicleForm):
     rec = IntegerField(label='Рекоменд.')
 
     def save(self, commit=True):
+        print(self.cleaned_data)
         self.instance.restrictions = Restriction(Tire(Measurement.from_json(self.cleaned_data), None, None))
         return super().save(commit=commit)
 

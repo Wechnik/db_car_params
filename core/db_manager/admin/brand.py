@@ -40,7 +40,6 @@ class BrandAdmin(admin.ModelAdmin):
         return qs.filter(_type=self._type)
 
     def save_model(self, request, obj, form, change):
-        print(request.body, request.headers)
         obj._type = self._type
         super().save_model(request, obj, form, change)
 

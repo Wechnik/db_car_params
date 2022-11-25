@@ -21,6 +21,8 @@ class BaseVehicleForm(ModelForm):
 
 
 class VehicleForm(BaseVehicleForm):
+    template_name_div = 'div.html'
+
     min_width = IntegerField(label='Минимальная ширина')
     max_width = IntegerField(label='Максимальная ширина')
     rec_width = IntegerField(label='Рекомендуемая ширина')
@@ -34,7 +36,6 @@ class VehicleForm(BaseVehicleForm):
     rec_diameter = IntegerField(label='Рекомендуемый диаметр')
 
     def save(self, commit=True):
-        print(self.cleaned_data)
         self.instance.restrictions = Restriction(
             Tire(
                 Measurement.from_json(self.cleaned_data),

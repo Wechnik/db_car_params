@@ -4,10 +4,9 @@
     <div class="raw">
         <div class="col-md-6 col-xs-12">
             <form action="" method="post">{% csrf_token %}
-                {{ form.as_p }}
-                    <input class="btn btn-outline-success" type="submit" value="Сохранить"/>
+                {{ form.as_div }}
+                    <input style="margin-bottom: 30px; margin-top: 30px" class="btn btn-outline-success" type="submit" value="Сохранить"/>
             </form>
         </div>
     </div>
-    <div style="height: 30px"></div>
 {% endblock content %}

@@ -30,9 +30,5 @@ class GenerationDetailView(BaseVehicleDetailView):
     pass
 
 
-class RestylingDetailView(BaseVehicleDetailView):
-    pass
-
-
 class ConfigurationDetailView(BaseVehicleDetailView):
     pass

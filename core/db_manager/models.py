@@ -66,11 +66,8 @@ class Vehicle(models.Model):
         MODEL = 1
         # Поколение.
         GENERATION = 2
-        # Todo: Если рестайлинга в поколении не было (еще не было), то стоит добавить "пустой рест"?
-        # Рестайлинг.
-        RESTYLING = 3
         # Комплектация.
-        CONFIGURATION = 4
+        CONFIGURATION = 3
 
     _type = models.IntegerField(choices=Type.choices)
     parent = models.ForeignKey('self', null=True, blank=True, on_delete=models.CASCADE)

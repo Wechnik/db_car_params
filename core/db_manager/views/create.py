@@ -6,7 +6,6 @@ from db_manager.forms.crud_forms import (
     ConfigurationForm,
     GenerationForm,
     ModelForm,
-    RestylingForm,
 )
 from db_manager.models import Vehicle
 from django.views.generic.edit import CreateView
@@ -61,21 +60,11 @@ class GenerationCreateView(BaseVehicleCreateView):
         return super().form_valid(form)
 
 
-class RestylingCreateView(BaseVehicleCreateView):
-    form_class = RestylingForm
-    _url = 'restyling'
-    _name = 'рестайлинг'
-
-    def form_valid(self, form):
-        form.instance._type = 3
-        return super().form_valid(form)
-
-
 class ConfigurationCreateView(BaseVehicleCreateView):
     form_class = ConfigurationForm
     _url = 'configuration'
     _name = 'комплектацию'
 
     def form_valid(self, form):
-        form.instance._type = 4
+        form.instance._type = 3
         return super().form_valid(form)

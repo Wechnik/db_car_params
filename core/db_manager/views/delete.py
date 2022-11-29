@@ -31,9 +31,5 @@ class GenerationDeleteView(BaseVehicleDeleteView):
     success_url = reverse_lazy('generation')
 
 
-class RestylingDeleteView(BaseVehicleDeleteView):
-    success_url = reverse_lazy('restyling')
-
-
 class ConfigurationDeleteView(BaseVehicleDeleteView):
     success_url = reverse_lazy('configuration')

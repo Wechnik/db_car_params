@@ -4,29 +4,25 @@ from db_manager.views.create import (
     ConfigurationCreateView,
     GenerationCreateView,
     ModelCreateView,
-    RestylingCreateView
 )
 from db_manager.views.delete import (
     BrandDeleteView,
     ConfigurationDeleteView,
     GenerationDeleteView,
     ModelDeleteView,
-    RestylingDeleteView
 )
 from db_manager.views.detail import (
     BrandDetailView,
     ConfigurationDetailView,
     GenerationDetailView,
     ModelDetailView,
-    RestylingDetailView
 )
-from db_manager.views.index import BrandView, ConfigurationView, GenerationView, ModelView, RestylingView
+from db_manager.views.index import BrandView, ConfigurationView, GenerationView, ModelView
 from db_manager.views.update import (
     BrandUpdateView,
     ConfigurationUpdateView,
     GenerationUpdateView,
     ModelUpdateView,
-    RestylingUpdateView
 )
 from django.urls.conf import include, path
 
@@ -60,14 +56,6 @@ crud_generation = [
     path('<int:pk>/delete/', GenerationDeleteView.as_view(), name='delete_generation'),
 ]
 
-crud_restyling = [
-    path('', RestylingView.as_view(), name='restyling'),
-    path('new/', RestylingCreateView.as_view(), name='create_restyling'),
-    path('<int:pk>/', RestylingDetailView.as_view(), name='detail_restyling'),
-    path('<int:pk>/edit/', RestylingUpdateView.as_view(), name='edit_restyling'),
-    path('<int:pk>/delete/', RestylingDeleteView.as_view(), name='delete_restyling'),
-]
-
 crud_configuration = [
     path('', ConfigurationView.as_view(), name='configuration'),
     path('new/', ConfigurationCreateView.as_view(), name='create_configuration'),
@@ -84,6 +72,5 @@ urlpatterns = [
     path('brand/', include(crud_brand)),
     path('model/', include(crud_model)),
     path('generation/', include(crud_generation)),
-    path('restyling/', include(crud_restyling)),
     path('configuration/', include(crud_configuration)),
 ]

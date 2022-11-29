@@ -83,24 +83,6 @@ class GenerationView(LoginRequiredMixin, View):
         )
 
 
-class RestylingView(LoginRequiredMixin, View):
-    login_url = '/accounts/login/'
-
-    def get(self, request, *args, **kwargs):
-        """
-        Функция отображения для домашней страницы сайта.
-        """
-        return render(
-            request,
-            'index.html',
-            context={
-                'title': 'Рестайлинги',
-                'data': Vehicle.objects.filter(_type=3),
-                'type': '_restyling',
-            },
-        )
-
-
 class ConfigurationView(LoginRequiredMixin, View):
     login_url = '/accounts/login/'
 
@@ -113,7 +95,7 @@ class ConfigurationView(LoginRequiredMixin, View):
             'index.html',
             context={
                 'title': 'Комплектации',
-                'data': Vehicle.objects.filter(_type=4),
+                'data': Vehicle.objects.filter(_type=3),
                 'type': '_configuration',
             },
         )

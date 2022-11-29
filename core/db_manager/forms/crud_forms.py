@@ -155,7 +155,7 @@ class GenerationForm(BaseVehicleForm):
         }
 
 
-class RestylingForm(BaseVehicleForm):
+class ConfigurationForm(BaseVehicleForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -166,22 +166,6 @@ class RestylingForm(BaseVehicleForm):
         fields = ['parent', 'name', 'description']
         labels = {
             'parent': 'Поколение',
-            'name': 'Название',
-            'description': 'Описание',
-        }
-
-
-class ConfigurationForm(BaseVehicleForm):
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['parent'].queryset = Vehicle.objects.filter(_type=3)
-
-    class Meta:
-        model = Vehicle
-        fields = ['parent', 'name', 'description']
-        labels = {
-            'parent': 'Рестайлинг',
             'name': 'Название',
             'description': 'Описание',
         }

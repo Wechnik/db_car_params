@@ -117,5 +117,4 @@ class Vehicle(models.Model):
         while parent:
             structure_data.append(parent.name)
             parent = parent.parent
-        structure_data.reverse()
-        return structure_data
+        return list(reversed(structure_data))

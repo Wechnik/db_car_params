@@ -1,7 +1,7 @@
 from django.forms.models import ModelForm as ModelFormBase
 from django.forms.fields import IntegerField
 
-from db_manager.models import Vehicle, Restriction, Tire, Measurement
+from db_manager.models import Vehicle, Restriction, Tire
 
 
 class BaseVehicleForm(ModelFormBase):
@@ -36,10 +36,8 @@ def get(name: str, prefix: str, annotations: dict):
 
     return type(name, (ModelFormBase,), {
         '__init__': __init__,
-
         'fill_initial': fill_initial,
-
-        **attrs
+        **attrs,
     })
 
 

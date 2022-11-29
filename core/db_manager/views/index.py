@@ -12,9 +12,10 @@ class IndexView(LoginRequiredMixin, View):
         Функция отображения для домашней страницы сайта.
         """
 
-        data = Vehicle.objects.filter(_type=4)
+        data = Vehicle.objects.filter(_type=2)
         structure_data = []
         for item in data:
+            # raise ValueError(item.get_structured_data())
             structure_data.append(item.get_structured_data())
 
         return render(

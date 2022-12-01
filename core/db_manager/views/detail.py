@@ -15,20 +15,32 @@ class BaseVehicleDetailView(DetailView):
 
 
 class VehicleDetailView(BaseVehicleDetailView):
-    template_name = 'crud/detail_vehicle.html'
+    template_name = 'all_car/detail.html'
 
 
 class BrandDetailView(BaseVehicleDetailView):
-    pass
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['type'] = '_brand'
+        return context
 
 
 class ModelDetailView(BaseVehicleDetailView):
-    pass
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['type'] = '_model'
+        return context
 
 
 class GenerationDetailView(BaseVehicleDetailView):
-    pass
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['type'] = '_generation'
+        return context
 
 
 class ConfigurationDetailView(BaseVehicleDetailView):
-    pass
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['type'] = '_configuration'
+        return context

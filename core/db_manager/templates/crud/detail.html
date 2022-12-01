@@ -2,5 +2,5 @@
 
 {% block content %}
     <div class='post-entry'></div>
-    <a class="btn btn-outline-primary" href='{% url 'edit' vehicle.id %}' role="button" style="color: white">Редактировать</a>
+    <a class="btn btn-outline-primary" href='{% url 'edit'|add:type vehicle.id %}' role="button" style="color: white">Редактировать</a>
 {% endblock content %}

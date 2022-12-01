@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class='post-entry'>
+        <h3 style="margin-bottom: 30px"><b>Ограничения</b></h3>
+    </div>
+
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+            <a class="nav-link active" data-toggle="tab" style="color: white;" href="#description">Комлектация 1</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" style="color: white" href="#characteristics">Комлектация 2</a>
+        </li>
+        <li class="nav-item" style="margin-left: 10px;">
+            <a href="#" class="btn btn-outline-success">
+                <i class="fa fa-plus" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+
+    <div class="tab-content" style="margin-top: 30px; margin-bottom: 30px;">
+        <div class="tab-pane fade show active" id="description">
+            <h4>Шины</h4>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">Тип</th>
+                    <th scope="col">Ширина</th>
+                    <th scope="col">Высота</th>
+                    <th scope="col">Диаметр</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <th scope="row">Мин.</th>
+                    <td>{{ vehicle.restrictions.tire.width.min }}</td>
+                    <td>{{ vehicle.restrictions.tire.height.min }}</td>
+                    <td>{{ vehicle.restrictions.tire.diameter.min }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Макс.</th>
+                    <td>{{ vehicle.restrictions.tire.width.max }}</td>
+                    <td>{{ vehicle.restrictions.tire.height.max }}</td>
+                    <td>{{ vehicle.restrictions.tire.diameter.max }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Рекомендуемая</th>
+                    <td>{{ vehicle.restrictions.tire.width.rec }}</td>
+                    <td>{{ vehicle.restrictions.tire.height.rec }}</td>
+                    <td>{{ vehicle.restrictions.tire.diameter.rec }}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="tab-pane fade" id="characteristics">
+            <h4>Хуй</h4>
+        </div>
+    </div>
+
+    <a class="btn btn-outline-primary" href='{% url 'edit' vehicle.id %}' role="button" style="color: white">Редактировать</a>
+{% endblock content %}

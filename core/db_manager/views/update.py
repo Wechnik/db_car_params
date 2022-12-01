@@ -35,6 +35,7 @@ class BaseVehicleUpdateView(UpdateView):
 
 class VehicleUpdateView(BaseVehicleUpdateView):
     form_class = VehicleForm
+    template_name = 'all_car/update.html'
     _url = 'index'
     _name = 'автомобиль'
 

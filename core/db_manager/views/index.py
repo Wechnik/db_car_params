@@ -1,7 +1,7 @@
 from db_manager.models import Vehicle
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render
-from django.views.generic.base import TemplateView, View
+from django.views.generic.base import View
 
 
 class IndexView(LoginRequiredMixin, View):
@@ -15,7 +15,6 @@ class IndexView(LoginRequiredMixin, View):
         data = Vehicle.objects.filter(_type=2)
         structure_data = []
         for item in data:
-            # raise ValueError(item.get_structured_data())
             structure_data.append(item.get_structured_data())
 
         return render(

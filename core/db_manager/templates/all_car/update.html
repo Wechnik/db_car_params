@@ -1,12 +1,37 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <div class="raw">
-        <div class="col-md-6 col-xs-12">
-            <form action="" method="post">{% csrf_token %}
-                {{ form.as_div }}
-                    <input style="margin-bottom: 30px; margin-top: 30px" class="btn btn-outline-success" type="submit" value="Сохранить"/>
-            </form>
+
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+            <a class="nav-link active" data-toggle="tab" style="color: white;" href="#description">Комлектация 1</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" style="color: white" href="#characteristics">Комлектация 2</a>
+        </li>
+        <li class="nav-item" style="margin-left: 10px;">
+            <a class="nav-link" data-toggle="tab" style="color: white" href="#tmp"><i class="fa fa-plus"
+                                                                                      aria-hidden="true"></i></a>
+        </li>
+    </ul>
+
+    <div class="tab-content" style="margin-top: 30px; margin-bottom: 30px;">
+        <div class="tab-pane fade show active" id="description">
+            <div class="raw">
+                <div class="col-md-6 col-xs-12">
+                    <form action="" method="post">{% csrf_token %}
+                        {{ form.as_div }}
+                        <input style="margin-top: 30px" class="btn btn-outline-success"
+                               type="submit"
+                               value="Сохранить"/>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="characteristics">
+            <h4>Хуй</h4>
         </div>
     </div>
+
+
 {% endblock content %}

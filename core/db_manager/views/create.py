@@ -10,8 +10,11 @@ from db_manager.forms.crud_forms import (
 from db_manager.models import Vehicle
 from django.views.generic.edit import CreateView
 
+from db_manager.views.abstract import BaseLoginRequiredMixin
 
-class BaseVehicleCreateView(CreateView):
+
+class BaseVehicleCreateView(BaseLoginRequiredMixin, CreateView):
+
     model = Vehicle
     queryset = Vehicle.objects.all()
     template_name = 'crud/create.html'

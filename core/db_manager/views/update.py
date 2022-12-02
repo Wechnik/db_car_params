@@ -13,8 +13,10 @@ from django.views.generic.edit import UpdateView
 
 __all__ = ['VehicleUpdateView']
 
+from db_manager.views.abstract import BaseLoginRequiredMixin
 
-class BaseVehicleUpdateView(UpdateView):
+
+class BaseVehicleUpdateView(BaseLoginRequiredMixin, UpdateView):
     model = Vehicle
     queryset = Vehicle.objects.all()
     template_name = 'crud/create.html'

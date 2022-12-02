@@ -1,16 +1,15 @@
 from db_manager.models import Vehicle
-from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render
 from django.views.generic.base import View
 
+from db_manager.views.abstract import BaseLoginRequiredMixin
 
-class IndexView(LoginRequiredMixin, View):
-    login_url = '/accounts/login/'
+
+class IndexView(BaseLoginRequiredMixin, View):
+    """Представление главной страницы."""
 
     def get(self, request, *args, **kwargs):
-        """
-        Функция отображения для домашней страницы сайта.
-        """
+        """Метод отображения для домашней страницы сайта."""
 
         data = Vehicle.objects.filter(_type=2)
         structure_data = []
@@ -28,13 +27,11 @@ class IndexView(LoginRequiredMixin, View):
         )
 
 
-class BrandView(LoginRequiredMixin, View):
-    login_url = '/accounts/login/'
+class BrandView(BaseLoginRequiredMixin, View):
+    """Представление страницы брендов."""
 
     def get(self, request, *args, **kwargs):
-        """
-        Функция отображения для домашней страницы сайта.
-        """
+        """Метод отображения для брендов авто."""
         return render(
             request,
             'index.html',
@@ -46,13 +43,11 @@ class BrandView(LoginRequiredMixin, View):
         )
 
 
-class ModelView(LoginRequiredMixin, View):
-    login_url = '/accounts/login/'
+class ModelView(BaseLoginRequiredMixin, View):
+    """Представление страницы моделей."""
 
     def get(self, request, *args, **kwargs):
-        """
-        Функция отображения для домашней страницы сайта.
-        """
+        """Метод отображения для моделей авто."""
         return render(
             request,
             'index.html',
@@ -64,13 +59,11 @@ class ModelView(LoginRequiredMixin, View):
         )
 
 
-class GenerationView(LoginRequiredMixin, View):
-    login_url = '/accounts/login/'
+class GenerationView(BaseLoginRequiredMixin, View):
+    """Представление страницы поколений."""
 
     def get(self, request, *args, **kwargs):
-        """
-        Функция отображения для домашней страницы сайта.
-        """
+        """Метод отображения для поколений авто."""
         return render(
             request,
             'index.html',
@@ -82,13 +75,11 @@ class GenerationView(LoginRequiredMixin, View):
         )
 
 
-class ConfigurationView(LoginRequiredMixin, View):
-    login_url = '/accounts/login/'
+class ConfigurationView(BaseLoginRequiredMixin, View):
+    """Представление страницы комплектаций."""
 
     def get(self, request, *args, **kwargs):
-        """
-        Функция отображения для домашней страницы сайта.
-        """
+        """Метод отображения для комплектаций авто."""
         return render(
             request,
             'index.html',

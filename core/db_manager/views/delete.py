@@ -4,8 +4,10 @@ from django.views.generic import DeleteView
 
 __all__ = ['VehicleDeleteView']
 
+from db_manager.views.abstract import BaseLoginRequiredMixin
 
-class BaseVehicleDeleteView(DeleteView):
+
+class BaseVehicleDeleteView(BaseLoginRequiredMixin, DeleteView):
     model = Vehicle
     template_name = 'crud/delete.html'
 

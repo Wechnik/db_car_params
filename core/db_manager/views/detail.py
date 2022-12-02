@@ -3,8 +3,10 @@ from django.views.generic import DetailView
 
 __all__ = ['VehicleDetailView']
 
+from db_manager.views.abstract import BaseLoginRequiredMixin
 
-class BaseVehicleDetailView(DetailView):
+
+class BaseVehicleDetailView(BaseLoginRequiredMixin, DetailView):
     model = Vehicle
     template_name = 'crud/detail.html'
 

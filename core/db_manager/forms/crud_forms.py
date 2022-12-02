@@ -1,7 +1,7 @@
 from django.forms.models import ModelForm as ModelFormBase
 from django.forms.fields import IntegerField
 
-from db_manager.models import Vehicle, Restriction, Tire
+from db_manager.models import Vehicle, Attributes
 
 
 class BaseVehicleForm(ModelFormBase):
@@ -20,9 +20,18 @@ class BaseVehicleForm(ModelFormBase):
         }
 
 
-def get(name: str, prefix: str, annotations: dict):
+def make_class(class_name: str, path: list[str], annotations: dict):
+    """
+
+    :param class_name: Название создаваемого класса.
+    :param path:
+    :param annotations:
+    :return:
+    """
+    prefix = f'{("__".join(path + [""]))}'
+
     attrs = {
-        f'{prefix}_{cls_field_name}': cls_field_type(**cls_field_type_kwargs)
+        f'{prefix}{cls_field_name}': cls_field_type(**cls_field_type_kwargs)
         for cls_field_name, (cls_field_type, cls_field_type_kwargs) in annotations.items()
     }
 
@@ -30,20 +39,23 @@ def get(name: str, prefix: str, annotations: dict):
         ModelFormBase.__init__(self, *args, **kwargs)
 
     def fill_initial(self: 'ModelFormBase'):
-        obj = getattr(self.instance.restrictions.tire, prefix)
-        for cls_field_name in annotations:
-            self.fields[f'{prefix}_{cls_field_name}'].initial = getattr(obj, cls_field_name)
+        obj = self.instance
+        for sub_object in path:
+            obj = getattr(obj, sub_object)
 
-    return type(name, (ModelFormBase,), {
+        for cls_field_name in annotations:
+            self.fields[f'{prefix}{cls_field_name}'].initial = getattr(obj, cls_field_name)
+
+    return type(class_name, (ModelFormBase,), {
         '__init__': __init__,
         'fill_initial': fill_initial,
         **attrs,
     })
 
 
-Width = get(
+Width = make_class(
     'Width',
-    'width',
+    ['attributes', 'restrictions', 'tire', 'width'],
     {
         'min': (IntegerField, {'label': 'Минимальная ширина'}),
         'max': (IntegerField, {'label': 'Максимальная ширина'}),
@@ -51,10 +63,9 @@ Width = get(
     }
 )
 
-
-Height = get(
+Height = make_class(
     'Height',
-    'height',
+    ['attributes', 'restrictions', 'tire', 'height'],
     {
         'min': (IntegerField, {'label': 'Минимальная высота профиля, %'}),
         'max': (IntegerField, {'label': 'Максимальная высота профиля, %'}),
@@ -62,10 +73,9 @@ Height = get(
     }
 )
 
-
-Diameter = get(
+Diameter = make_class(
     'Diameter',
-    'diameter',
+    ['attributes', 'restrictions', 'tire', 'diameter'],
     {
         'min': (IntegerField, {'label': 'Минимальный диаметр'}),
         'max': (IntegerField, {'label': 'Максимальный диаметр'}),
@@ -73,9 +83,18 @@ Diameter = get(
     }
 )
 
+YearsOfProduction = make_class(
+    'YearsOfProduction',
+    ['attributes', 'years_of_production'],
+    {
+        'start': (IntegerField, {'label': 'Начало'}),
+        'end': (IntegerField, {'label': 'Конец'})
+    }
+)
+
 
 def deep_set(base_dict: dict, keys: str, value) -> None:
-    _keys = keys.split('_')
+    _keys = keys.split('__')
 
     last_level = base_dict
     for i, key in enumerate(_keys[:-1]):
@@ -93,19 +112,18 @@ def cleaned_data_to_json(cleaned_data: dict) -> dict:
     return json
 
 
-class VehicleForm(BaseVehicleForm, Diameter, Width, Height):
+class VehicleForm(BaseVehicleForm, Diameter, Width, Height, YearsOfProduction):
     template_name_div = 'div.html'
 
     def save(self, commit=True):
-        self.instance.restrictions = Restriction(
-            Tire.from_json(cleaned_data_to_json(self.cleaned_data)),
-        )
+        self.instance.attributes = Attributes.from_json(cleaned_data_to_json(self.cleaned_data).get('attributes'))
         return super().save(commit=commit)
 
     def __init__(self, *args, **kwargs):
         Width.__init__(self, *args, **kwargs)
         Height.__init__(self, *args, **kwargs)
         Diameter.__init__(self, *args, **kwargs)
+        YearsOfProduction.__init__(self, *args, **kwargs)
         BaseVehicleForm.__init__(self, *args, **kwargs)
 
         for base_type in type(self).mro():

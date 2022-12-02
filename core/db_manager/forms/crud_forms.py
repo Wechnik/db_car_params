@@ -22,11 +22,32 @@ class BaseVehicleForm(ModelFormBase):
 
 def make_class(class_name: str, path: list[str], annotations: dict):
     """
-
+    Сформировать класс для работы с атрибутами как полями формы.
     :param class_name: Название создаваемого класса.
-    :param path:
-    :param annotations:
-    :return:
+    :param path: Путь до атрибута (dataclass).
+    :param annotations: Аннотации. Содержат название конечного атрибута не (dataclass).
+    :return: Класс содержит:
+        - Атрибуты класса в виде названия полей с сохранением иерархии.
+        - Instance-метод fill_initial для заполнения полей.
+        - __init__-метод от ModelFormBase.
+
+        Пример:
+        >>> make_class(
+        >>>     class_name='Width',
+        >>>     path=['attributes', 'restrictions', 'tire', 'width'],
+        >>>     annotations={
+        >>>        'min': (IntegerField, {'label': 'Минимальная ширина'}),
+        >>>        'max': (IntegerField, {'label': 'Максимальная ширина'}),
+        >>>     }
+        >>> )
+
+        Эквивалентно:
+        >>> Width(ModelFormBase):
+        >>>    attributes__restrictions__tire__width__min: IntegerField
+        >>>    attributes__restrictions__tire__width__max: IntegerField
+        >>>
+        >>>    def fill_initial(self) -> None:
+        >>>        ...
     """
     prefix = f'{("__".join(path + [""]))}'
 
@@ -38,7 +59,7 @@ def make_class(class_name: str, path: list[str], annotations: dict):
     def __init__(self: 'ModelFormBase', *args, **kwargs):
         ModelFormBase.__init__(self, *args, **kwargs)
 
-    def fill_initial(self: 'ModelFormBase'):
+    def fill_initial(self: 'ModelFormBase') -> None:
         obj = self.instance
         for sub_object in path:
             obj = getattr(obj, sub_object)
@@ -93,18 +114,20 @@ YearsOfProduction = make_class(
 )
 
 
-def deep_set(base_dict: dict, keys: str, value) -> None:
-    _keys = keys.split('__')
+def deep_set(base_dict: dict, path: str, value) -> None:
+    """Установить значение по ключу с неограниченным уровнем вложенности."""
+    keys = path.split('__')
 
     last_level = base_dict
-    for i, key in enumerate(_keys[:-1]):
+    for i, key in enumerate(keys[:-1]):
         if key not in last_level or not isinstance(last_level[key], dict):
             last_level[key] = {}
         last_level = last_level[key]
-    last_level[_keys[-1]] = value
+    last_level[keys[-1]] = value
 
 
 def cleaned_data_to_json(cleaned_data: dict) -> dict:
+    """Преобразовать заполненные данные формы в JSON-представление dataclass-атрибутов."""
     json = {}
     for field, value in cleaned_data.items():
         deep_set(json, field, value)

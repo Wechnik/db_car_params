@@ -22,6 +22,7 @@ class VehicleDetailView(BaseVehicleDetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         vehicle = Vehicle.objects.filter(parent=context['vehicle'].id)
+        context['parent'] = context['vehicle']
         if vehicle:
             context['vehicle'] = list(vehicle)
         else:

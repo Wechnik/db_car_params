@@ -58,47 +58,48 @@
                 </tr>
                 </tbody>
             </table>
-            <h4>Годы производства {{ vehicle.0.attributes.years_of_production.start }} - {{ vehicle.0.attributes.years_of_production.end }}</h4>
-            <h4>Годы производства {{ vehicle.0.attributes.years_of_production }}</h4>
+{#            <h4>Годы производства {{ vehicle.0.attributes.years_of_production.start }} - {{ vehicle.0.attributes.years_of_production.end }}</h4>#}
+{#            <h4>Годы производства {{ vehicle.0.attributes.years_of_production }}</h4>#}
         </div>
         {% if vehicle.1 %}
             {% for veh in vehicle|slice:"1:" %}
-                <h4>Шины</h4>
-                <table class="table">
-                    <thead>
-                    <tr>
-                        <th scope="col">Тип</th>
-                        <th scope="col">Ширина</th>
-                        <th scope="col">Высота</th>
-                        <th scope="col">Диаметр</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <th scope="row">Мин.</th>
-                        <td>{{ veh.attributes.restrictions.tire.width.min }}</td>
-                        <td>{{ veh.attributes.restrictions.tire.height.min }}</td>
-                        <td>{{ veh.attributes.restrictions.tire.diameter.min }}</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Макс.</th>
-                        <td>{{ veh.attributes.restrictions.tire.width.max }}</td>
-                        <td>{{ veh.attributes.restrictions.tire.height.max }}</td>
-                        <td>{{ veh.attributes.restrictions.tire.diameter.max }}</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Рекомендуемая</th>
-                        <td>{{ veh.attributes.restrictions.tire.width.rec }}</td>
-                        <td>{{ veh.attributes.restrictions.tire.height.rec }}</td>
-                        <td>{{ veh.attributes.restrictions.tire.diameter.rec }}</td>
-                    </tr>
-                    </tbody>
-                </table>
-                <h4>Годы производства {{ veh.attributes.years_of_production.start }} - {{ veh.attributes.years_of_production.end }}</h4>
-                <h4>Годы производства {{ veh.attributes.years_of_production }}</h4>
+                <div class="tab-pane fade" id="description">
+                    <h4>Шины</h4>
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th scope="col">Тип</th>
+                            <th scope="col">Ширина</th>
+                            <th scope="col">Высота</th>
+                            <th scope="col">Диаметр</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <th scope="row">Мин.</th>
+                            <td>{{ veh.attributes.restrictions.tire.width.min }}</td>
+                            <td>{{ veh.attributes.restrictions.tire.height.min }}</td>
+                            <td>{{ veh.attributes.restrictions.tire.diameter.min }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Макс.</th>
+                            <td>{{ veh.attributes.restrictions.tire.width.max }}</td>
+                            <td>{{ veh.attributes.restrictions.tire.height.max }}</td>
+                            <td>{{ veh.attributes.restrictions.tire.diameter.max }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Рекомендуемая</th>
+                            <td>{{ veh.attributes.restrictions.tire.width.rec }}</td>
+                            <td>{{ veh.attributes.restrictions.tire.height.rec }}</td>
+                            <td>{{ veh.attributes.restrictions.tire.diameter.rec }}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+    {#                <h4>Годы производства {{ veh.attributes.years_of_production.start }} - {{ veh.attributes.years_of_production.end }}</h4>#}
+    {#                <h4>Годы производства {{ veh.attributes.years_of_production }}</h4>#}
+                </div>
             {% endfor %}
         {% endif %}
     </div>
-
-{#    <a class="btn btn-outline-primary" href='{% url 'edit' vehicle.id %}' role="button" style="color: white">Редактировать</a>#}
+    <a class="btn btn-outline-primary" href='{% url 'edit' parent.id %}' role="button" style="color: white">Редактировать</a>
 {% endblock content %}

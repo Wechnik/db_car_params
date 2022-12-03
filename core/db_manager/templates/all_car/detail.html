@@ -26,7 +26,7 @@
     </ul>
 
     <div class="tab-content" style="margin-top: 30px; margin-bottom: 30px;">
-        <div class="tab-pane fade show active" id="description">
+        <div class="tab-pane fade show active" id="{{ vehicle.0.name }}">
             <h4>Шины</h4>
             <table class="table">
                 <thead>
@@ -58,12 +58,11 @@
                 </tr>
                 </tbody>
             </table>
-            <h4>Годы производства {{ vehicle.0.attributes.years_of_production.start }} - {{ vehicle.0.attributes.years_of_production.end }}</h4>
             <h4>Годы производства {{ vehicle.0.attributes.years_of_production }}</h4>
         </div>
         {% if vehicle.1 %}
             {% for veh in vehicle|slice:"1:" %}
-                <div class="tab-pane fade" id="description">
+                <div class="tab-pane fade" id="{{ veh.name }}">
                     <h4>Шины</h4>
                     <table class="table">
                         <thead>

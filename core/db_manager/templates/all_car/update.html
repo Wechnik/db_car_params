@@ -19,9 +19,9 @@
         <div class="tab-pane fade show active" id="description">
             <div class="raw">
                 <div class="col-md-6 col-xs-12">
-                    <form action="" method="post">{% csrf_token %}
+                    <form action="" method="post" onsubmit="document.getElementById('submit').disabled=true; processFormData();">{% csrf_token %}
                         {{ form.as_div }}
-                        <input style="margin-top: 30px" class="btn btn-outline-success"
+                        <input id="submit" style="margin-top: 30px" class="btn btn-outline-success"
                                type="submit"
                                value="Сохранить"/>
                     </form>

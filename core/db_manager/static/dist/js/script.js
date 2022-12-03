@@ -270,6 +270,3 @@ $('.menu_button').click(function () {
     $(this).toggleClass('active');
     $('.menu_button').not(this).removeClass('active');
 })
-
-
-

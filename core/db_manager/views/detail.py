@@ -19,6 +19,16 @@ class BaseVehicleDetailView(BaseLoginRequiredMixin, DetailView):
 class VehicleDetailView(BaseVehicleDetailView):
     template_name = 'all_car/detail.html'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        vehicle = Vehicle.objects.filter(parent=context['vehicle'].id)
+        if vehicle:
+            context['vehicle'] = list(vehicle)
+        else:
+            context['vehicle'] = [context['vehicle']]
+            context['isBaseConfiguration'] = 'True'
+        return context
+
 
 class BrandDetailView(BaseVehicleDetailView):
     def get_context_data(self, **kwargs):

@@ -1,14 +1,25 @@
 {% extends 'base.html' %}
 
 {% block content %}
-
     <ul class="nav nav-tabs">
-        <li class="nav-item">
-            <a class="nav-link active" data-toggle="tab" style="color: white;" href="#description">Комлектация 1</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" style="color: white" href="#characteristics">Комлектация 2</a>
-        </li>
+        {% if isBaseConfiguration %}
+            <li class="nav-item">
+                <a class="nav-link active" data-toggle="tab" style="color: white;"
+                   href="#{{ vehicle.0.name }}">Базовая комплектация</a>
+            </li>
+        {% else %}
+            <li class="nav-item">
+                <a class="nav-link active" data-toggle="tab" style="color: white;"
+                   href="#{{ vehicle.0.name }}">{{ vehicle.0.name }}</a>
+            </li>
+        {% endif %}
+        {% if vehicle.1 %}
+            {% for veh in vehicle|slice:"1:" %}
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" style="color: white" href="#{{ veh.name }}">{{ veh.name }}</a>
+                </li>
+            {% endfor %}
+        {% endif %}
         <li class="nav-item" style="margin-left: 10px;">
             <a class="nav-link" data-toggle="tab" style="color: white" href="#tmp"><i class="fa fa-plus"
                                                                                       aria-hidden="true"></i></a>
@@ -16,10 +27,11 @@
     </ul>
 
     <div class="tab-content" style="margin-top: 30px; margin-bottom: 30px;">
-        <div class="tab-pane fade show active" id="description">
+        <div class="tab-pane fade show active" id="{{ vehicle.0.name }}">
             <div class="raw">
                 <div class="col-md-6 col-xs-12">
-                    <form action="" method="post" onsubmit="document.getElementById('submit').disabled=true; processFormData();">{% csrf_token %}
+                    <form action="" method="post"
+                          onsubmit="document.getElementById('submit').disabled=true; processFormData();">{% csrf_token %}
                         {{ form.as_div }}
                         <input id="submit" style="margin-top: 30px" class="btn btn-outline-success"
                                type="submit"
@@ -28,10 +40,22 @@
                 </div>
             </div>
         </div>
-        <div class="tab-pane fade" id="characteristics">
-            <h4>Хуй</h4>
-        </div>
+        {% if vehicle.1 %}
+            {% for veh in vehicle|slice:"1:" %}
+                <div class="tab-pane fade" id="{{ veh }}">
+                    <div class="raw">
+                        <div class="col-md-6 col-xs-12">
+                            <form action="" method="post"
+                                  onsubmit="document.getElementById('submit').disabled=true; processFormData();">{% csrf_token %}
+                                {{ form.as_div }}
+                                <input id="submit" style="margin-top: 30px" class="btn btn-outline-success"
+                                       type="submit"
+                                       value="Сохранить"/>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% endif %}
     </div>
-
-
 {% endblock content %}

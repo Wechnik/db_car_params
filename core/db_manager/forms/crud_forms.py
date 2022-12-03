@@ -108,8 +108,8 @@ YearsOfProduction = make_class(
     'YearsOfProduction',
     ['attributes', 'years_of_production'],
     {
-        'start': (IntegerField, {'label': 'Начало'}),
-        'end': (IntegerField, {'label': 'Конец'})
+        'start': (IntegerField, {'label': 'Год начала выпуска'}),
+        'end': (IntegerField, {'label': 'Год окончания выпуска'})
     }
 )
 

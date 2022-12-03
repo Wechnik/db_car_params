@@ -37,9 +37,21 @@ class BaseVehicleUpdateView(BaseLoginRequiredMixin, UpdateView):
 
 class VehicleUpdateView(BaseVehicleUpdateView):
     form_class = VehicleForm
+    queryset = Vehicle.objects.all()
     template_name = 'all_car/update.html'
     _url = 'index'
     _name = 'автомобиль'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        vehicle = Vehicle.objects.filter(parent=context['vehicle'].id)
+        if vehicle:
+            context['vehicle'] = list(vehicle)
+        else:
+            context['vehicle'] = [context['vehicle']]
+            context['isBaseConfiguration'] = True
+        context['title'] = f'Редактировать {self._name}'
+        return context
 
 
 class BrandUpdateView(BaseVehicleUpdateView):

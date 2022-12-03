@@ -32,6 +32,7 @@
                     <form action="" method="post"
                           onsubmit="document.getElementById('submit').disabled=true; processFormData();">{% csrf_token %}
                         {{ form.as_div }}
+                        <input type="hidden" name="configurationId" value="{{ vehicle.0.id }}">
                         <input id="submit" style="margin-top: 30px" class="btn btn-outline-success"
                                type="submit"
                                value="Сохранить"/>
@@ -41,12 +42,13 @@
         </div>
         {% if vehicle.1 %}
             {% for veh in vehicle|slice:"1:" %}
-                <div class="tab-pane fade" id="{{ veh }}">
+                <div class="tab-pane fade" id="{{ veh.name }}">
                     <div class="raw">
                         <div class="col-md-6 col-xs-12">
                             <form action="" method="post"
                                   onsubmit="document.getElementById('submit').disabled=true; processFormData();">{% csrf_token %}
                                 {{ form.as_div }}
+                                <input type="hidden" name="configurationId" value="{{ veh.id }}">
                                 <input id="submit" style="margin-top: 30px" class="btn btn-outline-success"
                                        type="submit"
                                        value="Сохранить"/>

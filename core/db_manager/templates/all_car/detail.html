@@ -58,8 +58,8 @@
                 </tr>
                 </tbody>
             </table>
-{#            <h4>Годы производства {{ vehicle.0.attributes.years_of_production.start }} - {{ vehicle.0.attributes.years_of_production.end }}</h4>#}
-{#            <h4>Годы производства {{ vehicle.0.attributes.years_of_production }}</h4>#}
+            <h4>Годы производства {{ vehicle.0.attributes.years_of_production.start }} - {{ vehicle.0.attributes.years_of_production.end }}</h4>
+            <h4>Годы производства {{ vehicle.0.attributes.years_of_production }}</h4>
         </div>
         {% if vehicle.1 %}
             {% for veh in vehicle|slice:"1:" %}
@@ -95,8 +95,8 @@
                         </tr>
                         </tbody>
                     </table>
-    {#                <h4>Годы производства {{ veh.attributes.years_of_production.start }} - {{ veh.attributes.years_of_production.end }}</h4>#}
-    {#                <h4>Годы производства {{ veh.attributes.years_of_production }}</h4>#}
+                    <h4>Годы производства {{ veh.attributes.years_of_production.start }} - {{ veh.attributes.years_of_production.end }}</h4>
+                    <h4>Годы производства {{ veh.attributes.years_of_production }}</h4>
                 </div>
             {% endfor %}
         {% endif %}

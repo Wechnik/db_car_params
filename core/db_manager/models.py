@@ -91,7 +91,7 @@ class YearsOfProduction(BaseAttribute):
 
     def __str__(self):
         if not self.start:
-            return
+            return ''
         if self.end:
             return f'{self.start} - {self.end}'
         else:

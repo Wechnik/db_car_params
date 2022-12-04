@@ -24,7 +24,6 @@
             {% endfor %}
         {% endif %}
     </ul>
-
     <div class="tab-content" style="margin-top: 30px; margin-bottom: 30px;">
         <div class="tab-pane fade show active" id="{{ vehicle.0.name }}">
             <h4>Шины</h4>
@@ -40,25 +39,25 @@
                 <tbody>
                 <tr>
                     <th scope="row">Мин.</th>
-                    <td>{{ vehicle.0.attributes.restrictions.tire.width.min }}</td>
-                    <td>{{ vehicle.0.attributes.restrictions.tire.height.min }}</td>
-                    <td>{{ vehicle.0.attributes.restrictions.tire.diameter.min }}</td>
+                    <td>{{ vehicle.0.get_hierarchy_attributes.restrictions.tire.width.min }}</td>
+                    <td>{{ vehicle.0.get_hierarchy_attributes.restrictions.tire.height.min }}</td>
+                    <td>{{ vehicle.0.get_hierarchy_attributes.restrictions.tire.diameter.min }}</td>
                 </tr>
                 <tr>
                     <th scope="row">Макс.</th>
-                    <td>{{ vehicle.0.attributes.restrictions.tire.width.max }}</td>
-                    <td>{{ vehicle.0.attributes.restrictions.tire.height.max }}</td>
-                    <td>{{ vehicle.0.attributes.restrictions.tire.diameter.max }}</td>
+                    <td>{{ vehicle.0.get_hierarchy_attributes.restrictions.tire.width.max }}</td>
+                    <td>{{ vehicle.0.get_hierarchy_attributes.restrictions.tire.height.max }}</td>
+                    <td>{{ vehicle.0.get_hierarchy_attributes.restrictions.tire.diameter.max }}</td>
                 </tr>
                 <tr>
                     <th scope="row">Рекомендуемая</th>
-                    <td>{{ vehicle.0.attributes.restrictions.tire.width.rec }}</td>
-                    <td>{{ vehicle.0.attributes.restrictions.tire.height.rec }}</td>
-                    <td>{{ vehicle.0.attributes.restrictions.tire.diameter.rec }}</td>
+                    <td>{{ vehicle.0.get_hierarchy_attributes.restrictions.tire.width.rec }}</td>
+                    <td>{{ vehicle.0.get_hierarchy_attributes.restrictions.tire.height.rec }}</td>
+                    <td>{{ vehicle.0.get_hierarchy_attributes.restrictions.tire.diameter.rec }}</td>
                 </tr>
                 </tbody>
             </table>
-            <h4>Годы производства {{ vehicle.0.attributes.years_of_production }}</h4>
+            <h4>Годы производства {{ vehicle.0.get_hierarchy_attributes.years_of_production }}</h4>
         </div>
         {% if vehicle.1 %}
             {% for veh in vehicle|slice:"1:" %}
@@ -76,26 +75,25 @@
                         <tbody>
                         <tr>
                             <th scope="row">Мин.</th>
-                            <td>{{ veh.attributes.restrictions.tire.width.min }}</td>
-                            <td>{{ veh.attributes.restrictions.tire.height.min }}</td>
-                            <td>{{ veh.attributes.restrictions.tire.diameter.min }}</td>
+                            <td>{{ veh.get_hierarchy_attributes.restrictions.tire.width.min }}</td>
+                            <td>{{ veh.get_hierarchy_attributes.restrictions.tire.height.min }}</td>
+                            <td>{{ veh.get_hierarchy_attributes.restrictions.tire.diameter.min }}</td>
                         </tr>
                         <tr>
                             <th scope="row">Макс.</th>
-                            <td>{{ veh.attributes.restrictions.tire.width.max }}</td>
-                            <td>{{ veh.attributes.restrictions.tire.height.max }}</td>
-                            <td>{{ veh.attributes.restrictions.tire.diameter.max }}</td>
+                            <td>{{ veh.get_hierarchy_attributes.restrictions.tire.width.max }}</td>
+                            <td>{{ veh.get_hierarchy_attributes.restrictions.tire.height.max }}</td>
+                            <td>{{ veh.get_hierarchy_attributes.restrictions.tire.diameter.max }}</td>
                         </tr>
                         <tr>
                             <th scope="row">Рекомендуемая</th>
-                            <td>{{ veh.attributes.restrictions.tire.width.rec }}</td>
-                            <td>{{ veh.attributes.restrictions.tire.height.rec }}</td>
-                            <td>{{ veh.attributes.restrictions.tire.diameter.rec }}</td>
+                            <td>{{ veh.get_hierarchy_attributes.restrictions.tire.width.rec }}</td>
+                            <td>{{ veh.get_hierarchy_attributes.restrictions.tire.height.rec }}</td>
+                            <td>{{ veh.get_hierarchy_attributes.restrictions.tire.diameter.rec }}</td>
                         </tr>
                         </tbody>
                     </table>
-                    <h4>Годы производства {{ veh.attributes.years_of_production.start }} - {{ veh.attributes.years_of_production.end }}</h4>
-                    <h4>Годы производства {{ veh.attributes.years_of_production }}</h4>
+                    <h4>Годы производства {{ veh.get_hierarchy_attributes.years_of_production }}</h4>
                 </div>
             {% endfor %}
         {% endif %}

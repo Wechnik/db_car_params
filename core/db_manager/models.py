@@ -5,6 +5,8 @@ from dataclasses import dataclass, is_dataclass
 from django.db import models
 from django.urls import reverse
 
+from db_manager.helpers import deepmerge
+
 
 class CaseHelper:
     """Вспомогательный класс для работы с регистрами."""
@@ -132,6 +134,17 @@ class Vehicle(models.Model):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.attributes = Attributes.from_json(self.attrs)
+
+    @property
+    def get_hierarchy_attributes(self) -> Attributes:
+        """Получить атрибуты. Поддержано наследование атрибутов."""
+        obj = self
+        attrs = {}
+        while obj.parent:
+            deepmerge(attrs, obj.attributes.to_json())
+            obj = obj.parent
+
+        return Attributes.from_json(attrs)
 
     def save(
             self, force_insert=False, force_update=False, using=None, update_fields=None

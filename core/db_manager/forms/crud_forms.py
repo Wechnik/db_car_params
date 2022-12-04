@@ -1,6 +1,7 @@
 from django.forms.models import ModelForm as ModelFormBase
 from django.forms.fields import IntegerField
 
+from db_manager.helpers import deep_set
 from db_manager.models import Vehicle, Attributes
 
 
@@ -112,18 +113,6 @@ YearsOfProduction = make_class(
         'end': (IntegerField, {'label': 'Год окончания выпуска'})
     }
 )
-
-
-def deep_set(base_dict: dict, path: str, value) -> None:
-    """Установить значение по ключу с неограниченным уровнем вложенности."""
-    keys = path.split('__')
-
-    last_level = base_dict
-    for i, key in enumerate(keys[:-1]):
-        if key not in last_level or not isinstance(last_level[key], dict):
-            last_level[key] = {}
-        last_level = last_level[key]
-    last_level[keys[-1]] = value
 
 
 def cleaned_data_to_json(cleaned_data: dict) -> dict:

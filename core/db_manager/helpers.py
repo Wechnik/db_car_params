@@ -1,3 +1,4 @@
+import re
 from copy import deepcopy
 
 
@@ -33,3 +34,21 @@ def deep_set(base_dict: dict, path: str, value) -> None:
             last_level[key] = {}
         last_level = last_level[key]
     last_level[keys[-1]] = value
+
+
+class CaseHelper:
+    """Вспомогательный класс для работы с регистрами."""
+
+    @staticmethod
+    def snake_to_camel(text: str) -> str:
+        """Преобразовать строку из snake_case в camelCase."""
+        words = text.split('_')
+        if len(words) > 1:
+            first, *rest = words
+            words = [first] + list(map(lambda word: word.capitalize(), rest))
+        return ''.join(words)
+
+    @staticmethod
+    def camel_to_snake(text: str) -> str:
+        """Преобразовать строку из camelCase в snake_case."""
+        return '_'.join(map(lambda txt: txt.lower(), re.findall(r'((?:[A-Z]+|\A)[a-z]*)', text)))

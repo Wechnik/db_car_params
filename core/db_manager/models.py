@@ -1,4 +1,3 @@
-import re
 from typing import List
 from dataclasses import dataclass, is_dataclass
 
@@ -6,24 +5,6 @@ from django.db import models
 from django.urls import reverse
 
 from db_manager.helpers import deepmerge
-
-
-class CaseHelper:
-    """Вспомогательный класс для работы с регистрами."""
-
-    @staticmethod
-    def snake_to_camel(text: str) -> str:
-        """Преобразовать строку из snake_case в camelCase."""
-        words = text.split('_')
-        if len(words) > 1:
-            first, *rest = words
-            words = [first] + list(map(lambda word: word.capitalize(), rest))
-        return ''.join(words)
-
-    @staticmethod
-    def camel_to_snake(text: str) -> str:
-        """Преобразовать строку из camelCase в snake_case."""
-        return '_'.join(map(lambda txt: txt.lower(), re.findall(r'((?:[A-Z]+|\A)[a-z]*)', text)))
 
 
 class BaseAttribute:

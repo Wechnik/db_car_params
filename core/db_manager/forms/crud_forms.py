@@ -128,10 +128,12 @@ class VehicleForm(BaseVehicleForm, Diameter, Width, Height, YearsOfProduction):
     template_name_div = 'div.html'
 
     def save(self, commit=True):
+        self.instance = Vehicle.objects.get(id=self.request.POST.get('configurationId'))
         self.instance.attributes = Attributes.from_json(cleaned_data_to_json(self.cleaned_data).get('attributes'))
         return super().save(commit=commit)
 
     def __init__(self, *args, **kwargs):
+        self.request = kwargs.pop('request')
         Width.__init__(self, *args, **kwargs)
         Height.__init__(self, *args, **kwargs)
         Diameter.__init__(self, *args, **kwargs)

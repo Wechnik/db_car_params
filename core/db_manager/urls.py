@@ -1,3 +1,5 @@
+from rest_framework.urlpatterns import format_suffix_patterns
+
 from db_manager.views import IndexView, VehicleDeleteView, VehicleDetailView, VehicleUpdateView
 from db_manager.views.create import (
     BrandCreateView,
@@ -18,6 +20,7 @@ from db_manager.views.detail import (
     ModelDetailView,
 )
 from db_manager.views.index import BrandView, ConfigurationView, GenerationView, ModelView
+from db_manager.views.rest import VehicleViewREST
 from db_manager.views.update import (
     BrandUpdateView,
     ConfigurationUpdateView,
@@ -73,4 +76,6 @@ urlpatterns = [
     path('model/', include(crud_model)),
     path('generation/', include(crud_generation)),
     path('configuration/', include(crud_configuration)),
+    path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    path('api/v1/vehicle/', VehicleViewREST.as_view(), name='rest_get'),
 ]

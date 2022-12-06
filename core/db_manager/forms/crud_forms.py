@@ -2,7 +2,8 @@ from django.forms.models import ModelForm as ModelFormBase
 from django.forms.fields import IntegerField
 
 from db_manager.helpers import deep_set
-from db_manager.models import Vehicle, Attributes
+from db_manager.models import Vehicle
+from db_manager.models.vehicle.attributes import Attributes
 
 
 class BaseVehicleForm(ModelFormBase):

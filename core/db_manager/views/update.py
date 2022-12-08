@@ -1,5 +1,10 @@
-from django.shortcuts import redirect
+__all__ = ['VehicleUpdateView']
 
+from django.shortcuts import redirect
+from django.views.generic.edit import UpdateView
+
+from db_manager.models import Vehicle
+from db_manager.views.abstract import BaseLoginRequiredMixin
 from db_manager.forms.crud_forms import (
     BaseVehicleForm,
     BrandForm,
@@ -8,12 +13,6 @@ from db_manager.forms.crud_forms import (
     ModelForm,
     VehicleForm
 )
-from db_manager.models import Vehicle
-from django.views.generic.edit import UpdateView
-
-__all__ = ['VehicleUpdateView']
-
-from db_manager.views.abstract import BaseLoginRequiredMixin
 
 
 class BaseVehicleUpdateView(BaseLoginRequiredMixin, UpdateView):

@@ -33,6 +33,7 @@ crud_vehicle = [
     path('<int:pk>/', VehicleDetailView.as_view(), name='detail'),
     path('<int:pk>/edit/', VehicleUpdateView.as_view(), name='edit'),
     path('<int:pk>/delete/', VehicleDeleteView.as_view(), name='delete'),
+
 ]
 
 crud_brand = [

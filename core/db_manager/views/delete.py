@@ -1,8 +1,14 @@
+__all__ = [
+    'VehicleDeleteView',
+    'BrandDeleteView',
+    'ModelDeleteView',
+    'GenerationDeleteView',
+    'ConfigurationDeleteView'
+]
+
 from db_manager.models import Vehicle
 from django.urls import reverse_lazy
 from django.views.generic import DeleteView
-
-__all__ = ['VehicleDeleteView']
 
 from db_manager.views.abstract import BaseLoginRequiredMixin
 

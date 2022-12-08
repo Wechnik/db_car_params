@@ -30,7 +30,7 @@
             <table class="table">
                 <thead>
                 <tr>
-                    <th scope="col">Тип</th>
+                    <th scope="col"></th>
                     <th scope="col">Ширина</th>
                     <th scope="col">Высота</th>
                     <th scope="col">Диаметр</th>
@@ -57,6 +57,70 @@
                 </tr>
                 </tbody>
             </table>
+            <h4>Диски</h4>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col"></th>
+                    <th scope="col">Ширина</th>
+                    <th scope="col">Высота</th>
+                    <th scope="col">Диаметр</th>
+                    <th scope="col">Вынос</th>
+                    <th scope="col">Диаметр ЦО</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <th scope="row">Мин.</th>
+                    <td>{{ vehicle.0.get_hierarchy_attributes.restrictions.rim.width.min }}</td>
+                    <td>{{ vehicle.0.get_hierarchy_attributes.restrictions.rim.height.min }}</td>
+                    <td>{{ vehicle.0.get_hierarchy_attributes.restrictions.rim.diameter.min }}</td>
+                    <td>{{ vehicle.0.get_hierarchy_attributes.restrictions.rim.offset.min }}</td>
+                    <td>{{ vehicle.0.get_hierarchy_attributes.restrictions.rim.center_hole_diameter.min }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Макс.</th>
+                    <td>{{ vehicle.0.get_hierarchy_attributes.restrictions.rim.width.max }}</td>
+                    <td>{{ vehicle.0.get_hierarchy_attributes.restrictions.rim.height.max }}</td>
+                    <td>{{ vehicle.0.get_hierarchy_attributes.restrictions.rim.diameter.max }}</td>
+                    <td>{{ vehicle.0.get_hierarchy_attributes.restrictions.rim.offset.max }}</td>
+                    <td>{{ vehicle.0.get_hierarchy_attributes.restrictions.rim.center_hole_diameter.max }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Рекомендуемая</th>
+                    <td>{{ vehicle.0.get_hierarchy_attributes.restrictions.rim.width.rec }}</td>
+                    <td>{{ vehicle.0.get_hierarchy_attributes.restrictions.rim.height.rec }}</td>
+                    <td>{{ vehicle.0.get_hierarchy_attributes.restrictions.rim.diameter.rec }}</td>
+                    <td>{{ vehicle.0.get_hierarchy_attributes.restrictions.rim.offset.rec }}</td>
+                    <td>{{ vehicle.0.get_hierarchy_attributes.restrictions.rim.center_hole_diameter.rec }}</td>
+                </tr>
+                </tbody>
+            </table>
+            <h4>Дворники</h4>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col"></th>
+                    <th scope="col">Длина</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <th scope="row">Мин.</th>
+                    <td>{{ vehicle.0.get_hierarchy_attributes.restrictions.wiper.length.min }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Макс.</th>
+                    <td>{{ vehicle.0.get_hierarchy_attributes.restrictions.wiper.length.max }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Рекомендуемая</th>
+                    <td>{{ vehicle.0.get_hierarchy_attributes.restrictions.wiper.length.rec }}</td>
+                </tr>
+                </tbody>
+            </table>
+            <h4>Масла</h4>
+            <p>Рекомендуемый тип масла {{ vehicle.0.get_hierarchy_attributes.restrictions.oil.type }}</p>
             <h4>Годы производства {{ vehicle.0.get_hierarchy_attributes.years_of_production }}</h4>
         </div>
         {% if vehicle.1 %}

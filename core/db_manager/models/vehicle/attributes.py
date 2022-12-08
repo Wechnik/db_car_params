@@ -98,7 +98,7 @@ class Restrictions(BaseAttribute):
     """Ограничение."""
 
     tire: Tire
-    rim: Tire
+    rim: Rim
     oil: Oil
     wiper: Wiper
 

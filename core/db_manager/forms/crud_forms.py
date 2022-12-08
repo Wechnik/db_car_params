@@ -1,5 +1,5 @@
 from django.forms.models import ModelForm as ModelFormBase
-from django.forms.fields import IntegerField
+from django.forms.fields import IntegerField, CharField
 
 from db_manager.helpers import deep_set
 from db_manager.models import Vehicle
@@ -159,6 +159,14 @@ RimOffset = make_class(
     }
 )
 
+OilType = make_class(
+    'OilType',
+    ['attributes', 'restrictions', 'oil'],
+    {
+        'type': (CharField, {'label': 'Рекомендуемый тип масла'}),
+    }
+)
+
 WiperLength = make_class(
     'WiperLength',
     ['attributes', 'restrictions', 'wiper', 'length'],
@@ -192,6 +200,7 @@ class VehicleForm(BaseVehicleForm,
                   RimWidth, RimHeight, RimDiameter, RimCenterHoleDiameter, RimOffset,
                   TireDiameter, TireWidth, TireHeight,
                   WiperLength,
+                  OilType,
                   YearsOfProduction):
     template_name_div = 'div.html'
 
@@ -211,6 +220,7 @@ class VehicleForm(BaseVehicleForm,
         RimCenterHoleDiameter.__init__(self, *args, **kwargs)
         RimOffset.__init__(self, *args, **kwargs)
         WiperLength.__init__(self, *args, **kwargs)
+        OilType.__init__(self, *args, **kwargs)
         YearsOfProduction.__init__(self, *args, **kwargs)
         BaseVehicleForm.__init__(self, *args, **kwargs)
 

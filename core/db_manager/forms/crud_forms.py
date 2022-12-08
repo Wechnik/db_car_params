@@ -63,46 +63,99 @@ def make_class(class_name: str, path: list[str], annotations: dict):
 
     def fill_initial(self: 'ModelFormBase') -> None:
         obj = self.instance
-        for sub_object in path:
+        for sub_object in self._path:
             obj = getattr(obj, sub_object)
 
-        for cls_field_name in annotations:
-            self.fields[f'{prefix}{cls_field_name}'].initial = getattr(obj, cls_field_name)
+        for cls_field_name in self._annotations:
+            self.fields[f'{self._prefix}{cls_field_name}'].initial = getattr(obj, cls_field_name)
 
     return type(class_name, (ModelFormBase,), {
         '__init__': __init__,
         'fill_initial': fill_initial,
+        '_path': path,
+        '_annotations': annotations,
+        '_prefix': prefix,
         **attrs,
     })
 
 
-Width = make_class(
-    'Width',
+TireWidth = make_class(
+    'TireWidth',
     ['attributes', 'restrictions', 'tire', 'width'],
     {
-        'min': (IntegerField, {'label': 'Минимальная ширина'}),
-        'max': (IntegerField, {'label': 'Максимальная ширина'}),
-        'rec': (IntegerField, {'label': 'Рекомендуемая ширина'})
+        'min': (IntegerField, {'label': 'Минимальная ширина шины'}),
+        'max': (IntegerField, {'label': 'Максимальная ширина шины'}),
+        'rec': (IntegerField, {'label': 'Рекомендуемая ширина шины'})
     }
 )
 
-Height = make_class(
-    'Height',
+TireHeight = make_class(
+    'TireHeight',
     ['attributes', 'restrictions', 'tire', 'height'],
     {
-        'min': (IntegerField, {'label': 'Минимальная высота профиля, %'}),
-        'max': (IntegerField, {'label': 'Максимальная высота профиля, %'}),
-        'rec': (IntegerField, {'label': 'Рекомендуемая высота профиля, %'})
+        'min': (IntegerField, {'label': 'Минимальная высота профиля шины, %'}),
+        'max': (IntegerField, {'label': 'Максимальная высота профиля шины, %'}),
+        'rec': (IntegerField, {'label': 'Рекомендуемая высота профиля шины, %'})
     }
 )
 
-Diameter = make_class(
-    'Diameter',
+TireDiameter = make_class(
+    'TireDiameter',
     ['attributes', 'restrictions', 'tire', 'diameter'],
     {
-        'min': (IntegerField, {'label': 'Минимальный диаметр'}),
-        'max': (IntegerField, {'label': 'Максимальный диаметр'}),
-        'rec': (IntegerField, {'label': 'Рекомендуемый диаметр'})
+        'min': (IntegerField, {'label': 'Минимальный диаметр шины'}),
+        'max': (IntegerField, {'label': 'Максимальный диаметр шины'}),
+        'rec': (IntegerField, {'label': 'Рекомендуемый диаметр шины'})
+    }
+)
+
+RimWidth = make_class(
+    'RimWidth',
+    ['attributes', 'restrictions', 'rim', 'width'],
+    {
+        'min': (IntegerField, {'label': 'Минимальная ширина диска'}),
+        'max': (IntegerField, {'label': 'Максимальная ширина диска'}),
+        'rec': (IntegerField, {'label': 'Рекомендуемая ширина диска'})
+    }
+)
+
+RimHeight = make_class(
+    'RimHeight',
+    ['attributes', 'restrictions', 'rim', 'height'],
+    {
+        'min': (IntegerField, {'label': 'Минимальная высота диска'}),
+        'max': (IntegerField, {'label': 'Максимальная высота диска'}),
+        'rec': (IntegerField, {'label': 'Рекомендуемая высота диска'})
+    }
+)
+
+RimDiameter = make_class(
+    'RimDiameter',
+    ['attributes', 'restrictions', 'rim', 'diameter'],
+    {
+        'min': (IntegerField, {'label': 'Минимальный диаметр диска'}),
+        'max': (IntegerField, {'label': 'Максимальный диаметр диска'}),
+        'rec': (IntegerField, {'label': 'Рекомендуемый диаметр диска'})
+    }
+)
+
+RimCenterHoleDiameter = make_class(
+    'RimCenterHoleDiameter',
+    ['attributes', 'restrictions', 'rim', 'center_hole_diameter'],
+    {
+        'min': (IntegerField, {'label': 'Минимальный диаметр ЦО диска'}),
+        'max': (IntegerField, {'label': 'Максимальный диаметр ЦО диска'}),
+        'rec': (IntegerField, {'label': 'Рекомендуемый диаметр ЦО диска'})
+    }
+)
+
+RimOffset = make_class(
+    'RimOffset',
+    ['attributes', 'restrictions', 'rim', 'offset'],
+    {
+        'min': (IntegerField, {'label': 'Минимальный вынос диска'}),
+        'max': (IntegerField, {'label': 'Максимальный вынос диска'}),
+        'rec': (IntegerField, {'label': 'Рекомендуемый вынос диска'})
     }
 )
 
@@ -125,7 +178,10 @@ def cleaned_data_to_json(cleaned_data: dict) -> dict:
     return json
 
 
-class VehicleForm(BaseVehicleForm, Diameter, Width, Height, YearsOfProduction):
+class VehicleForm(BaseVehicleForm,
+                  RimWidth, RimHeight, RimDiameter, RimCenterHoleDiameter, RimOffset,
+                  TireDiameter, TireWidth, TireHeight,
+                  YearsOfProduction):
     template_name_div = 'div.html'
 
     def save(self, commit=True):
@@ -135,9 +191,14 @@ class VehicleForm(BaseVehicleForm, Diameter, Width, Height, YearsOfProduction):
 
     def __init__(self, *args, **kwargs):
         self.request = kwargs.pop('request')
-        Width.__init__(self, *args, **kwargs)
-        Height.__init__(self, *args, **kwargs)
-        Diameter.__init__(self, *args, **kwargs)
+        TireWidth.__init__(self, *args, **kwargs)
+        TireHeight.__init__(self, *args, **kwargs)
+        TireDiameter.__init__(self, *args, **kwargs)
+        RimWidth.__init__(self, *args, **kwargs)
+        RimHeight.__init__(self, *args, **kwargs)
+        RimDiameter.__init__(self, *args, **kwargs)
+        RimCenterHoleDiameter.__init__(self, *args, **kwargs)
+        RimOffset.__init__(self, *args, **kwargs)
         YearsOfProduction.__init__(self, *args, **kwargs)
         BaseVehicleForm.__init__(self, *args, **kwargs)
 

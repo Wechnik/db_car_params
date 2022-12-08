@@ -69,10 +69,38 @@ class Tire(BaseAttribute):
 
 
 @dataclass
+class Oil(BaseAttribute):
+    """Масло."""
+
+    type: str
+
+
+@dataclass
+class Wiper(BaseAttribute):
+    """Дворник."""
+
+    length: Measurement
+
+
+@dataclass
+class Rim(BaseAttribute):
+    """Диск."""
+
+    width: Measurement
+    diameter: Measurement
+    drilling: Measurement
+    offset: Measurement
+    center_hole_diameter: Measurement
+
+
+@dataclass
 class Restrictions(BaseAttribute):
     """Ограничение."""
 
     tire: Tire
+    rim: Tire
+    oil: Oil
+    wiper: Wiper
 
 
 @dataclass

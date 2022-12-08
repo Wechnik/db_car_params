@@ -202,6 +202,10 @@ class VehicleForm(BaseVehicleForm,
                   WiperLength,
                   OilType,
                   YearsOfProduction):
+    class Meta:
+        model = Vehicle
+        fields = []
+
     template_name_div = 'div.html'
 
     def save(self, commit=True):

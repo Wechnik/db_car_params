@@ -159,6 +159,16 @@ RimOffset = make_class(
     }
 )
 
+WiperLength = make_class(
+    'WiperLength',
+    ['attributes', 'restrictions', 'wiper', 'length'],
+    {
+        'min': (IntegerField, {'label': 'Минимальная длина дворника'}),
+        'max': (IntegerField, {'label': 'Максимальная длина дворника'}),
+        'rec': (IntegerField, {'label': 'Рекомендуемая длина дворника'})
+    }
+)
+
 YearsOfProduction = make_class(
     'YearsOfProduction',
     ['attributes', 'years_of_production'],
@@ -181,6 +191,7 @@ def cleaned_data_to_json(cleaned_data: dict) -> dict:
 class VehicleForm(BaseVehicleForm,
                   RimWidth, RimHeight, RimDiameter, RimCenterHoleDiameter, RimOffset,
                   TireDiameter, TireWidth, TireHeight,
+                  WiperLength,
                   YearsOfProduction):
     template_name_div = 'div.html'
 
@@ -199,6 +210,7 @@ class VehicleForm(BaseVehicleForm,
         RimDiameter.__init__(self, *args, **kwargs)
         RimCenterHoleDiameter.__init__(self, *args, **kwargs)
         RimOffset.__init__(self, *args, **kwargs)
+        WiperLength.__init__(self, *args, **kwargs)
         YearsOfProduction.__init__(self, *args, **kwargs)
         BaseVehicleForm.__init__(self, *args, **kwargs)
 

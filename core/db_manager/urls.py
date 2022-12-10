@@ -29,6 +29,8 @@ from django.urls.conf import include, path
 
 crud_vehicle = [
     path('<int:pk>/', VehicleDetailView.as_view(), name='detail'),
+    # FIXME: Пробросить config_id через сессию, чтобы не создавать доп. юрл?
+    path('<int:pk>/configuration/<int:cfg_pk>/', VehicleDetailView.as_view(), name='detail_with_configuration'),
     path('<int:pk>/add-configuration/', ConfigurationCreateView.as_view(), name='add_configuration'),
 ]
 

@@ -35,6 +35,8 @@ class Vehicle(models.Model):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.attributes = Attributes.from_json(self.attrs)
+        # Вроде jinja не падает, если атрибута нет
+        self.selected = False
 
     @property
     def get_hierarchy_attributes(self) -> Attributes:

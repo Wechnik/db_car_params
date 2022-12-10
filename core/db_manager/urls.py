@@ -1,6 +1,4 @@
-from rest_framework.urlpatterns import format_suffix_patterns
-
-from db_manager.views import IndexView, VehicleDeleteView, VehicleDetailView, VehicleUpdateView
+from db_manager.views import IndexView, VehicleDetailView
 from db_manager.views.create import (
     BrandCreateView,
     ConfigurationCreateView,
@@ -31,9 +29,7 @@ from django.urls.conf import include, path
 
 crud_vehicle = [
     path('<int:pk>/', VehicleDetailView.as_view(), name='detail'),
-    path('<int:pk>/edit/', VehicleUpdateView.as_view(), name='edit'),
-    path('<int:pk>/delete/', VehicleDeleteView.as_view(), name='delete'),
-
+    path('<int:pk>/add-configuration/', ConfigurationCreateView.as_view(), name='add_configuration'),
 ]
 
 crud_brand = [
@@ -62,7 +58,6 @@ crud_generation = [
 
 crud_configuration = [
     path('', ConfigurationView.as_view(), name='configuration'),
-    path('new/', ConfigurationCreateView.as_view(), name='create_configuration'),
     path('<int:pk>/', ConfigurationDetailView.as_view(), name='detail_configuration'),
     path('<int:pk>/edit/', ConfigurationUpdateView.as_view(), name='edit_configuration'),
     path('<int:pk>/delete/', ConfigurationDeleteView.as_view(), name='delete_configuration'),

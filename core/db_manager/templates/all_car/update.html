@@ -2,29 +2,22 @@
 
 {% block content %}
     <ul class="nav nav-tabs">
-        {% if isBaseConfiguration %}
+        {% for config in config_list %}
             <li class="nav-item">
-                <a class="nav-link active" data-toggle="tab" style="color: white;"
-                   href="#{{ vehicle.0.name }}">Базовая комплектация</a>
-            </li>
-        {% else %}
-            <li class="nav-item">
-                <a class="nav-link active" data-toggle="tab" style="color: white;"
-                   href="#{{ vehicle.0.name }}">{{ vehicle.0.name }}</a>
-            </li>
-        {% endif %}
-        {% if vehicle.1 %}
-            {% for veh in vehicle|slice:"1:" %}
-                <li class="nav-item">
-                    <a class="nav-link" data-toggle="tab" style="color: white" href="#{{ veh.name }}">{{ veh.name }}</a>
-                </li>
-            {% endfor %}
-        {% endif %}
-        <li class="nav-item" style="margin-left: 10px;">
-            <a class="nav-link" style="color: white" href="{% url 'create_configuration' %}"><i class="fa fa-plus" aria-hidden="true"></i></a>
-        </li>
-    </ul>
+                <a
+                    data-toggle="tab"
+                    style="color: white"
+                    href="#{{ config.name }}"
 
+                    {% if config == config_list.0 %}
+                        class="nav-link active"
+                    {% else %}
+                        class="nav-link"
+                    {% endif %}
+                >{{ config.name }}</a>
+            </li>
+        {% endfor %}
+    </ul>
     <div class="tab-content" style="margin-top: 30px; margin-bottom: 30px;">
         <div class="tab-pane fade show active" id="{{ vehicle.0.name }}">
             <div class="raw">

@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    {% for veh in vehicles %}
+        {{ veh.as_div }}
+    {% endfor %}
+    <form action="" method="post" onsubmit="document.getElementById('submit').disabled=true; processFormData();">{% csrf_token %}
+        {{ form.as_div }}
+        <input id="submit" style="margin-bottom: 30px; margin-top: 30px" class="btn btn-outline-success" type="submit" value="Сохранить"/>
+    </form>
+{% endblock content %}

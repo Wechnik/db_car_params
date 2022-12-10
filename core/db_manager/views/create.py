@@ -1,20 +1,20 @@
 from django.shortcuts import redirect
+from django.urls import reverse
 
 from db_manager.forms.crud_forms import (
     BaseVehicleForm,
     BrandForm,
-    ConfigurationForm,
     GenerationForm,
     ModelForm,
 )
+from db_manager.forms.configuration import ConfigurationForm
 from db_manager.models import Vehicle
-from django.views.generic.edit import CreateView
+from django.views.generic.edit import CreateView, BaseCreateView
 
 from db_manager.views.abstract import BaseLoginRequiredMixin
 
 
 class BaseVehicleCreateView(BaseLoginRequiredMixin, CreateView):
-
     model = Vehicle
     queryset = Vehicle.objects.all()
     template_name = 'crud/create.html'
@@ -63,11 +63,28 @@ class GenerationCreateView(BaseVehicleCreateView):
         return super().form_valid(form)
 
 
-class ConfigurationCreateView(BaseVehicleCreateView):
+class ConfigurationCreateView(BaseLoginRequiredMixin, CreateView):
     form_class = ConfigurationForm
-    _url = 'configuration'
-    _name = 'комплектацию'
+    template_name = 'crud/create.html'
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.generation = None
+
+    def get_context_data(self, **kwargs):
+        context_data = super().get_context_data(**kwargs)
+        context_data['generation'] = self.generation
+
+        return context_data
+
+    def post(self, request, *args, **kwargs):
+        self.generation = Vehicle.objects.get(id=kwargs.get('pk'))
+        return super().post(request, *args, **kwargs)
 
     def form_valid(self, form):
-        form.instance._type = 3
+        form.instance._type = Vehicle.Type.CONFIGURATION.value
+        form.instance.parent = self.generation
         return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse('detail', kwargs={'pk': self.generation.id})

@@ -21,14 +21,14 @@
                         <button type="button" class="btn btn-outline-info"><i class="nav-icon fas fa-glasses"></i>
                         </button>
                     </a>
-                    <a href='{% url 'edit'|add:type row.3.id %}'>
-                        <button type="button" class="btn btn-outline-success"><i
-                                class="nav-icon fas fa-highlighter"></i></button>
-                    </a>
-                    <a href="{% url 'delete'|add:type row.3.id %}">
-                        <button type="button" class="btn btn-outline-danger"><i class="nav-icon fas fa-trash"></i>
-                        </button>
-                    </a>
+{#                    <a href='{% url 'edit'|add:type row.3.id %}'>#}
+{#                        <button type="button" class="btn btn-outline-success"><i#}
+{#                                class="nav-icon fas fa-highlighter"></i></button>#}
+{#                    </a>#}
+{#                    <a href="{% url 'delete'|add:type row.3.id %}">#}
+{#                        <button type="button" class="btn btn-outline-danger"><i class="nav-icon fas fa-trash"></i>#}
+{#                        </button>#}
+{#                    </a>#}
                 </td>
             </tr>
         {% endfor %}

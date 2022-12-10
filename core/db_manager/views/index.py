@@ -94,6 +94,6 @@ class ConfigurationView(BaseLoginRequiredMixin, View):
             context={
                 'title': 'Комплектации',
                 'data': Vehicle.objects.filter(_type=3),
-                'type': '_configuration',
+                'type': 'add_configuration',
             },
         )

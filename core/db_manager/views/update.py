@@ -1,6 +1,7 @@
 __all__ = ['BaseVehicleUpdateView']
 
 from django.shortcuts import redirect
+from django.urls import reverse
 from django.views.generic.edit import UpdateView
 
 from db_manager.models import Vehicle
@@ -8,10 +9,10 @@ from db_manager.views.abstract import BaseLoginRequiredMixin
 from db_manager.forms.crud_forms import (
     BaseVehicleForm,
     BrandForm,
-    ConfigurationForm,
     GenerationForm,
     ModelForm
 )
+from db_manager.forms.configuration import ConfigurationForm
 
 
 class BaseVehicleUpdateView(BaseLoginRequiredMixin, UpdateView):
@@ -51,7 +52,19 @@ class GenerationUpdateView(BaseVehicleUpdateView):
     _name = 'поколение'
 
 
-class ConfigurationUpdateView(BaseVehicleUpdateView):
+class ConfigurationUpdateView(BaseLoginRequiredMixin, UpdateView):
     form_class = ConfigurationForm
-    _url = 'configuration'
-    _name = 'комплектацию'
+    template_name = 'crud/create.html'
+    queryset = Vehicle.objects.all()
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.generation = None
+
+    def post(self, request, *args, **kwargs):
+        self.generation = self.queryset.get(pk=kwargs.get('pk')).parent.id
+        return super().post(request, *args, **kwargs)
+
+    def get_success_url(self):
+        return reverse('detail', kwargs={'pk': self.generation})
+

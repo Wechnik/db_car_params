@@ -3,7 +3,7 @@ __all__ = [
     'BrandDeleteView',
     'ModelDeleteView',
     'GenerationDeleteView',
-    'ConfigurationDeleteView'
+    'BaseVehicleDeleteView',
 ]
 
 from db_manager.models import Vehicle
@@ -37,7 +37,3 @@ class ModelDeleteView(BaseVehicleDeleteView):
 
 class GenerationDeleteView(BaseVehicleDeleteView):
     success_url = reverse_lazy('generation')
-
-
-class ConfigurationDeleteView(BaseVehicleDeleteView):
-    success_url = reverse_lazy('configuration')

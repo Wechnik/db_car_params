@@ -1,30 +1,30 @@
 from db_manager.views import IndexView, VehicleDetailView
 from db_manager.views.create import (
     BrandCreateView,
-    ConfigurationCreateView,
     GenerationCreateView,
     ModelCreateView,
 )
+from db_manager.views.configuration.create import ConfigurationCreateView
 from db_manager.views.delete import (
     BrandDeleteView,
-    ConfigurationDeleteView,
     GenerationDeleteView,
     ModelDeleteView,
 )
+from db_manager.views.configuration.delete import ConfigurationDeleteView
 from db_manager.views.detail import (
     BrandDetailView,
-    ConfigurationDetailView,
     GenerationDetailView,
     ModelDetailView,
 )
+from db_manager.views.configuration.detail import ConfigurationDetailView
 from db_manager.views.index import BrandView, GenerationView, ModelView
 from db_manager.views.rest import VehicleViewREST
 from db_manager.views.update import (
     BrandUpdateView,
-    ConfigurationUpdateView,
     GenerationUpdateView,
     ModelUpdateView,
 )
+from db_manager.views.configuration.update import ConfigurationUpdateView
 from django.urls.conf import include, path
 
 crud_vehicle = [

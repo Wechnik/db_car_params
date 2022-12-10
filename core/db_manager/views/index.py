@@ -3,7 +3,6 @@ __all__ = [
     'BrandView',
     'ModelView',
     'GenerationView',
-    'ConfigurationView',
 ]
 
 from db_manager.models import Vehicle
@@ -79,21 +78,5 @@ class GenerationView(BaseLoginRequiredMixin, View):
                 'title': 'Поколения',
                 'data': Vehicle.objects.filter(_type=2),
                 'type': '_generation',
-            },
-        )
-
-
-class ConfigurationView(BaseLoginRequiredMixin, View):
-    """Представление страницы комплектаций."""
-
-    def get(self, request, *args, **kwargs):
-        """Метод отображения для комплектаций авто."""
-        return render(
-            request,
-            'index.html',
-            context={
-                'title': 'Комплектации',
-                'data': Vehicle.objects.filter(_type=3),
-                'type': 'add_configuration',
             },
         )

@@ -17,7 +17,7 @@ from db_manager.views.detail import (
     GenerationDetailView,
     ModelDetailView,
 )
-from db_manager.views.index import BrandView, ConfigurationView, GenerationView, ModelView
+from db_manager.views.index import BrandView, GenerationView, ModelView
 from db_manager.views.rest import VehicleViewREST
 from db_manager.views.update import (
     BrandUpdateView,
@@ -57,7 +57,6 @@ crud_generation = [
 ]
 
 crud_configuration = [
-    path('', ConfigurationView.as_view(), name='configuration'),
     path('<int:pk>/', ConfigurationDetailView.as_view(), name='detail_configuration'),
     path('<int:pk>/edit/', ConfigurationUpdateView.as_view(), name='edit_configuration'),
     path('<int:pk>/delete/', ConfigurationDeleteView.as_view(), name='delete_configuration'),

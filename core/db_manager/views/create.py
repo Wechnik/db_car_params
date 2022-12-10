@@ -71,12 +71,6 @@ class ConfigurationCreateView(BaseLoginRequiredMixin, CreateView):
         super().__init__(**kwargs)
         self.generation = None
 
-    def get_context_data(self, **kwargs):
-        context_data = super().get_context_data(**kwargs)
-        context_data['generation'] = self.generation
-
-        return context_data
-
     def post(self, request, *args, **kwargs):
         self.generation = Vehicle.objects.get(id=kwargs.get('pk'))
         return super().post(request, *args, **kwargs)

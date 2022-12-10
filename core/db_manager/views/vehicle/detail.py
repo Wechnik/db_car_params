@@ -18,15 +18,23 @@ class VehicleDetailView(BaseVehicleDetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        generation = context['vehicle']
-        context['generation'] = generation
+        # Нужна для редиректа на страницу добавления конфигураций поколения.
+        context['generation'] = self.object
 
-        config_list = list(Vehicle.objects.filter(parent=context['vehicle'].id))
+        # Комплектации будут отсортированы по возрастанию даты начала выпуска.
+        # Комплектации, у которых даты производства совпадают, будут отсортированы по дате конца выпуска.
+        config_list = sorted(
+            list(Vehicle.objects.filter(parent=context['vehicle'].id)),
+            key=lambda cfg: (cfg.attributes.years_of_production.start, cfg.attributes.years_of_production.end)
+        )
+
+        # Нет ни одной комплектации. Информацией о базовой комплектации является информация о поколении.
         if not config_list:
-            current_config = context['vehicle']
+            current_config = self.object
             current_config.name = 'Базовая комплектация'
             config_list = [current_config]
 
+        # Указываем какая комплектация будет отображена по умолчанию. Если нет предпочтений - выбираем первую.
         if not self.preferred_config:
             config_list[0].selected = True
         else:
@@ -37,6 +45,7 @@ class VehicleDetailView(BaseVehicleDetailView):
             else:
                 config_list[0].selected = True
 
+        # Нужна для отображения списка доступных комплектаций и информации о самих комплектациях.
         context['config_list'] = config_list
 
         return context

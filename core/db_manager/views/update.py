@@ -57,14 +57,6 @@ class ConfigurationUpdateView(BaseLoginRequiredMixin, UpdateView):
     template_name = 'crud/create.html'
     queryset = Vehicle.objects.all()
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.generation = None
-
-    def post(self, request, *args, **kwargs):
-        self.generation = self.queryset.get(pk=kwargs.get('pk')).parent.id
-        return super().post(request, *args, **kwargs)
-
     def get_success_url(self):
-        return reverse('detail', kwargs={'pk': self.generation})
+        return reverse('detail', kwargs={'pk': self.object.parent.id, 'cfg_pk': self.object.id})
 

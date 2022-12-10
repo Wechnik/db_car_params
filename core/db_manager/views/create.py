@@ -87,4 +87,4 @@ class ConfigurationCreateView(BaseLoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
     def get_success_url(self):
-        return reverse('detail_with_configuration', kwargs={'pk': self.generation.id, 'cfg_pk': self.object.id})
+        return reverse('detail', kwargs={'pk': self.object.parent.id, 'cfg_pk': self.object.id})

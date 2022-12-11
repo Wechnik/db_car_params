@@ -40,6 +40,7 @@ INSTALLED_APPS = [
 
     'db_manager',
     'rest_framework',
+    'rest_framework.authtoken',
 ]
 
 MIDDLEWARE = [
@@ -111,6 +112,10 @@ AUTH_PASSWORD_VALIDATORS = [
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAdminUser',
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'db_manager.rest.token.BearerAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
     ],
     'PAGE_SIZE': 10,
 }

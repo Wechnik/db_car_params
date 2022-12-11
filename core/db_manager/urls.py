@@ -1,30 +1,13 @@
 from db_manager.views import IndexView, VehicleDetailView
-from db_manager.views.create import (
-    BrandCreateView,
-    GenerationCreateView,
-    ModelCreateView,
-)
 from db_manager.views.configuration.create import ConfigurationCreateView
-from db_manager.views.delete import (
-    BrandDeleteView,
-    GenerationDeleteView,
-    ModelDeleteView,
-)
 from db_manager.views.configuration.delete import ConfigurationDeleteView
-from db_manager.views.detail import (
-    BrandDetailView,
-    GenerationDetailView,
-    ModelDetailView,
-)
 from db_manager.views.configuration.detail import ConfigurationDetailView
-from db_manager.views.index import BrandView, GenerationView, ModelView
-from db_manager.views.rest import VehicleViewREST
-from db_manager.views.update import (
-    BrandUpdateView,
-    GenerationUpdateView,
-    ModelUpdateView,
-)
 from db_manager.views.configuration.update import ConfigurationUpdateView
+from db_manager.views.create import BrandCreateView, GenerationCreateView, ModelCreateView
+from db_manager.views.delete import BrandDeleteView, GenerationDeleteView, ModelDeleteView
+from db_manager.views.detail import BrandDetailView, GenerationDetailView, ModelDetailView
+from db_manager.views.index import BrandView, GenerationView, ModelView
+from db_manager.views.update import BrandUpdateView, GenerationUpdateView, ModelUpdateView
 from django.urls.conf import include, path
 
 crud_vehicle = [
@@ -74,5 +57,4 @@ urlpatterns = [
     path('generation/', include(crud_generation)),
     path('configuration/', include(crud_configuration)),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-    path('api/v1/vehicle/', VehicleViewREST.as_view(), name='rest_get'),
 ]

@@ -1,15 +1,19 @@
+from db_manager.models import Vehicle
+from db_manager.rest.api import GetDataByNameRequest, VehicleSerializer
+from db_manager.rest.token import BearerAuthentication
 from rest_framework import status
+from rest_framework.authentication import SessionAuthentication
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
-
-from db_manager.models import Vehicle
-from db_manager.rest.api import VehicleSerializer, GetDataByNameRequest
 
 
 class VehicleViewREST(APIView):
     """
     API endpoint that allows groups to be viewed or edited.
     """
+    authentication_classes = [SessionAuthentication, BearerAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request, format=None):
         """Пост запрос для получения информации об авто."""

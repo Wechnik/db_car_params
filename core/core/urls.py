@@ -17,10 +17,12 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path
 from django.urls.conf import include
+from rest_framework.authtoken import views
 
 from core import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('db_manager.urls')),
+    path('', include('db_manager.rest.urls')),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

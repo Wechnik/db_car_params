@@ -1,15 +1,8 @@
-from django.shortcuts import redirect
-
-from db_manager.forms.crud_forms import (
-    BaseVehicleForm,
-    BrandForm,
-    GenerationForm,
-    ModelForm,
-)
+from db_manager.forms.crud_forms import BaseVehicleForm, BrandForm, GenerationForm, ModelForm
 from db_manager.models import Vehicle
-from django.views.generic.edit import CreateView
-
 from db_manager.views.abstract import BaseLoginRequiredMixin
+from django.shortcuts import redirect
+from django.views.generic.edit import CreateView
 
 
 class BaseVehicleCreateView(BaseLoginRequiredMixin, CreateView):

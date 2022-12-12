@@ -10,6 +10,11 @@ class ConfigurationCreateView(BaseLoginRequiredMixin, CreateView):
     form_class = ConfigurationForm
     template_name = 'crud/create.html'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = f'Создание комплектации'
+        return context
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.generation = None

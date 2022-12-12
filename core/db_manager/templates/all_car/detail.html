@@ -8,130 +8,152 @@
         {% for config in config_list %}
             <li class="nav-item">
                 <a
-                    data-toggle="tab"
-                    style="color: white"
-                    href="#{{ config.name }}"
+                        data-toggle="tab"
+                        style="color: white"
+                        href="#{{ config.name }}"
 
-                    {% if config.selected == True %}
+                        {% if config.selected == True %}
                         class="nav-link active"
-                    {% else %}
+                        {% else %}
                         class="nav-link"
-                    {% endif %}
-                >{{ config.name }}</a>
+                        {% endif %}
+                >{{ config.name }} {{ config.get_hierarchy_attributes.years_of_production }}</a>
             </li>
         {% endfor %}
         <li class="nav-item" style="margin-left: 10px;">
-            <a class="nav-link" style="color: white" href="{% url 'add_configuration' generation.id %}"><i class="fa fa-plus" aria-hidden="true"></i></a>
+            <a class="nav-link" style="color: white" href="{% url 'add_configuration' generation.id %}"><i
+                    class="fa fa-plus" aria-hidden="true"></i></a>
         </li>
     </ul>
     <div class="tab-content" style="margin-top: 30px; margin-bottom: 30px;">
         {% for config in config_list %}
             <div
-                id="{{ config.name }}"
+                    id="{{ config.name }}"
 
-                {% if config.selected == True %}
+                    {% if config.selected == True %}
                     class="tab-pane fade show active"
-                {% else %}
+                    {% else %}
                     class="tab-pane fade"
-                {% endif %}
+                    {% endif %}
             >
-                <h4>Шины</h4>
-                <table class="table">
-                    <thead>
-                    <tr>
-                        <th scope="col"></th>
-                        <th scope="col">Ширина</th>
-                        <th scope="col">Высота</th>
-                        <th scope="col">Диаметр</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <th scope="row">Мин.</th>
-                        <td>{{ config.get_hierarchy_attributes.restrictions.tire.width.min }}</td>
-                        <td>{{ config.get_hierarchy_attributes.restrictions.tire.height.min }}</td>
-                        <td>{{ config.get_hierarchy_attributes.restrictions.tire.diameter.min }}</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Макс.</th>
-                        <td>{{ config.get_hierarchy_attributes.restrictions.tire.width.max }}</td>
-                        <td>{{ config.get_hierarchy_attributes.restrictions.tire.height.max }}</td>
-                        <td>{{ config.get_hierarchy_attributes.restrictions.tire.diameter.max }}</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Рекомендуемая</th>
-                        <td>{{ config.get_hierarchy_attributes.restrictions.tire.width.rec }}</td>
-                        <td>{{ config.get_hierarchy_attributes.restrictions.tire.height.rec }}</td>
-                        <td>{{ config.get_hierarchy_attributes.restrictions.tire.diameter.rec }}</td>
-                    </tr>
-                    </tbody>
-                </table>
-                <h4>Диски</h4>
-                <table class="table">
-                    <thead>
-                    <tr>
-                        <th scope="col"></th>
-                        <th scope="col">Ширина</th>
-                        <th scope="col">Сверление</th>
-                        <th scope="col">Диаметр</th>
-                        <th scope="col">Вынос</th>
-                        <th scope="col">Диаметр ЦО</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <th scope="row">Мин.</th>
-                        <td>{{ config.get_hierarchy_attributes.restrictions.rim.width.min }}</td>
-                        <td>{{ config.get_hierarchy_attributes.restrictions.rim.drilling.min }}</td>
-                        <td>{{ config.get_hierarchy_attributes.restrictions.rim.diameter.min }}</td>
-                        <td>{{ config.get_hierarchy_attributes.restrictions.rim.offset.min }}</td>
-                        <td>{{ config.get_hierarchy_attributes.restrictions.rim.center_hole_diameter.min }}</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Макс.</th>
-                        <td>{{ config.get_hierarchy_attributes.restrictions.rim.width.max }}</td>
-                        <td>{{ config.get_hierarchy_attributes.restrictions.rim.drilling.max }}</td>
-                        <td>{{ config.get_hierarchy_attributes.restrictions.rim.diameter.max }}</td>
-                        <td>{{ config.get_hierarchy_attributes.restrictions.rim.offset.max }}</td>
-                        <td>{{ config.get_hierarchy_attributes.restrictions.rim.center_hole_diameter.max }}</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Рекомендуемая</th>
-                        <td>{{ config.get_hierarchy_attributes.restrictions.rim.width.rec }}</td>
-                        <td>{{ config.get_hierarchy_attributes.restrictions.rim.drilling.rec }}</td>
-                        <td>{{ config.get_hierarchy_attributes.restrictions.rim.diameter.rec }}</td>
-                        <td>{{ config.get_hierarchy_attributes.restrictions.rim.offset.rec }}</td>
-                        <td>{{ config.get_hierarchy_attributes.restrictions.rim.center_hole_diameter.rec }}</td>
-                    </tr>
-                    </tbody>
-                </table>
-                <h4>Дворники</h4>
-                <table class="table">
-                    <thead>
-                    <tr>
-                        <th scope="col"></th>
-                        <th scope="col">Длина</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <th scope="row">Мин.</th>
-                        <td>{{ config.get_hierarchy_attributes.restrictions.wiper.length.min }}</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Макс.</th>
-                        <td>{{ config.get_hierarchy_attributes.restrictions.wiper.length.max }}</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Рекомендуемая</th>
-                        <td>{{ config.get_hierarchy_attributes.restrictions.wiper.length.rec }}</td>
-                    </tr>
-                    </tbody>
-                </table>
-                <h4>Масла</h4>
-                <p>Рекомендуемый тип масла {{ config.get_hierarchy_attributes.restrictions.oil.type }}</p>
-                <h4>Годы производства {{ config.get_hierarchy_attributes.years_of_production }}</h4>
-                <a class="btn btn-outline-primary" href='{% url 'edit_configuration' config.id %}' role="button" style="color: white">Редактировать</a>
+                <ul class="nav nav-tabs">
+                    <li class="nav-item">
+                        <a class="nav-link active" data-toggle="tab" style="color: white" href="#tires{{ config.name }}">Шины</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" style="color: white" href="#wheels{{ config.name }}">Диски</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" style="color: white" href="#wipers{{ config.name }}">Дворники</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" style="color: white" href="#oils{{ config.name }}">Масла</a>
+                    </li>
+                </ul>
+                <div class="tab-content" style="margin-top: 30px; margin-bottom: 30px;">
+                    <div id="tires{{ config.name }}" class="tab-pane fade show active">
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th scope="col"></th>
+                                <th scope="col">Ширина</th>
+                                <th scope="col">Высота</th>
+                                <th scope="col">Диаметр</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <th scope="row">Мин.</th>
+                                <td>{{ config.get_hierarchy_attributes.restrictions.tire.width.min }}</td>
+                                <td>{{ config.get_hierarchy_attributes.restrictions.tire.height.min }}</td>
+                                <td>{{ config.get_hierarchy_attributes.restrictions.tire.diameter.min }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Макс.</th>
+                                <td>{{ config.get_hierarchy_attributes.restrictions.tire.width.max }}</td>
+                                <td>{{ config.get_hierarchy_attributes.restrictions.tire.height.max }}</td>
+                                <td>{{ config.get_hierarchy_attributes.restrictions.tire.diameter.max }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Рекомендуемая</th>
+                                <td>{{ config.get_hierarchy_attributes.restrictions.tire.width.rec }}</td>
+                                <td>{{ config.get_hierarchy_attributes.restrictions.tire.height.rec }}</td>
+                                <td>{{ config.get_hierarchy_attributes.restrictions.tire.diameter.rec }}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div id="wheels{{ config.name }}" class="tab-pane fade">
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th scope="col"></th>
+                                <th scope="col">Ширина</th>
+                                <th scope="col">Сверление</th>
+                                <th scope="col">Диаметр</th>
+                                <th scope="col">Вынос</th>
+                                <th scope="col">Диаметр ЦО</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <th scope="row">Мин.</th>
+                                <td>{{ config.get_hierarchy_attributes.restrictions.rim.width.min }}</td>
+                                <td>{{ config.get_hierarchy_attributes.restrictions.rim.drilling.min }}</td>
+                                <td>{{ config.get_hierarchy_attributes.restrictions.rim.diameter.min }}</td>
+                                <td>{{ config.get_hierarchy_attributes.restrictions.rim.offset.min }}</td>
+                                <td>{{ config.get_hierarchy_attributes.restrictions.rim.center_hole_diameter.min }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Макс.</th>
+                                <td>{{ config.get_hierarchy_attributes.restrictions.rim.width.max }}</td>
+                                <td>{{ config.get_hierarchy_attributes.restrictions.rim.drilling.max }}</td>
+                                <td>{{ config.get_hierarchy_attributes.restrictions.rim.diameter.max }}</td>
+                                <td>{{ config.get_hierarchy_attributes.restrictions.rim.offset.max }}</td>
+                                <td>{{ config.get_hierarchy_attributes.restrictions.rim.center_hole_diameter.max }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Рекомендуемая</th>
+                                <td>{{ config.get_hierarchy_attributes.restrictions.rim.width.rec }}</td>
+                                <td>{{ config.get_hierarchy_attributes.restrictions.rim.drilling.rec }}</td>
+                                <td>{{ config.get_hierarchy_attributes.restrictions.rim.diameter.rec }}</td>
+                                <td>{{ config.get_hierarchy_attributes.restrictions.rim.offset.rec }}</td>
+                                <td>{{ config.get_hierarchy_attributes.restrictions.rim.center_hole_diameter.rec }}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div id="wipers{{ config.name }}" class="tab-pane fade">
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th scope="col"></th>
+                                <th scope="col">Длина</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <th scope="row">Мин.</th>
+                                <td>{{ config.get_hierarchy_attributes.restrictions.wiper.length.min }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Макс.</th>
+                                <td>{{ config.get_hierarchy_attributes.restrictions.wiper.length.max }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Рекомендуемая</th>
+                                <td>{{ config.get_hierarchy_attributes.restrictions.wiper.length.rec }}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div id="oils{{ config.name }}" class="tab-pane fade">
+                        <p>Рекомендуемый тип масла {{ config.get_hierarchy_attributes.restrictions.oil.type }}</p>
+                    </div>
+                </div>
+                {#                <h4>Годы производства </h4>#}
+                <a class="btn btn-outline-primary" href='{% url 'edit_configuration' config.id %}' role="button"
+                   style="color: white">Редактировать</a>
             </div>
         {% endfor %}
     </div>

@@ -154,8 +154,12 @@
                         <p>Рекомендуемый тип масла {{ config.get_hierarchy_attributes.restrictions.oil.type }}</p>
                     </div>
                 </div>
+                <a class="btn btn-outline-danger" href='{% url 'delete_configuration' config.id %}' role="button"
+                   style="color: white">Удалить
+                </a>
                 <a class="btn btn-outline-primary" href='{% url 'edit_configuration' config.id %}' role="button"
-                   style="color: white">Редактировать</a>
+                   style="color: white">Редактировать
+                </a>
             </div>
         {% endfor %}
     </div>

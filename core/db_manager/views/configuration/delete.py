@@ -4,4 +4,4 @@ from db_manager.views.delete import BaseVehicleDeleteView
 
 
 class ConfigurationDeleteView(BaseVehicleDeleteView):
-    success_url = reverse_lazy('configuration')
+    success_url = reverse_lazy('index')

@@ -25,7 +25,12 @@ class VehicleDetailView(BaseVehicleDetailView):
         # Комплектации, у которых даты производства совпадают, будут отсортированы по дате конца выпуска.
         config_list = sorted(
             list(Vehicle.objects.filter(parent=context['vehicle'].id)),
-            key=lambda cfg: (cfg.attributes.years_of_production.start, cfg.attributes.years_of_production.end)
+            key=lambda cfg: (
+                float('inf') if cfg.attributes.years_of_production.start is None
+                else cfg.attributes.years_of_production.start,
+                float('inf') if cfg.attributes.years_of_production.end is None
+                else cfg.attributes.years_of_production.end,
+            )
         )
 
         # Нет ни одной комплектации. Информацией о базовой комплектации является информация о поколении.

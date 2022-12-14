@@ -49,6 +49,17 @@ class Vehicle(models.Model):
 
         return Attributes.from_json(attrs)
 
+    @property
+    def get_hierarchy_attributes_json(self) -> dict:
+        """Получить атрибуты. Поддержано наследование атрибутов."""
+        obj = self
+        attrs = {}
+        while obj.parent:
+            deepmerge(attrs, obj.attributes.to_json())
+            obj = obj.parent
+
+        return attrs
+
     def save(
             self, force_insert=False, force_update=False, using=None, update_fields=None
     ):

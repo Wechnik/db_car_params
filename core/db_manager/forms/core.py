@@ -1,4 +1,4 @@
-from django.forms import IntegerField, ModelForm as ModelFormBase, CharField
+from django.forms import IntegerField, ModelForm as ModelFormBase, CharField, TypedChoiceField
 
 from db_manager.helpers import deep_set
 
@@ -66,8 +66,16 @@ YearsOfProduction = make_class(
     'YearsOfProduction',
     ['attributes', 'years_of_production'],
     {
-        'start': (IntegerField, {'label': 'Год начала выпуска'}),
-        'end': (IntegerField, {'label': 'Год окончания выпуска'})
+        'start': (TypedChoiceField, {
+            'label': 'Год начала выпуска',
+            'choices': [(year, str(year)) for year in range(1950, 2024)],
+            'coerce': int,
+        }),
+        'end': (TypedChoiceField, {
+            'label': 'Год окончания выпуска',
+            'choices': [(year, str(year)) for year in range(1950, 2024)],
+            'coerce': int,
+        })
     }
 )
 
@@ -109,13 +117,26 @@ RimCenterHoleDiameter = make_class(
     }
 )
 
+rim_diameter_common = {
+    'choices': [(radius, f'R{radius}') for radius in range(1, 30)],
+    'coerce': int,
+}
 RimDiameter = make_class(
     'RimDiameter',
     ['attributes', 'restrictions', 'rim', 'diameter'],
     {
-        'min': (IntegerField, {'label': 'Минимальный диаметр диска'}),
-        'max': (IntegerField, {'label': 'Максимальный диаметр диска'}),
-        'rec': (IntegerField, {'label': 'Рекомендуемый диаметр диска'})
+        'min': (TypedChoiceField, {
+            **rim_diameter_common,
+            'label': 'Минимальный диаметр диска'
+        }),
+        'max': (TypedChoiceField, {
+            **rim_diameter_common,
+            'label': 'Максимальный диаметр диска'
+        }),
+        'rec': (TypedChoiceField, {
+            **rim_diameter_common,
+            'label': 'Рекомендуемый диаметр диска'
+        })
     }
 )
 
@@ -128,6 +149,7 @@ RimDrilling = make_class(
         'rec': (IntegerField, {'label': 'Рекомендуемая XXX диска'})
     }
 )
+
 RimWidth = make_class(
     'RimWidth',
     ['attributes', 'restrictions', 'rim', 'width'],
@@ -138,13 +160,26 @@ RimWidth = make_class(
     }
 )
 
+tire_diameter_common = {
+    'choices': [(radius, f'R{radius}') for radius in range(1, 30)],
+    'coerce': int,
+}
 TireDiameter = make_class(
     'TireDiameter',
     ['attributes', 'restrictions', 'tire', 'diameter'],
     {
-        'min': (IntegerField, {'label': 'Минимальный диаметр шины'}),
-        'max': (IntegerField, {'label': 'Максимальный диаметр шины'}),
-        'rec': (IntegerField, {'label': 'Рекомендуемый диаметр шины'})
+        'min': (TypedChoiceField, {
+            **tire_diameter_common,
+            'label': 'Минимальный диаметр шины',
+        }),
+        'max': (TypedChoiceField, {
+            **tire_diameter_common,
+            'label': 'Максимальный диаметр шины',
+        }),
+        'rec': (TypedChoiceField, {
+            **tire_diameter_common,
+            'label': 'Рекомендуемый диаметр шины',
+        })
     }
 )
 

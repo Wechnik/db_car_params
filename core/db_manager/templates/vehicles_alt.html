@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <ul>
+        {% for brand in brands %}
+            <li><span class="caret"><a href="{% url 'detail_brand' brand.id %}">{{ brand.name }}</a></span>
+                <ul class="nested">
+                    {% for model in brand.get_children %}
+                        <li><span class="caret"><a href="{% url 'detail_model' model.id %}">{{ model.name }}</a></span>
+                            <ul class="nested">
+                                {% for generation in model.get_children %}
+                                    <li><span class="caret"><a href="{% url 'detail_generation' generation.id %}">{{ generation.name }}</a></span>
+                                        <ul class="nested">
+                                            {% for config in generation.get_children %}
+                                                <li><a href="{% url 'detail' config.id %}">{{ config.name }}</a></li>
+                                            {% endfor %}
+                                        </ul>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}

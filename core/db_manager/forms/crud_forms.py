@@ -43,21 +43,3 @@ class ModelForm(BaseVehicleForm):
             'name': 'Название',
             'description': 'Описание',
         }
-
-
-class GenerationForm(BaseVehicleForm):
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['parent'].queryset = Vehicle.objects.filter(_type=1)
-
-    class Meta:
-        model = Vehicle
-        fields = ['parent', 'name', 'description']
-        labels = {
-            'parent': 'Модель',
-            'name': 'Название',
-            'description': 'Описание',
-        }
-
-

@@ -8,7 +8,6 @@ from db_manager.views.abstract import BaseLoginRequiredMixin
 from db_manager.forms.crud_forms import (
     BaseVehicleForm,
     BrandForm,
-    GenerationForm,
     ModelForm
 )
 
@@ -42,9 +41,3 @@ class ModelUpdateView(BaseVehicleUpdateView):
     form_class = ModelForm
     _url = 'model'
     _name = 'модель'
-
-
-class GenerationUpdateView(BaseVehicleUpdateView):
-    form_class = GenerationForm
-    _url = 'generation'
-    _name = 'поколение'

@@ -12,6 +12,19 @@ from django.views.generic.base import View
 from db_manager.views.abstract import BaseLoginRequiredMixin
 
 
+class VehiclesAlt(BaseLoginRequiredMixin, View):
+    def get(self, request, *args, **kwargs):
+        return render(
+            request,
+            'vehicles_alt.html',
+            context={
+                'title': 'Главная страница',
+                'brands': Vehicle.objects.filter(_type=Vehicle.Type.BRAND.value),
+                'type': '',
+            }
+        )
+
+
 class IndexView(BaseLoginRequiredMixin, View):
     """Представление главной страницы."""
 

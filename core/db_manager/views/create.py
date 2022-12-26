@@ -1,4 +1,4 @@
-from db_manager.forms.crud_forms import BaseVehicleForm, BrandForm, GenerationForm, ModelForm
+from db_manager.forms.crud_forms import BaseVehicleForm, BrandForm, ModelForm
 from db_manager.models import Vehicle
 from db_manager.views.abstract import BaseLoginRequiredMixin
 from django.shortcuts import redirect
@@ -41,14 +41,4 @@ class ModelCreateView(BaseVehicleCreateView):
 
     def form_valid(self, form):
         form.instance._type = 1
-        return super().form_valid(form)
-
-
-class GenerationCreateView(BaseVehicleCreateView):
-    form_class = GenerationForm
-    _url = 'generation'
-    _name = 'поколение'
-
-    def form_valid(self, form):
-        form.instance._type = 2
         return super().form_valid(form)

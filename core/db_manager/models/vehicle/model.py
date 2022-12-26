@@ -3,6 +3,7 @@ __all__ = ['Vehicle']
 from typing import List
 
 from django.db import models
+from django.db.models import QuerySet
 from django.urls import reverse
 
 from db_manager.helpers import deepmerge
@@ -39,6 +40,10 @@ class Vehicle(models.Model):
         self.selected = False
 
     @property
+    def get_children(self) -> QuerySet:
+        return Vehicle.objects.filter(parent=self)
+
+    @property
     def get_hierarchy_attributes(self) -> Attributes:
         """Получить атрибуты. Поддержано наследование атрибутов."""
         obj = self
@@ -49,6 +54,7 @@ class Vehicle(models.Model):
 
         return Attributes.from_json(attrs)
 
+    # fixme: Костыль, связанный с serializer.
     @property
     def get_hierarchy_attributes_json(self) -> dict:
         """Получить атрибуты. Поддержано наследование атрибутов."""

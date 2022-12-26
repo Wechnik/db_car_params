@@ -3,11 +3,14 @@ from db_manager.views.configuration.create import ConfigurationCreateView
 from db_manager.views.configuration.delete import ConfigurationDeleteView
 from db_manager.views.configuration.detail import ConfigurationDetailView
 from db_manager.views.configuration.update import ConfigurationUpdateView
-from db_manager.views.create import BrandCreateView, GenerationCreateView, ModelCreateView
+from db_manager.views.create import BrandCreateView, ModelCreateView
 from db_manager.views.delete import BrandDeleteView, GenerationDeleteView, ModelDeleteView
-from db_manager.views.detail import BrandDetailView, GenerationDetailView, ModelDetailView
-from db_manager.views.index import BrandView, GenerationView, ModelView
-from db_manager.views.update import BrandUpdateView, GenerationUpdateView, ModelUpdateView
+from db_manager.views.detail import BrandDetailView, ModelDetailView
+from db_manager.views.generation.detail import GenerationDetailView
+from db_manager.views.generation.create import GenerationCreateView
+from db_manager.views.generation.update import GenerationUpdateView
+from db_manager.views.index import BrandView, GenerationView, ModelView, VehiclesAlt
+from db_manager.views.update import BrandUpdateView, ModelUpdateView
 from django.urls.conf import include, path
 
 crud_vehicle = [
@@ -50,6 +53,7 @@ crud_configuration = [
 
 urlpatterns = [
     path('', IndexView.as_view(), name='index'),
+    path('alt/', VehiclesAlt.as_view(), name='index_alt'),
     path('accounts/', include('django.contrib.auth.urls')),
     path('vehicle/', include(crud_vehicle)),
     path('brand/', include(crud_brand)),

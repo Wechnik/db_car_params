@@ -1,22 +1,17 @@
-from db_manager.forms.core import cleaned_data_to_json, YearsOfProduction, WiperLength, OilType, RimOffset, \
-    RimCenterHoleDiameter, RimDiameter, RimDrilling, RimWidth, TireDiameter, TireHeight, TireWidth
+from db_manager.forms.core import cleaned_data_to_json, YearsOfProduction
 from db_manager.forms.crud_forms import BaseVehicleForm
 from db_manager.models import Vehicle
 from db_manager.models.vehicle.attributes import Attributes
 
 
-class ConfigurationForm(BaseVehicleForm,
-                        RimDiameter, RimDrilling, RimWidth, RimCenterHoleDiameter, RimOffset,
-                        TireDiameter, TireWidth, TireHeight,
-                        WiperLength,
-                        OilType,
-                        YearsOfProduction):
+class GenerationForm(BaseVehicleForm, YearsOfProduction):
     class Meta:
         model = Vehicle
-        fields = ['name', 'description']
+        fields = ['name', 'description', 'parent']
         labels = {
             'name': 'Название',
             'description': 'Описание',
+            'parent': 'Модель',
         }
 
     template_name_div = 'div.html'
@@ -31,3 +26,5 @@ class ConfigurationForm(BaseVehicleForm,
         for base_type in type(self).mro():
             if hasattr(base_type, 'fill_initial'):
                 base_type.fill_initial(self)
+
+        self.fields['parent'].queryset = Vehicle.objects.filter(_type=Vehicle.Type.MODEL.value)

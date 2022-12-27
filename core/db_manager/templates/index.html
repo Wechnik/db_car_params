@@ -18,16 +18,14 @@
             <tr>
                 <td>{{ row }}</td>
                 <td>
-                    <a href="{% url 'detail'|add:type row.id %}">
-                        <button type="button" class="btn btn-outline-info"><i class="nav-icon fas fa-glasses"></i>
+                    <a href="{% url 'edit'|add:type row.id %}">
+                        <button type="button" class="btn btn-outline-success">
+                            <i class="nav-icon fas fa-highlighter"></i>
                         </button>
                     </a>
-                    <a href='{% url 'edit'|add:type row.id %}'>
-                        <button type="button" class="btn btn-outline-success"><i
-                                class="nav-icon fas fa-highlighter"></i></button>
-                    </a>
                     <a href="{% url 'delete'|add:type row.id %}">
-                        <button type="button" class="btn btn-outline-danger"><i class="nav-icon fas fa-trash"></i>
+                        <button type="button" class="btn btn-outline-danger">
+                            <i class="nav-icon fas fa-trash"></i>
                         </button>
                     </a>
                 </td>

@@ -17,7 +17,6 @@ class BaseParamsValueCreateView(BaseLoginRequiredMixin, CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        print(context)
         context['title'] = f'Создать {self._name}'
         return context
 

@@ -1,32 +1,70 @@
+from django.urls.conf import include, path
+
 from db_manager.views import IndexView, VehicleDetailView
 from db_manager.views.configuration.create import ConfigurationCreateView
 from db_manager.views.configuration.delete import ConfigurationDeleteView
 from db_manager.views.configuration.detail import ConfigurationDetailView
 from db_manager.views.configuration.update import ConfigurationUpdateView
 from db_manager.views.create import BrandCreateView, ModelCreateView
-from db_manager.views.delete import BrandDeleteView, GenerationDeleteView, ModelDeleteView
+from db_manager.views.delete import (BrandDeleteView, GenerationDeleteView,
+                                     ModelDeleteView)
 from db_manager.views.detail import BrandDetailView, ModelDetailView
-from db_manager.views.generation.detail import GenerationDetailView
 from db_manager.views.generation.create import GenerationCreateView
+from db_manager.views.generation.detail import GenerationDetailView
 from db_manager.views.generation.update import GenerationUpdateView
-from db_manager.views.index import BrandView, GenerationView, ModelView, VehiclesAlt
-from db_manager.views.params.create import TireDiameterCreateView, TireMetricWidthCreateView, \
-    TireMetricProfileCreateView, TireInchWidthCreateView, TireInchHeightCreateView, WheelDiameterCreateView, \
-    WheelDrillingCreateView, WheelDepartureCreateView, WheelCHDiameterCreateView, OilTypeCreateView, \
-    OilViscosityCreateView, WipersLengthCreateView, WheelWidthCreateView
-from db_manager.views.params.delete import BaseParamsValueDeleteView, TireDiameterDeleteView, TireMetricWidthDeleteView, \
-    TireMetricProfileDeleteView, TireInchWidthDeleteView, TireInchHeightDeleteView, WheelDiameterDeleteView, \
-    WheelDrillingDeleteView, WheelDepartureDeleteView, WheelCHDiameterDeleteView, OilTypeDeleteView, \
-    OilViscosityDeleteView, WipersLengthDeleteView, WheelWidthDeleteView
-from db_manager.views.params.index import TireDiameterView, TireMetricWidthView, TireMetricProfileView, \
-    TireInchWidthView, TireInchHeightView, WheelDiameterView, WheelDrillingView, WheelDepartureView, \
-    WheelCHDiameterView, OilTypeView, OilViscosityView, WipersLengthView, WheelWidthView
-from db_manager.views.params.update import TireDiameterUpdateView, TireMetricWidthUpdateView, \
-    TireMetricProfileUpdateView, TireInchWidthUpdateView, TireInchHeightUpdateView, WheelDiameterUpdateView, \
-    WheelDrillingUpdateView, WheelDepartureUpdateView, WheelCHDiameterUpdateView, OilTypeUpdateView, \
-    OilViscosityUpdateView, WipersLengthUpdateView, WheelWidthUpdateView
+from db_manager.views.index import (BrandView, GenerationView, ModelView,
+                                    VehiclesAlt)
+from db_manager.views.params.create import (OilTypeCreateView,
+                                            OilViscosityCreateView,
+                                            TireDiameterCreateView,
+                                            TireInchHeightCreateView,
+                                            TireInchWidthCreateView,
+                                            TireMetricProfileCreateView,
+                                            TireMetricWidthCreateView,
+                                            WheelCHDiameterCreateView,
+                                            WheelDepartureCreateView,
+                                            WheelDiameterCreateView,
+                                            WheelDrillingCreateView,
+                                            WheelWidthCreateView,
+                                            WipersLengthCreateView)
+from db_manager.views.params.delete import (OilTypeDeleteView,
+                                            OilViscosityDeleteView,
+                                            TireDiameterDeleteView,
+                                            TireInchHeightDeleteView,
+                                            TireInchWidthDeleteView,
+                                            TireMetricProfileDeleteView,
+                                            TireMetricWidthDeleteView,
+                                            WheelCHDiameterDeleteView,
+                                            WheelDepartureDeleteView,
+                                            WheelDiameterDeleteView,
+                                            WheelDrillingDeleteView,
+                                            WheelWidthDeleteView,
+                                            WipersLengthDeleteView)
+from db_manager.views.params.index import (OilTypeView, OilViscosityView,
+                                           TireDiameterView,
+                                           TireInchHeightView,
+                                           TireInchWidthView,
+                                           TireMetricProfileView,
+                                           TireMetricWidthView,
+                                           WheelCHDiameterView,
+                                           WheelDepartureView,
+                                           WheelDiameterView,
+                                           WheelDrillingView, WheelWidthView,
+                                           WipersLengthView)
+from db_manager.views.params.update import (OilTypeUpdateView,
+                                            OilViscosityUpdateView,
+                                            TireDiameterUpdateView,
+                                            TireInchHeightUpdateView,
+                                            TireInchWidthUpdateView,
+                                            TireMetricProfileUpdateView,
+                                            TireMetricWidthUpdateView,
+                                            WheelCHDiameterUpdateView,
+                                            WheelDepartureUpdateView,
+                                            WheelDiameterUpdateView,
+                                            WheelDrillingUpdateView,
+                                            WheelWidthUpdateView,
+                                            WipersLengthUpdateView)
 from db_manager.views.update import BrandUpdateView, ModelUpdateView
-from django.urls.conf import include, path
 
 crud_vehicle = [
     path('<int:pk>/', VehicleDetailView.as_view(), name='detail'),

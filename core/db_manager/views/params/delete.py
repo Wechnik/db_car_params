@@ -7,7 +7,7 @@ from db_manager.views.abstract import BaseLoginRequiredMixin
 
 class BaseParamsValueDeleteView(BaseLoginRequiredMixin, DeleteView):
     model = ParamsValue
-    template_name = 'crud/delete.html'
+    template_name = 'params/delete.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

@@ -1,23 +1,27 @@
+from typing import Optional, Union
+
 from django.forms import IntegerField, ModelForm as ModelFormBase, CharField, TypedChoiceField
 
-from db_manager.helpers import deep_set
+from db_manager.helpers import deepset
 
 
 def cleaned_data_to_json(cleaned_data: dict) -> dict:
     """Преобразовать заполненные данные формы в JSON-представление dataclass-атрибутов."""
     json = {}
     for field, value in cleaned_data.items():
-        deep_set(json, field, value)
+        deepset(json, field, value)
 
     return json
 
 
-def make_class(class_name: str, path: list[str], annotations: dict):
+def make_class(class_name: str, path: list[str], annotations: dict[str, tuple[type, dict[str]]],
+               group: Optional[Union[str, list[str]]] = None) -> type:
     """
     Сформировать класс для работы с атрибутами как полями формы.
     :param class_name: Название создаваемого класса.
     :param path: Путь до атрибута (dataclass).
     :param annotations: Аннотации. Содержат название конечного атрибута не (dataclass).
+    :param group: .
     :return: Класс содержит:
         - Атрибуты класса в виде названия полей с сохранением иерархии.
         - Instance-метод fill_initial для заполнения полей.
@@ -49,12 +53,18 @@ def make_class(class_name: str, path: list[str], annotations: dict):
     }
 
     def fill_initial(self: 'ModelFormBase') -> None:
+        """Заполнить форму данными из модели."""
         obj = self.instance
         for sub_object in path:
             obj = getattr(obj, sub_object)
 
+        # Заполняем поля первичными данными.
+        fields = []
         for cls_field_name in annotations:
             self.fields[f'{prefix}{cls_field_name}'].initial = getattr(obj, cls_field_name)
+            fields.append(f'{prefix}{cls_field_name}')
+
+        self.add_field_group(group or '', fields)
 
     return type(class_name, (ModelFormBase,), {
         'fill_initial': fill_initial,
@@ -67,54 +77,59 @@ YearsOfProduction = make_class(
     ['attributes', 'years_of_production'],
     {
         'start': (TypedChoiceField, {
-            'label': 'Год начала выпуска',
+            'label': 'Начало',
             'choices': [(year, str(year)) for year in range(1950, 2024)],
             'coerce': int,
         }),
         'end': (TypedChoiceField, {
-            'label': 'Год окончания выпуска',
+            'label': 'Конец',
             'choices': [(year, str(year)) for year in range(1950, 2024)],
             'coerce': int,
         })
-    }
+    },
+    'Годы выпуска',
 )
 
 WiperLength = make_class(
     'WiperLength',
     ['attributes', 'restrictions', 'wiper', 'length'],
     {
-        'min': (IntegerField, {'label': 'Минимальная длина дворника'}),
-        'max': (IntegerField, {'label': 'Максимальная длина дворника'}),
-        'rec': (IntegerField, {'label': 'Рекомендуемая длина дворника'})
-    }
+        'min': (IntegerField, {'label': 'Минимальная'}),
+        'max': (IntegerField, {'label': 'Максимальная'}),
+        'rec': (IntegerField, {'label': 'Рекомендуемая'})
+    },
+    ['Дворник', 'Длина'],
 )
 
 OilType = make_class(
     'OilType',
     ['attributes', 'restrictions', 'oil'],
     {
-        'type': (CharField, {'label': 'Рекомендуемый тип масла'}),
-    }
+        'type': (CharField, {'label': 'Рекомендуемый тип'}),
+    },
+    'Масло'
 )
 
 RimOffset = make_class(
     'RimOffset',
     ['attributes', 'restrictions', 'rim', 'offset'],
     {
-        'min': (IntegerField, {'label': 'Минимальный вынос диска'}),
-        'max': (IntegerField, {'label': 'Максимальный вынос диска'}),
-        'rec': (IntegerField, {'label': 'Рекомендуемый вынос диска'})
-    }
+        'min': (IntegerField, {'label': 'Минимальный'}),
+        'max': (IntegerField, {'label': 'Максимальный'}),
+        'rec': (IntegerField, {'label': 'Рекомендуемый'})
+    },
+    ['Диски', 'Вынос'],
 )
 
 RimCenterHoleDiameter = make_class(
     'RimCenterHoleDiameter',
     ['attributes', 'restrictions', 'rim', 'center_hole_diameter'],
     {
-        'min': (IntegerField, {'label': 'Минимальный диаметр ЦО диска'}),
-        'max': (IntegerField, {'label': 'Максимальный диаметр ЦО диска'}),
-        'rec': (IntegerField, {'label': 'Рекомендуемый диаметр ЦО диска'})
-    }
+        'min': (IntegerField, {'label': 'Минимальный'}),
+        'max': (IntegerField, {'label': 'Максимальный'}),
+        'rec': (IntegerField, {'label': 'Рекомендуемый'})
+    },
+    ['Диски', 'Диаметр ЦО'],
 )
 
 rim_diameter_common = {
@@ -127,37 +142,40 @@ RimDiameter = make_class(
     {
         'min': (TypedChoiceField, {
             **rim_diameter_common,
-            'label': 'Минимальный диаметр диска'
+            'label': 'Минимальный'
         }),
         'max': (TypedChoiceField, {
             **rim_diameter_common,
-            'label': 'Максимальный диаметр диска'
+            'label': 'Максимальный'
         }),
         'rec': (TypedChoiceField, {
             **rim_diameter_common,
-            'label': 'Рекомендуемый диаметр диска'
+            'label': 'Рекомендуемый'
         })
-    }
+    },
+    ['Диски', 'Диаметр'],
 )
 
 RimDrilling = make_class(
     'RimDrilling',
     ['attributes', 'restrictions', 'rim', 'drilling'],
     {
-        'min': (IntegerField, {'label': 'Минимальная XXX диска'}),
-        'max': (IntegerField, {'label': 'Максимальная XXX диска'}),
-        'rec': (IntegerField, {'label': 'Рекомендуемая XXX диска'})
-    }
+        'min': (IntegerField, {'label': 'Минимальная'}),
+        'max': (IntegerField, {'label': 'Максимальная'}),
+        'rec': (IntegerField, {'label': 'Рекомендуемая'})
+    },
+    ['Диски', 'Сверловка'],
 )
 
 RimWidth = make_class(
     'RimWidth',
     ['attributes', 'restrictions', 'rim', 'width'],
     {
-        'min': (IntegerField, {'label': 'Минимальная ширина диска'}),
-        'max': (IntegerField, {'label': 'Максимальная ширина диска'}),
-        'rec': (IntegerField, {'label': 'Рекомендуемая ширина диска'})
-    }
+        'min': (IntegerField, {'label': 'Минимальная'}),
+        'max': (IntegerField, {'label': 'Максимальная'}),
+        'rec': (IntegerField, {'label': 'Рекомендуемая'})
+    },
+    ['Диски', 'Ширина'],
 )
 
 tire_diameter_common = {
@@ -170,35 +188,38 @@ TireDiameter = make_class(
     {
         'min': (TypedChoiceField, {
             **tire_diameter_common,
-            'label': 'Минимальный диаметр шины',
+            'label': 'Минимальный',
         }),
         'max': (TypedChoiceField, {
             **tire_diameter_common,
-            'label': 'Максимальный диаметр шины',
+            'label': 'Максимальный',
         }),
         'rec': (TypedChoiceField, {
             **tire_diameter_common,
-            'label': 'Рекомендуемый диаметр шины',
+            'label': 'Рекомендуемый',
         })
-    }
+    },
+    ['Шины', 'Диаметр'],
 )
 
 TireHeight = make_class(
     'TireHeight',
     ['attributes', 'restrictions', 'tire', 'height'],
     {
-        'min': (IntegerField, {'label': 'Минимальная высота профиля шины, %'}),
-        'max': (IntegerField, {'label': 'Максимальная высота профиля шины, %'}),
-        'rec': (IntegerField, {'label': 'Рекомендуемая высота профиля шины, %'})
-    }
+        'min': (IntegerField, {'label': 'Минимальная'}),
+        'max': (IntegerField, {'label': 'Максимальная'}),
+        'rec': (IntegerField, {'label': 'Рекомендуемая'})
+    },
+    ['Шины', 'Высота профиля, %'],
 )
 
 TireWidth = make_class(
     'TireWidth',
     ['attributes', 'restrictions', 'tire', 'width'],
     {
-        'min': (IntegerField, {'label': 'Минимальная ширина шины'}),
-        'max': (IntegerField, {'label': 'Максимальная ширина шины'}),
-        'rec': (IntegerField, {'label': 'Рекомендуемая ширина шины'})
-    }
+        'min': (IntegerField, {'label': 'Минимальная'}),
+        'max': (IntegerField, {'label': 'Максимальная'}),
+        'rec': (IntegerField, {'label': 'Рекомендуемая'})
+    },
+    ['Шины', 'Ширина'],
 )

@@ -8,7 +8,7 @@ from db_manager.views.abstract import BaseLoginRequiredMixin
 
 class ConfigurationUpdateView(BaseLoginRequiredMixin, UpdateView):
     form_class = ConfigurationForm
-    template_name = 'crud/create.html'
+    template_name = 'configuration/create.html'
     queryset = Vehicle.objects.all()
 
     def get_success_url(self):

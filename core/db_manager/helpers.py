@@ -1,5 +1,6 @@
 import re
 from copy import deepcopy
+from typing import Union, List, Any, Optional
 
 
 def deepmerge(base_dict: dict, add_dict: dict, include_nulls: bool = False) -> dict:
@@ -24,9 +25,9 @@ def deepmerge(base_dict: dict, add_dict: dict, include_nulls: bool = False) -> d
     return base_dict
 
 
-def deep_set(base_dict: dict, path: str, value) -> None:
+def deepset(base_dict: dict, path: Union[List[str], str], value, delimiter: str = '__') -> None:
     """Установить значение по ключу с неограниченным уровнем вложенности."""
-    keys = path.split('__')
+    keys = path.split(delimiter) if isinstance(path, str) else path.copy()
 
     last_level = base_dict
     for i, key in enumerate(keys[:-1]):
@@ -34,6 +35,23 @@ def deep_set(base_dict: dict, path: str, value) -> None:
             last_level[key] = {}
         last_level = last_level[key]
     last_level[keys[-1]] = value
+
+
+def deepget(base_dict: Optional[dict], keys: Union[str, List[Any]], default: Any = None) -> Any:
+    """
+    Получить значение ключа из словаря, с поддержкой неограниченного уровня вложенности.
+
+    :param base_dict: Словарь.
+    :param keys: Имена ключей в виде массива или "описания пути" через "/".
+    :param default: Значение по-умолчанию.
+    """
+    _keys = keys.split('/') if isinstance(keys, str) else keys
+
+    result = base_dict or {}
+    for i, key in enumerate(_keys):
+        result = result.get(key, {} if i < len(_keys) - 1 else default)
+
+    return result
 
 
 class CaseHelper:

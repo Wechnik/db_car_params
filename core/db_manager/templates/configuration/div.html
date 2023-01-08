@@ -1,0 +1,7 @@
+{% for field in form.form_content %}
+    {% if field.label %}{{ field.label_tag }}{% endif %}
+    {% if field.help_text %}
+        <div class="helptext">{{ field.help_text|safe }}</div>
+    {% endif %}
+    {{ field }}
+{% endfor %}

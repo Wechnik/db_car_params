@@ -29,6 +29,8 @@ class ConfigurationForm(BaseVehicleForm,
         return super().save(commit=commit)
 
     def __init__(self, *args, **kwargs):
+        self.initial_attributes = kwargs.pop('initial_attributes') if 'initial_attributes' in kwargs else None
+
         BaseVehicleForm.__init__(self, *args, **kwargs)
 
         for base_type in type(self).mro():

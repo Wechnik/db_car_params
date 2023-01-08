@@ -9,6 +9,12 @@ class ConfigurationCreateView(BaseLoginRequiredMixin, CreateView):
     form_class = ConfigurationForm
     template_name = 'configuration/create.html'
 
+    def get_form_kwargs(self):
+        form_kwargs = super().get_form_kwargs()
+        form_kwargs['initial_attributes'] = Vehicle.objects.filter(parent=self.kwargs['pk']).order_by('id')[0].get_hierarchy_attributes
+        return form_kwargs
+
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
@@ -17,15 +23,7 @@ class ConfigurationCreateView(BaseLoginRequiredMixin, CreateView):
 
         # Комплектации будут отсортированы по возрастанию даты начала выпуска.
         # Комплектации, у которых даты производства совпадают, будут отсортированы по дате конца выпуска.
-        config_list = sorted(
-            list(Vehicle.objects.filter(parent=gen.id)),
-            key=lambda cfg: (
-                float('inf') if cfg.attributes.years_of_production.start is None
-                else cfg.attributes.years_of_production.start,
-                float('inf') if cfg.attributes.years_of_production.end is None
-                else cfg.attributes.years_of_production.end,
-            )
-        )
+        config_list = Vehicle.objects.filter(parent=gen.id).order_by('id')
 
         # Нужна для отображения списка доступных комплектаций и информации о самих комплектациях.
         context['config_list'] = config_list

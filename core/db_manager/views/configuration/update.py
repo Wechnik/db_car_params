@@ -1,3 +1,4 @@
+from django.db.models import QuerySet
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.views.generic import UpdateView
@@ -25,16 +26,8 @@ class ConfigurationUpdateView(BaseLoginRequiredMixin, UpdateView):
         return obj
 
     @staticmethod
-    def get_sorted_config_list(gen: Vehicle) -> list[Vehicle]:
-        return sorted(
-            list(Vehicle.objects.filter(parent=gen.id)),
-            key=lambda cfg: (
-                float('inf') if cfg.attributes.years_of_production.start is None
-                else cfg.attributes.years_of_production.start,
-                float('inf') if cfg.attributes.years_of_production.end is None
-                else cfg.attributes.years_of_production.end,
-            )
-        )
+    def get_sorted_config_list(gen: Vehicle) -> QuerySet:
+        return Vehicle.objects.filter(parent=gen.id).order_by('id')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

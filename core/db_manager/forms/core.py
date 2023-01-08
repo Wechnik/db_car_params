@@ -16,7 +16,7 @@ def cleaned_data_to_json(cleaned_data: dict) -> dict:
 
 
 def get_choices(choice_type) -> list[tuple[Any, Any]]:
-    return [(choice.id, choice.value) for choice in ParamsValue.objects.filter(type=choice_type)]
+    return [(None, '')] + [(choice.id, choice.value) for choice in ParamsValue.objects.filter(type=choice_type)]
 
 
 def make_class(class_name: str, path: list[str], annotations: dict[str, tuple[type, dict[str]]],

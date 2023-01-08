@@ -1,9 +1,8 @@
 from django.template import Template, Context
 
-from db_manager.forms.core import cleaned_data_to_json, YearsOfProduction, WiperLength, Oil, RimOffset, \
+from db_manager.forms.core import cleaned_data_to_json, WiperLength, Oil, RimOffset, \
     RimCenterHoleDiameter, RimDiameter, RimDrilling, RimWidth, TireDiameter, TireHeight, TireWidth
 from db_manager.forms.crud_forms import BaseVehicleForm
-from db_manager.helpers import deepset, deepget
 from db_manager.models import Vehicle
 from db_manager.models.vehicle.attributes import Attributes
 
@@ -12,8 +11,7 @@ class ConfigurationForm(BaseVehicleForm,
                         RimDiameter, RimDrilling, RimWidth, RimCenterHoleDiameter, RimOffset,
                         TireDiameter, TireWidth, TireHeight,
                         WiperLength,
-                        Oil,
-                        YearsOfProduction):
+                        Oil):
     class Meta:
         model = Vehicle
         fields = ['name', 'description']
@@ -21,6 +19,8 @@ class ConfigurationForm(BaseVehicleForm,
             'name': 'Название',
             'description': 'Описание',
         }
+
+    required = ('name',)
 
     template_name_div = 'configuration/div.html'
 
@@ -30,7 +30,6 @@ class ConfigurationForm(BaseVehicleForm,
 
     def __init__(self, *args, **kwargs):
         BaseVehicleForm.__init__(self, *args, **kwargs)
-        self.field_groups = {}
 
         for base_type in type(self).mro():
             if hasattr(base_type, 'fill_initial'):
@@ -49,12 +48,10 @@ class ConfigurationForm(BaseVehicleForm,
 
         self.add_field_group('Параметры', [field for field in self.fields if field not in grouped_fields])
 
-    def add_field_group(self, path, fields):
-        deepset(
-            self.field_groups,
-            path,
-            deepget(self.field_groups, path, [] + fields)
-        )
+        for field in self.fields:
+            if field not in self.required:
+                self.fields[field].required = False
+                self[field].required = False
 
     def form_content(self, form_content=None, level=2) -> list:
         target = self.field_groups if form_content is None else form_content

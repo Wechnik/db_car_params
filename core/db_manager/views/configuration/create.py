@@ -7,11 +7,33 @@ from django.views.generic import CreateView
 
 class ConfigurationCreateView(BaseLoginRequiredMixin, CreateView):
     form_class = ConfigurationForm
-    template_name = 'crud/create.html'
+    template_name = 'configuration/create.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = f'Создание комплектации'
+
+        gen = Vehicle.objects.get(id=self.kwargs['pk'])
+        context['generation'] = gen
+
+        # Комплектации будут отсортированы по возрастанию даты начала выпуска.
+        # Комплектации, у которых даты производства совпадают, будут отсортированы по дате конца выпуска.
+        config_list = sorted(
+            list(Vehicle.objects.filter(parent=gen.id)),
+            key=lambda cfg: (
+                float('inf') if cfg.attributes.years_of_production.start is None
+                else cfg.attributes.years_of_production.start,
+                float('inf') if cfg.attributes.years_of_production.end is None
+                else cfg.attributes.years_of_production.end,
+            )
+        )
+
+        # Нужна для отображения списка доступных комплектаций и информации о самих комплектациях.
+        context['config_list'] = config_list
+
+        context['title'] = gen
+
+        context['select_plus'] = True
+
         return context
 
     def __init__(self, **kwargs):
@@ -28,4 +50,4 @@ class ConfigurationCreateView(BaseLoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
     def get_success_url(self):
-        return reverse('detail', kwargs={'pk': self.object.parent.id, 'cfg_pk': self.object.id})
+        return reverse('edit_configuration', kwargs={'pk': self.object.id})

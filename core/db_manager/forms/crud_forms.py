@@ -1,13 +1,22 @@
 from django.forms.models import ModelForm as ModelFormBase
 
+from db_manager.helpers import deepset, deepget
 from db_manager.models import Vehicle
 
 
 class BaseVehicleForm(ModelFormBase):
     def __init__(self, *args, **kwargs):
+        self.field_groups = {}
         ModelFormBase.__init__(self, *args, **kwargs)
         for visible in self.visible_fields():
             visible.field.widget.attrs['class'] = 'form-control'
+
+    def add_field_group(self, path, fields):
+        deepset(
+            self.field_groups,
+            path,
+            deepget(self.field_groups, path, [] + fields)
+        )
 
     class Meta:
         model = Vehicle

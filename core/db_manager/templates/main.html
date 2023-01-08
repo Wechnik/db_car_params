@@ -17,18 +17,14 @@
                 <td>{{ row.1 }}</td>
                 <td>{{ row.2 }}</td>
                 <td>
-                    <a href="{% url 'detail'|add:type row.3.id %}">
-                        <button type="button" class="btn btn-outline-info"><i class="nav-icon fas fa-glasses"></i>
+                    <a href='{% url 'edit_configuration' row.3.id %}'>
+                        <button type="button" class="btn btn-outline-success"><i
+                                class="nav-icon fas fa-highlighter"></i></button>
+                    </a>
+                    <a href="{% url 'delete_generation'|add:type row.3.id %}">
+                        <button type="button" class="btn btn-outline-danger"><i class="nav-icon fas fa-trash"></i>
                         </button>
                     </a>
-{#                    <a href='{% url 'edit'|add:type row.3.id %}'>#}
-{#                        <button type="button" class="btn btn-outline-success"><i#}
-{#                                class="nav-icon fas fa-highlighter"></i></button>#}
-{#                    </a>#}
-{#                    <a href="{% url 'delete'|add:type row.3.id %}">#}
-{#                        <button type="button" class="btn btn-outline-danger"><i class="nav-icon fas fa-trash"></i>#}
-{#                        </button>#}
-{#                    </a>#}
                 </td>
             </tr>
         {% endfor %}

@@ -11,9 +11,13 @@ class ConfigurationCreateView(BaseLoginRequiredMixin, CreateView):
 
     def get_form_kwargs(self):
         form_kwargs = super().get_form_kwargs()
-        form_kwargs['initial_attributes'] = Vehicle.objects.filter(parent=self.kwargs['pk']).order_by('id')[0].get_hierarchy_attributes
-        return form_kwargs
+        try:
+            form_kwargs['initial_attributes'] = Vehicle.objects.filter(parent=self.kwargs['pk']).order_by('id')[0]\
+                .get_hierarchy_attributes
+        except IndexError:
+            form_kwargs['initial_attributes'] = None
 
+        return form_kwargs
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

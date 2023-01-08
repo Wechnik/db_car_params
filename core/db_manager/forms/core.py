@@ -59,7 +59,7 @@ def make_class(class_name: str, path: list[str], annotations: dict[str, tuple[ty
 
     def fill_initial(self: 'ModelFormBase') -> None:
         """Заполнить форму данными из модели."""
-        if self.initial_attributes:
+        if getattr(self, 'initial_attributes', None):
             class obj:
                 attributes = self.initial_attributes
         else:

@@ -11,15 +11,10 @@ class ConfigurationUpdateView(BaseLoginRequiredMixin, UpdateView):
     template_name = 'configuration/create.html'
     queryset = Vehicle.objects.all()
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        self.preferred_config = None
-
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
         gen = self.object.parent
-        # Нужна для редиректа на страницу добавления конфигураций поколения.
         context['generation'] = gen
 
         # Комплектации будут отсортированы по возрастанию даты начала выпуска.

@@ -76,7 +76,24 @@ class ConfigurationForm(BaseVehicleForm,
                 form_content.append(Template(f'<{tag}>{legend}</{tag}>').render(Context({})))
 
             if isinstance(content, list):
-                form_content.extend([self[field] for field in content])
+                tags = []
+                for field in content:
+                    tags.append('<div class="col-4">')
+
+                    if self[field].label:
+                        tags.append(str(self[field].label_tag()))
+
+                    if self[field].help_text:
+                        tags.append(f'<div class="helptext">{{field.help_text | safe}}</div>')
+
+                    tags.append(str(self[field]))
+                    tags.append('</div>')
+
+                wrapped_fields = tags
+                form_content.append(
+                    Template(f'<div class="row">{"".join([wrapped_field for wrapped_field in wrapped_fields])}</div>')
+                    .render(Context({}))
+                )
             else:
                 form_content.extend(self.form_content(content, level + 1))
 

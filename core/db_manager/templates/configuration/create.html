@@ -1,12 +1,33 @@
 {% extends 'base.html' %}
 
 {% block content %}
+    <ul class="nav nav-tabs">
+        {% for config in config_list %}
+            <li class="nav-item">
+                <a
+                        style="color: white"
+                        href="{% url 'edit_configuration' config.id %}"
+
+                        {% if config.selected == True %}
+                        class="nav-link active"
+                        {% else %}
+                        class="nav-link"
+                        {% endif %}
+                >{{ config.name }} {{ config.get_hierarchy_attributes.years_of_production }}</a>
+            </li>
+        {% endfor %}
+        <li class="nav-item" style="margin-left: 10px;">
+            <a class="nav-link" style="color: white" href="{% url 'add_configuration' generation.id %}">
+                <i class="fa fa-plus" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
     <div class="raw">
-        <div class="col-md-6 col-xs-12">
-            <form action="" method="post" onsubmit="document.getElementById('submit').disabled=true; processFormData();">{% csrf_token %}
-                {{ form.as_div }}
-                <input id="submit" style="margin-bottom: 30px; margin-top: 30px" class="btn btn-outline-success" type="submit" value="Сохранить"/>
-            </form>
-        </div>
+        <form action="" method="post"
+              onsubmit="document.getElementById('submit').disabled=true; processFormData();">{% csrf_token %}
+            {{ form.as_div }}
+            <input id="submit" style="margin-bottom: 30px; margin-top: 30px" class="btn btn-outline-success"
+                   type="submit" value="Сохранить"/>
+        </form>
     </div>
 {% endblock content %}

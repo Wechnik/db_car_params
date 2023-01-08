@@ -33,6 +33,14 @@ class BaseAttribute:
 
         return json
 
+    def map_values(self, map_dict: dict) -> None:
+        for cls_field_name, cls_field_type in self.__annotations__.items():
+            attr = getattr(self, cls_field_name)
+            if is_dataclass(cls_field_type) and isinstance(attr, cls_field_type):
+                attr.map_values(map_dict)
+            else:
+                setattr(self, cls_field_name, map_dict.get(attr))
+
 
 @dataclass
 class YearsOfProduction(BaseAttribute):

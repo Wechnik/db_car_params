@@ -51,6 +51,8 @@ class ConfigurationUpdateView(BaseLoginRequiredMixin, UpdateView):
         # Нужна для отображения списка доступных комплектаций и информации о самих комплектациях.
         context['config_list'] = config_list
 
+        context['title'] = gen
+
         return context
 
     def get_success_url(self):

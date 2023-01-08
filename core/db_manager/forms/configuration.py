@@ -1,6 +1,6 @@
 from django.template import Template, Context
 
-from db_manager.forms.core import cleaned_data_to_json, YearsOfProduction, WiperLength, OilType, RimOffset, \
+from db_manager.forms.core import cleaned_data_to_json, YearsOfProduction, WiperLength, Oil, RimOffset, \
     RimCenterHoleDiameter, RimDiameter, RimDrilling, RimWidth, TireDiameter, TireHeight, TireWidth
 from db_manager.forms.crud_forms import BaseVehicleForm
 from db_manager.helpers import deepset, deepget
@@ -12,7 +12,7 @@ class ConfigurationForm(BaseVehicleForm,
                         RimDiameter, RimDrilling, RimWidth, RimCenterHoleDiameter, RimOffset,
                         TireDiameter, TireWidth, TireHeight,
                         WiperLength,
-                        OilType,
+                        Oil,
                         YearsOfProduction):
     class Meta:
         model = Vehicle

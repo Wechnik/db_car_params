@@ -1,8 +1,9 @@
-from typing import Optional, Union
+from typing import Optional, Union, Any
 
 from django.forms import IntegerField, ModelForm as ModelFormBase, CharField, TypedChoiceField
 
 from db_manager.helpers import deepset
+from db_manager.models import ParamsValue
 
 
 def cleaned_data_to_json(cleaned_data: dict) -> dict:
@@ -12,6 +13,10 @@ def cleaned_data_to_json(cleaned_data: dict) -> dict:
         deepset(json, field, value)
 
     return json
+
+
+def get_choices(choice_type) -> list[tuple[Any, Any]]:
+    return [(choice.id, choice.value) for choice in ParamsValue.objects.filter(type=choice_type)]
 
 
 def make_class(class_name: str, path: list[str], annotations: dict[str, tuple[type, dict[str]]],
@@ -90,50 +95,98 @@ YearsOfProduction = make_class(
     'Годы выпуска',
 )
 
+wiper_length_common = {
+    'choices': get_choices(ParamsValue.Type.WIPERS_LENGTH),
+    'coerce': int,
+}
 WiperLength = make_class(
     'WiperLength',
     ['attributes', 'restrictions', 'wiper', 'length'],
     {
-        'min': (IntegerField, {'label': 'Минимальная'}),
-        'max': (IntegerField, {'label': 'Максимальная'}),
-        'rec': (IntegerField, {'label': 'Рекомендуемая'})
+        'min': (TypedChoiceField, {
+            **wiper_length_common,
+            'label': 'Минимальная'
+        }),
+        'max': (TypedChoiceField, {
+            **wiper_length_common,
+            'label': 'Максимальная'
+        }),
+        'rec': (TypedChoiceField, {
+            **wiper_length_common,
+            'label': 'Рекомендуемая'
+        })
     },
-    ['Дворник', 'Длина'],
+    ['Дворник', 'Длина, мм'],
 )
 
-OilType = make_class(
-    'OilType',
+Oil = make_class(
+    'Oil',
     ['attributes', 'restrictions', 'oil'],
     {
-        'type': (CharField, {'label': 'Рекомендуемый тип'}),
+        'type': (TypedChoiceField, {
+            'choices': get_choices(ParamsValue.Type.OIL_TYPE),
+            'coerce': int,
+            'label': 'Рекомендуемый тип'
+        }),
+        'viscosity': (TypedChoiceField, {
+            'choices': get_choices(ParamsValue.Type.OIL_VISCOSITY),
+            'coerce': int,
+            'label': 'Рекомендуемая вязкость'
+        }),
     },
     'Масло'
 )
 
+rim_offset_common = {
+    'choices': get_choices(ParamsValue.Type.WHEEL_DEPARTURE),
+    'coerce': int,
+}
 RimOffset = make_class(
     'RimOffset',
     ['attributes', 'restrictions', 'rim', 'offset'],
     {
-        'min': (IntegerField, {'label': 'Минимальный'}),
-        'max': (IntegerField, {'label': 'Максимальный'}),
-        'rec': (IntegerField, {'label': 'Рекомендуемый'})
+        'min': (TypedChoiceField, {
+            **rim_offset_common,
+            'label': 'Минимальный'
+        }),
+        'max': (TypedChoiceField, {
+            **rim_offset_common,
+            'label': 'Максимальный'
+        }),
+        'rec': (TypedChoiceField, {
+            **rim_offset_common,
+            'label': 'Рекомендуемый'
+        })
     },
     ['Диски', 'Вынос'],
 )
 
+rim_center_hole_diameter_common = {
+    'choices': get_choices(ParamsValue.Type.WHEEL_CH_DIAMETER),
+    'coerce': int,
+}
 RimCenterHoleDiameter = make_class(
     'RimCenterHoleDiameter',
     ['attributes', 'restrictions', 'rim', 'center_hole_diameter'],
     {
-        'min': (IntegerField, {'label': 'Минимальный'}),
-        'max': (IntegerField, {'label': 'Максимальный'}),
-        'rec': (IntegerField, {'label': 'Рекомендуемый'})
+        # 'min': (TypedChoiceField, {
+        #     **rim_center_hole_diameter_common,
+        #     'label': 'Минимальный'
+        # }),
+        # 'max': (TypedChoiceField, {
+        #     **rim_center_hole_diameter_common,
+        #     'label': 'Максимальный'
+        # }),
+        'rec': (TypedChoiceField, {
+            **rim_center_hole_diameter_common,
+            'label': 'Рекомендуемый'
+        })
     },
     ['Диски', 'Диаметр ЦО'],
 )
 
 rim_diameter_common = {
-    'choices': [(radius, f'R{radius}') for radius in range(1, 30)],
+    'choices': get_choices(ParamsValue.Type.WHEEL_DIAMETER),
     'coerce': int,
 }
 RimDiameter = make_class(
@@ -160,26 +213,41 @@ RimDrilling = make_class(
     'RimDrilling',
     ['attributes', 'restrictions', 'rim', 'drilling'],
     {
-        'min': (IntegerField, {'label': 'Минимальная'}),
-        'max': (IntegerField, {'label': 'Максимальная'}),
-        'rec': (IntegerField, {'label': 'Рекомендуемая'})
+        'rec': (TypedChoiceField, {
+            'choices': get_choices(ParamsValue.Type.WHEEL_DRILLING),
+            'coerce': int,
+            'label': 'Рекомендуемая',
+        })
     },
     ['Диски', 'Сверловка'],
 )
 
+rim_width_common = {
+    'choices': get_choices(ParamsValue.Type.WHEEL_WIDTH),
+    'coerce': int,
+}
 RimWidth = make_class(
     'RimWidth',
     ['attributes', 'restrictions', 'rim', 'width'],
     {
-        'min': (IntegerField, {'label': 'Минимальная'}),
-        'max': (IntegerField, {'label': 'Максимальная'}),
-        'rec': (IntegerField, {'label': 'Рекомендуемая'})
+        'min': (TypedChoiceField, {
+            **rim_width_common,
+            'label': 'Минимальная',
+        }),
+        'max': (TypedChoiceField, {
+            **rim_width_common,
+            'label': 'Максимальная',
+        }),
+        'rec': (TypedChoiceField, {
+            **rim_width_common,
+            'label': 'Рекомендуемая',
+        })
     },
     ['Диски', 'Ширина'],
 )
 
 tire_diameter_common = {
-    'choices': [(radius, f'R{radius}') for radius in range(1, 30)],
+    'choices': get_choices(ParamsValue.Type.TIRE_DIAMETER),
     'coerce': int,
 }
 TireDiameter = make_class(
@@ -202,24 +270,50 @@ TireDiameter = make_class(
     ['Шины', 'Диаметр'],
 )
 
+tire_height_common = {
+    'choices': get_choices(ParamsValue.Type.TIRE_INCH_HEIGHT),
+    'coerce': int,
+}
 TireHeight = make_class(
     'TireHeight',
     ['attributes', 'restrictions', 'tire', 'height'],
     {
-        'min': (IntegerField, {'label': 'Минимальная'}),
-        'max': (IntegerField, {'label': 'Максимальная'}),
-        'rec': (IntegerField, {'label': 'Рекомендуемая'})
+        'min': (TypedChoiceField, {
+            **tire_height_common,
+            'label': 'Минимальная',
+        }),
+        'max': (TypedChoiceField, {
+            **tire_height_common,
+            'label': 'Максимальная',
+        }),
+        'rec': (TypedChoiceField, {
+            **tire_height_common,
+            'label': 'Рекомендуемая',
+        })
     },
     ['Шины', 'Высота профиля, %'],
 )
 
+tire_width_common = {
+    'choices': get_choices(ParamsValue.Type.TIRE_METRIC_WIDTH),
+    'coerce': int,
+}
 TireWidth = make_class(
     'TireWidth',
     ['attributes', 'restrictions', 'tire', 'width'],
     {
-        'min': (IntegerField, {'label': 'Минимальная'}),
-        'max': (IntegerField, {'label': 'Максимальная'}),
-        'rec': (IntegerField, {'label': 'Рекомендуемая'})
+        'min': (TypedChoiceField, {
+            **tire_width_common,
+            'label': 'Минимальная',
+        }),
+        'max': (TypedChoiceField, {
+            **tire_width_common,
+            'label': 'Максимальная',
+        }),
+        'rec': (TypedChoiceField, {
+            **tire_width_common,
+            'label': 'Рекомендуемая',
+        })
     },
     ['Шины', 'Ширина'],
 )

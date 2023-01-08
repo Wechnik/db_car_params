@@ -73,6 +73,7 @@ class Oil(BaseAttribute):
     """Масло."""
 
     type: str
+    viscosity: str
 
 
 @dataclass
@@ -88,6 +89,7 @@ class Rim(BaseAttribute):
 
     width: Measurement
     diameter: Measurement
+    # FIXME: У сверловки только rec
     drilling: Measurement
     offset: Measurement
     center_hole_diameter: Measurement

@@ -4,7 +4,7 @@ from db_manager.models import Vehicle
 from db_manager.models.vehicle.attributes import Attributes
 
 
-class GenerationForm(BaseVehicleForm, YearsOfProduction):
+class GenerationForm(BaseVehicleForm):
     class Meta:
         model = Vehicle
         fields = ['parent', 'name', 'description']
@@ -21,10 +21,5 @@ class GenerationForm(BaseVehicleForm, YearsOfProduction):
         return super().save(commit=commit)
 
     def __init__(self, *args, **kwargs):
-        BaseVehicleForm.__init__(self, *args, **kwargs)
-
-        for base_type in type(self).mro():
-            if hasattr(base_type, 'fill_initial'):
-                base_type.fill_initial(self)
-
+        super().__init__(*args, **kwargs)
         self.fields['parent'].queryset = Vehicle.objects.filter(_type=Vehicle.Type.MODEL.value)

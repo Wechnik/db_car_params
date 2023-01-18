@@ -13,3 +13,9 @@ class GenerationUpdateView(BaseLoginRequiredMixin, UpdateView):
 
     def get_success_url(self):
         return reverse('detail_generation', kwargs={'pk': self.object.id})
+
+    def get_context_data(self, **kwargs):
+        return {
+            **super().get_context_data(**kwargs),
+            'title': self.object,
+        }

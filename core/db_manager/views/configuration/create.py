@@ -1,8 +1,9 @@
+from django.urls import reverse
+from django.views.generic import CreateView
+
 from db_manager.forms.configuration import ConfigurationForm
 from db_manager.models import Vehicle
 from db_manager.views.abstract import BaseLoginRequiredMixin
-from django.urls import reverse
-from django.views.generic import CreateView
 
 
 class ConfigurationCreateView(BaseLoginRequiredMixin, CreateView):

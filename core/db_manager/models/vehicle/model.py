@@ -72,6 +72,23 @@ class Vehicle(models.Model):
         self.attrs = self.attributes.to_json()
         super().save(force_insert=False, force_update=False, using=None, update_fields=None)
 
+    def copy(self, new_parent_id: int = None, first_level_name_suffix: str = '') -> None:
+        """
+        Скопировать объект и всех его наследников.
+        :param new_parent_id: Идентификатор родителя.
+        :param first_level_name_suffix: Суффикс для названия первого уровня.
+        """
+        original_id = self.id
+
+        self.id = None
+        self.name += first_level_name_suffix
+        self.parent = Vehicle.objects.get(id=new_parent_id) if new_parent_id else self.parent
+        self._state.adding = True
+        self.save()
+
+        for child in Vehicle.objects.filter(parent=original_id):
+            child.copy(self.id)
+
     def __str__(self):
         display_name = self.name
 

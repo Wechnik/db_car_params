@@ -9,6 +9,7 @@ from db_manager.views.create import BrandCreateView, ModelCreateView
 from db_manager.views.delete import (BrandDeleteView, GenerationDeleteView,
                                      ModelDeleteView)
 from db_manager.views.detail import BrandDetailView, ModelDetailView
+from db_manager.views.generation.copy import CopyView
 from db_manager.views.generation.create import GenerationCreateView
 from db_manager.views.generation.detail import GenerationDetailView
 from db_manager.views.generation.update import GenerationUpdateView
@@ -95,6 +96,7 @@ crud_generation = [
     path('<int:pk>/', GenerationDetailView.as_view(), name='detail_generation'),
     path('<int:pk>/edit/', GenerationUpdateView.as_view(), name='edit_generation'),
     path('<int:pk>/delete/', GenerationDeleteView.as_view(), name='delete_generation'),
+    path('<int:pk>/copy/', CopyView.as_view(), name='copy_generation'),
 ]
 
 crud_configuration = [

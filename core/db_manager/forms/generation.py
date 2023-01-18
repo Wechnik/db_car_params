@@ -7,7 +7,7 @@ from db_manager.models.vehicle.attributes import Attributes
 class GenerationForm(BaseVehicleForm, YearsOfProduction):
     class Meta:
         model = Vehicle
-        fields = ['name', 'description', 'parent']
+        fields = ['parent', 'name', 'description']
         labels = {
             'name': 'Название',
             'description': 'Описание',

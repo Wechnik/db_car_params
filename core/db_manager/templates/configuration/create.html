@@ -27,12 +27,16 @@
                     <a
                             style="color: white" href="{% url 'add_configuration' generation.id %}"
                             {% if select_plus %}
-                            class="nav-link active"
+                                class="nav-link active"
                             {% else %}
-                            class="nav-link"
+                                class="nav-link"
                             {% endif %}
                     >
-                        <i class="fa fa-plus" aria-hidden="true"></i>
+                        {% if select_plus %}
+                            Новая комплектация (не сохранено)
+                        {% else %}
+                            <i class="fa fa-plus" aria-hidden="true"></i>
+                        {% endif %}
                     </a>
                 </li>
             </ul>

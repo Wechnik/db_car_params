@@ -27,7 +27,7 @@ from db_manager.views.params.create import (OilTypeCreateView,
                                             WheelDiameterCreateView,
                                             WheelDrillingCreateView,
                                             WheelWidthCreateView,
-                                            WipersLengthCreateView)
+                                            WipersLengthCreateView, YearCreateView)
 from db_manager.views.params.delete import (OilTypeDeleteView,
                                             OilViscosityDeleteView,
                                             TireDiameterDeleteView,
@@ -40,7 +40,7 @@ from db_manager.views.params.delete import (OilTypeDeleteView,
                                             WheelDiameterDeleteView,
                                             WheelDrillingDeleteView,
                                             WheelWidthDeleteView,
-                                            WipersLengthDeleteView)
+                                            WipersLengthDeleteView, YearDeleteView)
 from db_manager.views.params.index import (OilTypeView, OilViscosityView,
                                            TireDiameterView,
                                            TireInchHeightView,
@@ -51,7 +51,7 @@ from db_manager.views.params.index import (OilTypeView, OilViscosityView,
                                            WheelDepartureView,
                                            WheelDiameterView,
                                            WheelDrillingView, WheelWidthView,
-                                           WipersLengthView)
+                                           WipersLengthView, YearView)
 from db_manager.views.params.update import (OilTypeUpdateView,
                                             OilViscosityUpdateView,
                                             TireDiameterUpdateView,
@@ -64,7 +64,7 @@ from db_manager.views.params.update import (OilTypeUpdateView,
                                             WheelDiameterUpdateView,
                                             WheelDrillingUpdateView,
                                             WheelWidthUpdateView,
-                                            WipersLengthUpdateView)
+                                            WipersLengthUpdateView, YearUpdateView)
 from db_manager.views.update import BrandUpdateView, ModelUpdateView
 
 crud_vehicle = [
@@ -203,7 +203,6 @@ crud_oil_viscosity = [
     path('<int:pk>/delete/', OilViscosityDeleteView.as_view(), name='delete_oil_viscosity'),
 ]
 
-
 crud_wipers_length = [
     path('', WipersLengthView.as_view(), name='wipers_length'),
     path('new/', WipersLengthCreateView.as_view(), name='create_wipers_length'),
@@ -211,6 +210,12 @@ crud_wipers_length = [
     path('<int:pk>/delete/', WipersLengthDeleteView.as_view(), name='delete_wipers_length'),
 ]
 
+crud_year = [
+    path('', YearView.as_view(), name='year'),
+    path('new/', YearCreateView.as_view(), name='create_year'),
+    path('<int:pk>/edit/', YearUpdateView.as_view(), name='edit_year'),
+    path('<int:pk>/delete/', YearDeleteView.as_view(), name='delete_year'),
+]
 
 urlpatterns = [
     path('', IndexView.as_view(), name='index'),
@@ -240,6 +245,7 @@ urlpatterns = [
 
     path('wipers_length/', include(crud_wipers_length)),
 
+    path('year/', include(crud_year)),
 
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 ]

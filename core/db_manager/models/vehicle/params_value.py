@@ -21,6 +21,7 @@ class ParamsValue(models.Model):
         OIL_TYPE = 10
         OIL_VISCOSITY = 11
         WIPERS_LENGTH = 12
+        YEAR = 13
 
     type = models.IntegerField(choices=Type.choices)
     value = models.CharField(max_length=100)

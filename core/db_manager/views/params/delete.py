@@ -65,3 +65,7 @@ class OilViscosityDeleteView(BaseParamsValueDeleteView):
 
 class WipersLengthDeleteView(BaseParamsValueDeleteView):
     success_url = reverse_lazy('wipers_length')
+
+
+class YearDeleteView(BaseParamsValueDeleteView):
+    success_url = reverse_lazy('year')

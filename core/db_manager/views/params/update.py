@@ -88,3 +88,8 @@ class OilViscosityUpdateView(BaseParamsValueUpdateView):
 class WipersLengthUpdateView(BaseParamsValueUpdateView):
     _url = 'wipers_length'
     _name = 'длина дворников'
+
+
+class YearUpdateView(BaseParamsValueUpdateView):
+    _url = 'year'
+    _name = 'год'

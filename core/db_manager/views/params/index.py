@@ -127,3 +127,11 @@ class WipersLengthView(BaseParamsView):
     title = 'Длина дворников'
     type_param = 12
     type_view = '_wipers_length'
+
+
+class YearView(BaseParamsView):
+    """Отображение параметра: Год."""
+
+    title = 'Год'
+    type_param = 13
+    type_view = '_year'

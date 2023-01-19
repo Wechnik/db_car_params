@@ -146,10 +146,18 @@ class OilViscosityCreateView(BaseParamsValueCreateView):
 
 
 class WipersLengthCreateView(BaseParamsValueCreateView):
-
     _url = 'wipers_length'
     _name = 'длина дворников'
 
     def form_valid(self, form):
         form.instance.type = 12
+        return super().form_valid(form)
+
+
+class YearCreateView(BaseParamsValueCreateView):
+    _url = 'year'
+    _name = 'год'
+
+    def form_valid(self, form):
+        form.instance.type = 13
         return super().form_valid(form)

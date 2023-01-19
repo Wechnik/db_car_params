@@ -17,7 +17,7 @@
                 <td>{{ row.1 }}</td>
                 <td>{{ row.2 }}</td>
                 <td>
-                    <a href='{% url 'edit_configuration' row.3.id %}'>
+                    <a href="{% url 'edit_configuration' row.3.id %}">
                         <button type="button" class="btn btn-outline-success">
                             <i class="nav-icon fas fa-highlighter"></i>
                         </button>
@@ -29,7 +29,7 @@
                     </a>
                     <a href="{% url 'copy_generation' row.3.id %}">
                         <button type="button" class="btn btn-outline-secondary">
-                            <i class="nav-icon fas fa-files-o" aria-hidden="true"></i>
+                            Copy
                         </button>
                     </a>
                 </td>

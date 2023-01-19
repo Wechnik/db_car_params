@@ -54,6 +54,33 @@ def deepget(base_dict: Optional[dict], keys: Union[str, List[Any]], default: Any
     return result
 
 
+def deepdel(base_dict, keys):
+    """
+    Удалить ключ из словаря, с поддержкой неограниченного уровня вложенности
+    :param dict base_dict:
+    :param list[str]|str keys: имена ключей в виде массива или "описания пути" через "/"
+    """
+
+    _keys = keys.split('/') if isinstance(keys, str) else keys
+
+    # Найти искомый элемент
+    levels = [base_dict]
+    for i, key in enumerate(_keys[:-1]):
+        if key not in levels[i] or not isinstance(levels[i][key], dict):
+            return
+        levels.append(levels[i][key])
+
+    # Удалить искомый элемент
+    last_idx = len(levels) - 1
+    if _keys[last_idx] in levels[last_idx]:
+        del levels[last_idx][_keys[last_idx]]
+
+    # Удалить оставшиеся пустые объекты
+    for i in reversed(range(last_idx)):
+        if levels[i][_keys[i]] == {}:
+            del levels[i][_keys[i]]
+
+
 class CaseHelper:
     """Вспомогательный класс для работы с регистрами."""
 

@@ -28,7 +28,7 @@ class GenerationCreateView(BaseLoginRequiredMixin, CreateView):
     #     return super().form_valid(form)
 
     def form_valid(self, form):
-        form.instance._type = Vehicle.Type.MODEL.value
+        form.instance._type = Vehicle.Type.GENERATION.value
         return super().form_valid(form)
 
     def get_success_url(self):

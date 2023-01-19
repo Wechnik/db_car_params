@@ -5,9 +5,9 @@ from django.template import Template, Context
 from django.utils.safestring import SafeString
 
 from db_manager.forms.core import cleaned_data_to_json, WiperLength, Oil, RimOffset, \
-    RimCenterHoleDiameter, RimDiameter, RimDrilling, RimWidth, TireDiameter, TireHeight, TireWidth
+    RimCenterHoleDiameter, RimDiameter, RimDrilling, RimWidth, TireDiameter, TireHeight, TireWidth, get_choices
 from db_manager.forms.crud_forms import BaseVehicleForm
-from db_manager.models import Vehicle
+from db_manager.models import Vehicle, ParamsValue
 from db_manager.models.vehicle.attributes import Attributes
 
 
@@ -27,8 +27,9 @@ class ConfigurationForm(BaseVehicleForm,
         label='Модель',
     )
     generation = CharField(required=True, label='Поколение')
-    start_year = TypedChoiceField(label='Начало', choices=[(year, str(year)) for year in range(1950, 2024)], coerce=int)
-    end_year = TypedChoiceField(label='Конец', choices=[(year, str(year)) for year in range(1950, 2024)], coerce=int)
+    year_choices = get_choices(ParamsValue.Type.YEAR)
+    start_year = TypedChoiceField(label='Начало', choices=year_choices, coerce=int)
+    end_year = TypedChoiceField(label='Конец', choices=year_choices, coerce=int)
 
     parental_fields = ['brand', 'model', 'generation', 'start_year', 'end_year']
 

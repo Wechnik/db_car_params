@@ -15,6 +15,7 @@ class ConfigurationCreateView(BaseLoginRequiredMixin, CreateView):
         try:
             form_kwargs['initial_attributes'] = Vehicle.objects.filter(parent=self.kwargs['pk']).order_by('id')[0]\
                 .get_hierarchy_attributes
+            form_kwargs['parent'] = Vehicle.objects.get(id=self.kwargs['pk'])
         except IndexError:
             form_kwargs['initial_attributes'] = None
 

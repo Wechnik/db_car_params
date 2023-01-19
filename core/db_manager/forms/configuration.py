@@ -58,14 +58,17 @@ class ConfigurationForm(BaseVehicleForm,
 
     def __init__(self, *args, **kwargs):
         self.initial_attributes = kwargs.pop('initial_attributes') if 'initial_attributes' in kwargs else None
+        parent = kwargs.pop('parent') if 'parent' in kwargs else None
 
         BaseVehicleForm.__init__(self, *args, **kwargs)
 
-        self.fields['generation'].initial = self.instance.parent.name
-        self.fields['model'].initial = self.instance.parent.parent.id
-        self.fields['brand'].initial = self.instance.parent.parent.parent.id
-        self.fields['start_year'].initial = self.instance.parent.attributes.years_of_production.start
-        self.fields['end_year'].initial = self.instance.parent.attributes.years_of_production.end
+        parent = parent or self.instance.parent
+
+        self.fields['generation'].initial = parent.name
+        self.fields['model'].initial = parent.parent.id
+        self.fields['brand'].initial = parent.parent.parent.id
+        self.fields['start_year'].initial = parent.attributes.years_of_production.start
+        self.fields['end_year'].initial = parent.attributes.years_of_production.end
 
         for base_type in type(self).mro():
             if hasattr(base_type, 'fill_initial'):

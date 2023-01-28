@@ -1,39 +1,48 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <table id="table_id" class="display">
-        <thead>
-        <tr>
-            <th>Бренд</th>
-            <th>Модель</th>
-            <th>Поколение</th>
-            <th style="width: 20%">Операции</th>
-        </tr>
-        </thead>
+<table id="table_id" class="display">
+    <thead>
+    <tr>
+        <th>Бренд</th>
+        <th>Модель</th>
+        <th>Поколение</th>
+        <th style="width: 20%">Операции</th>
+    </tr>
+    </thead>
 
-        {% for row in data %}
-            <tr>
-                <td>{{ row.0 }}</td>
-                <td>{{ row.1 }}</td>
-                <td>{{ row.2 }}</td>
-                <td>
-                    <a href="{% url 'edit_configuration' row.3.id %}">
-                        <button type="button" class="btn btn-outline-success">
-                            <i class="nav-icon fas fa-highlighter"></i>
-                        </button>
-                    </a>
-                    <a href="{% url 'delete_generation'|add:type row.3.id %}">
+    {% for row in data %}
+    <tr>
+        <td>{{ row.0 }}</td>
+        <td>{{ row.1 }}</td>
+        <td>{{ row.2 }}</td>
+        <td>
+            <a href="{% url 'edit_configuration' row.3.id %}">
+                <button type="button" class="btn btn-outline-success">
+                    <i class="nav-icon fas fa-highlighter"></i>
+                </button>
+            </a>
+
+            <div class="dropleft btn-group">
+                <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    ...
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item btn-group" href="{% url 'delete_generation'|add:type row.3.id %}">
                         <button type="button" class="btn btn-outline-danger">
                             <i class="nav-icon fas fa-trash"></i>
                         </button>
                     </a>
-                    <a href="{% url 'copy_generation' row.3.id %}">
+                    <a class="dropdown-item btn-group" href="{% url 'copy_generation' row.3.id %}">
                         <button type="button" class="btn btn-outline-secondary">
                             Copy
                         </button>
                     </a>
-                </td>
-            </tr>
-        {% endfor %}
-    </table>
+                </div>
+            </div>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
 {% endblock %}

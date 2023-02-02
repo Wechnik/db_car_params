@@ -1,4 +1,4 @@
-from db_manager.forms.core import cleaned_data_to_json, YearsOfProduction
+from db_manager.forms.core import cleaned_data_to_json
 from db_manager.forms.crud_forms import BaseVehicleForm
 from db_manager.models import Vehicle
 from db_manager.models.vehicle.attributes import Attributes

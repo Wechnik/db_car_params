@@ -1,6 +1,6 @@
 from typing import Union
 
-from django.forms import TypedChoiceField, CharField
+from django.forms import TypedChoiceField, CharField, ModelChoiceField
 from django.template import Template, Context
 from django.utils.safestring import SafeString
 
@@ -28,8 +28,16 @@ class ConfigurationForm(BaseVehicleForm,
     )
     generation = CharField(required=True, label='Поколение')
     year_choices = get_choices(ParamsValue.Type.YEAR)
-    start_year = TypedChoiceField(label='Начало', choices=year_choices, coerce=int)
-    end_year = TypedChoiceField(label='Конец', choices=year_choices, coerce=int)
+    start_year = ModelChoiceField(
+        label='Начало',
+        queryset=ParamsValue.objects.filter(type=ParamsValue.Type.YEAR).order_by('value'),
+        to_field_name='id',
+    )
+    end_year = ModelChoiceField(
+        label='Конец',
+        queryset=ParamsValue.objects.filter(type=ParamsValue.Type.YEAR).order_by('value'),
+        to_field_name='id'
+    )
 
     parental_fields = ['brand', 'model', 'generation', 'start_year', 'end_year']
 
@@ -50,8 +58,10 @@ class ConfigurationForm(BaseVehicleForm,
 
         self.instance.parent.name = self.cleaned_data.get('generation')
         self.instance.parent.parent = Vehicle.objects.get(id=self.cleaned_data.get('model'))
-        self.instance.parent.attributes.years_of_production.start = self.cleaned_data.get('start_year')
-        self.instance.parent.attributes.years_of_production.end = self.cleaned_data.get('end_year')
+        start_year = self.cleaned_data.get('start_year')
+        self.instance.parent.attributes.years_of_production.start = start_year.id if start_year is not None else None
+        end_year = self.cleaned_data.get('end_year')
+        self.instance.parent.attributes.years_of_production.end = end_year.id if end_year is not None else None
         self.instance.parent.save()
 
         return super().save(commit=commit)

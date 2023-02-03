@@ -1,14 +1,28 @@
 from typing import Union
 
-from django.forms import TypedChoiceField, CharField, ModelChoiceField
+from django.forms import ModelChoiceField
+from django.forms.models import ModelChoiceIterator
 from django.template import Template, Context
 from django.utils.safestring import SafeString
 
 from db_manager.forms.core import cleaned_data_to_json, WiperLength, Oil, RimOffset, \
-    RimCenterHoleDiameter, RimDiameter, RimDrilling, RimWidth, TireDiameter, TireHeight, TireWidth, get_choices
+    RimCenterHoleDiameter, RimDiameter, RimDrilling, RimWidth, TireDiameter, TireHeight, TireWidth
 from db_manager.forms.crud_forms import BaseVehicleForm
 from db_manager.models import Vehicle, ParamsValue
 from db_manager.models.vehicle.attributes import Attributes
+
+
+class Iterator(ModelChoiceIterator):
+    def choice(self, obj):
+        return obj.id, obj.name
+
+
+class CustomField(ModelChoiceField):
+    iterator = Iterator
+
+
+def get_id_from_obj(obj):
+    return obj.id if obj is not None else None
 
 
 class ConfigurationForm(BaseVehicleForm,
@@ -16,18 +30,24 @@ class ConfigurationForm(BaseVehicleForm,
                         TireDiameter, TireWidth, TireHeight,
                         WiperLength,
                         Oil):
-    brand = TypedChoiceField(
-        choices=[(brand.id, brand.name) for brand in Vehicle.objects.filter(_type=Vehicle.Type.BRAND.value)],
-        coerce=int,
+    brand = CustomField(
         label='Брэнд',
+        queryset=Vehicle.objects.filter(_type=Vehicle.Type.BRAND.value),
+        to_field_name='id',
+        required=True
     )
-    model = TypedChoiceField(
-        choices=[(model.id, model.name) for model in Vehicle.objects.filter(_type=Vehicle.Type.MODEL.value)],
-        coerce=int,
+    model = CustomField(
         label='Модель',
+        queryset=Vehicle.objects.filter(_type=Vehicle.Type.MODEL.value),
+        to_field_name='id',
+        required=True
     )
-    generation = CharField(required=True, label='Поколение')
-    year_choices = get_choices(ParamsValue.Type.YEAR)
+    generation = CustomField(
+        label='Поколение',
+        queryset=Vehicle.objects.filter(_type=Vehicle.Type.GENERATION.value),
+        to_field_name='id',
+        required=True
+    )
     start_year = ModelChoiceField(
         label='Начало',
         queryset=ParamsValue.objects.filter(type=ParamsValue.Type.YEAR).order_by('value'),
@@ -56,12 +76,10 @@ class ConfigurationForm(BaseVehicleForm,
     def save(self, commit=True):
         self.instance.attributes = Attributes.from_json(cleaned_data_to_json(self.cleaned_data).get('attributes'))
 
-        self.instance.parent.name = self.cleaned_data.get('generation')
-        self.instance.parent.parent = Vehicle.objects.get(id=self.cleaned_data.get('model'))
-        start_year = self.cleaned_data.get('start_year')
-        self.instance.parent.attributes.years_of_production.start = start_year.id if start_year is not None else None
-        end_year = self.cleaned_data.get('end_year')
-        self.instance.parent.attributes.years_of_production.end = end_year.id if end_year is not None else None
+        self.instance.parent = self.cleaned_data.get('generation')
+        self.instance.parent.parent = self.cleaned_data.get('model')
+        self.instance.parent.attributes.years_of_production.start = get_id_from_obj(self.cleaned_data.get('start_year'))
+        self.instance.parent.attributes.years_of_production.end = get_id_from_obj(self.cleaned_data.get('end_year'))
         self.instance.parent.save()
 
         return super().save(commit=commit)
@@ -74,7 +92,7 @@ class ConfigurationForm(BaseVehicleForm,
 
         parent = parent or self.instance.parent
 
-        self.fields['generation'].initial = parent.name
+        self.fields['generation'].initial = parent.id
         self.fields['model'].initial = parent.parent.id
         self.fields['brand'].initial = parent.parent.parent.id
         self.fields['start_year'].initial = parent.attributes.years_of_production.start

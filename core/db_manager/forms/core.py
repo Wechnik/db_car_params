@@ -1,8 +1,8 @@
 from typing import Optional, Union, Any
 
 from django.db.models import QuerySet
-from django.forms import IntegerField, ModelForm as ModelFormBase, CharField, TypedChoiceField, ModelChoiceField
-from django.forms.models import ModelChoiceIterator, ModelChoiceIteratorValue
+from django.forms import IntegerField, ModelForm as ModelFormBase, ModelChoiceField
+from django.forms.models import ModelChoiceIterator
 
 from db_manager.helpers import deepset
 from db_manager.models import ParamsValue
@@ -15,10 +15,6 @@ def cleaned_data_to_json(cleaned_data: dict) -> dict:
         deepset(json, field, value)
 
     return json
-
-
-def get_choices(choice_type) -> list[tuple[Any, Any]]:
-    return [(None, '')] + [(choice.id, choice.value) for choice in ParamsValue.objects.filter(type=choice_type)]
 
 
 def make_class(class_name: str, path: list[str], annotations: dict[str, tuple[type, dict[str]]],
@@ -101,6 +97,9 @@ class Iterator(ModelChoiceIterator):
 
 class CustomField(ModelChoiceField):
     iterator = Iterator
+
+    def to_python(self, value):
+        return int(value) if value else None
 
 
 def get_model_choice_field(queryset: QuerySet, label: str = None) -> tuple[type, dict]:

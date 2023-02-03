@@ -5,7 +5,7 @@ __all__ = [
     'GenerationView',
 ]
 
-from db_manager.models import Vehicle
+from db_manager.models import Vehicle, ParamsValue
 from django.shortcuts import render
 from django.views.generic.base import View
 
@@ -34,6 +34,7 @@ class IndexView(BaseLoginRequiredMixin, View):
         data = Vehicle.objects.filter(_type=2)
         structure_data = []
         for item in data:
+            item.attributes.map_values({choice.id: choice.value for choice in ParamsValue.objects.all()})
             structure_data.append(item.get_structured_data())
 
         return render(

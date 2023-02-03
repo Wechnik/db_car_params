@@ -50,12 +50,14 @@ class YearsOfProduction(BaseAttribute):
     end: int
 
     def __str__(self):
-        if not self.start:
+        if not self.start and not self.end:
             return ''
-        if self.end:
-            return f'{self.start} - {self.end}'
-        else:
+        elif self.start:
             return f'С {self.start}'
+        elif self.end:
+            return f'До {self.end}'
+        else:
+            return f'{self.start} - {self.end}'
 
 
 @dataclass

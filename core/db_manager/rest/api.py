@@ -1,20 +1,22 @@
 from rest_framework import serializers
 
 from db_manager.models import Vehicle, ParamsValue
-from db_manager.models.vehicle.attributes import Restrictions
+from db_manager.models.vehicle.attributes import Attributes
 
 
 class VehicleSerializer(serializers.ModelSerializer):
     """Сериализатор данных для получения ограничений."""
-    attributes = serializers.ReadOnlyField(source='get_hierarchy_attributes_json')
+    attributes = serializers.SerializerMethodField(read_only=True)
     configurations = serializers.SerializerMethodField(read_only=True)
 
     @staticmethod
     def replace_ids_with_values(attributes: dict) -> dict:
-        restrictions = Restrictions.from_json(attributes['restrictions'])
-        restrictions.map_values({choice.id: choice.value for choice in ParamsValue.objects.all()})
-        attributes['restrictions'] = restrictions.to_json()
-        return attributes
+        valued_attributes = Attributes.from_json(attributes)
+        valued_attributes.map_values({choice.id: choice.value for choice in ParamsValue.objects.all()})
+        return valued_attributes.to_json()
+
+    def get_attributes(self, obj: Vehicle) -> dict:
+        return self.replace_ids_with_values(obj.get_hierarchy_attributes_json)
 
     # attributes = serializers.SerializerMethodField(read_only=True)
     #
@@ -22,7 +24,6 @@ class VehicleSerializer(serializers.ModelSerializer):
     #     return obj.get_hierarchy_attributes().to_json()
 
     def get_configurations(self, obj: Vehicle) -> list[dict]:
-        """"""
         configurations = Vehicle.objects.filter(parent=obj)
         configurations_attrs = []
         for config in configurations:

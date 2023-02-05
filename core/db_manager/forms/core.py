@@ -1,4 +1,4 @@
-from typing import Optional, Union, Any
+from typing import Optional, Union
 
 from django.db.models import QuerySet
 from django.forms import IntegerField, ModelForm as ModelFormBase, ModelChoiceField
@@ -143,9 +143,9 @@ RimOffset = make_class(
     {
         # 'min': get_model_choice_field(rim_offset_queryset, 'Минимальный'),
         # 'max': get_model_choice_field(rim_offset_queryset, 'Максимальный'),
-        'rec': get_model_choice_field(rim_offset_queryset, 'Рекомендуемый'),
+        'rec': get_model_choice_field(rim_offset_queryset, 'Вынос'),
     },
-    ['Диски', 'Вынос'],
+    ['Диски'],
 )
 
 rim_center_hole_diameter_queryset = get_model_choice_field_queryset(ParamsValue.Type.WHEEL_CH_DIAMETER)
@@ -153,9 +153,9 @@ RimCenterHoleDiameter = make_class(
     'RimCenterHoleDiameter',
     ['attributes', 'restrictions', 'rim', 'center_hole_diameter'],
     {
-        'rec': get_model_choice_field(rim_center_hole_diameter_queryset, 'Рекомендуемый'),
+        'rec': get_model_choice_field(rim_center_hole_diameter_queryset, 'Диаметр ЦО'),
     },
-    ['Диски', 'Диаметр ЦО'],
+    ['Диски'],
 )
 
 rim_diameter_queryset = get_model_choice_field_queryset(ParamsValue.Type.WHEEL_DIAMETER)
@@ -165,9 +165,9 @@ RimDiameter = make_class(
     {
         # 'min': get_model_choice_field(rim_diameter_queryset, 'Минимальный'),
         # 'max': get_model_choice_field(rim_diameter_queryset, 'Максимальный'),
-        'rec': get_model_choice_field(rim_diameter_queryset, 'Рекомендуемый')
+        'rec': get_model_choice_field(rim_diameter_queryset, 'Диаметр')
     },
-    ['Диски', 'Диаметр'],
+    'Диски',
 )
 
 rim_drilling_queryset = get_model_choice_field_queryset(ParamsValue.Type.WHEEL_DRILLING)
@@ -175,9 +175,9 @@ RimDrilling = make_class(
     'RimDrilling',
     ['attributes', 'restrictions', 'rim', 'drilling'],
     {
-        'rec': get_model_choice_field(rim_drilling_queryset, 'Рекомендуемая')
+        'rec': get_model_choice_field(rim_drilling_queryset, 'Сверловка')
     },
-    ['Диски', 'Сверловка'],
+    'Диски',
 )
 
 rim_width_queryset = get_model_choice_field_queryset(ParamsValue.Type.WHEEL_WIDTH, 'FLOAT')
@@ -187,9 +187,9 @@ RimWidth = make_class(
     {
         # 'min': get_model_choice_field(rim_width_queryset, 'Минимальная'),
         # 'max': get_model_choice_field(rim_width_queryset, 'Максимальная'),
-        'rec': get_model_choice_field(rim_width_queryset, 'Рекомендуемая')
+        'rec': get_model_choice_field(rim_width_queryset, 'Ширина')
     },
-    ['Диски', 'Ширина'],
+    'Диски',
 )
 
 tire_diameter_queryset = get_model_choice_field_queryset(ParamsValue.Type.TIRE_DIAMETER, 'FLOAT')
@@ -199,9 +199,9 @@ TireDiameter = make_class(
     {
         # 'min': get_model_choice_field(tire_diameter_queryset, 'Минимальный'),
         # 'max': get_model_choice_field(tire_diameter_queryset, 'Максимальный'),
-        'rec': get_model_choice_field(tire_diameter_queryset, 'Рекомендуемый')
+        'rec': get_model_choice_field(tire_diameter_queryset, 'Диаметр')
     },
-    ['Шины', 'Диаметр'],
+    'Шины',
 )
 
 tire_height_queryset = get_model_choice_field_queryset(ParamsValue.Type.TIRE_INCH_HEIGHT, 'FLOAT')
@@ -211,9 +211,9 @@ TireHeight = make_class(
     {
         # 'min': get_model_choice_field(tire_height_queryset, 'Минимальная'),
         # 'max': get_model_choice_field(tire_height_queryset, 'Максимальная'),
-        'rec': get_model_choice_field(tire_height_queryset, 'Рекомендуемая')
+        'rec': get_model_choice_field(tire_height_queryset, 'Высота профиля, %')
     },
-    ['Шины', 'Высота профиля, %'],
+    'Шины',
 )
 
 tire_width_queryset = get_model_choice_field_queryset(ParamsValue.Type.TIRE_METRIC_WIDTH, 'FLOAT')
@@ -223,7 +223,7 @@ TireWidth = make_class(
     {
         # 'min': get_model_choice_field(tire_width_queryset, 'Минимальная'),
         # 'max': get_model_choice_field(tire_width_queryset, 'Максимальная'),
-        'rec': get_model_choice_field(tire_width_queryset, 'Рекомендуемая')
+        'rec': get_model_choice_field(tire_width_queryset, 'Ширина')
     },
-    ['Шины', 'Ширина'],
+    'Шины',
 )

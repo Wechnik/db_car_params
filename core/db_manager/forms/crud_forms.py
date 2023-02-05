@@ -11,11 +11,11 @@ class BaseVehicleForm(ModelFormBase):
         for visible in self.visible_fields():
             visible.field.widget.attrs['class'] = 'form-control'
 
-    def add_field_group(self, path, fields):
+    def add_field_group(self, path, fields) -> None:
         deepset(
             self.field_groups,
             path,
-            deepget(self.field_groups, path, [] + fields)
+            list(set(deepget(self.field_groups, path, []) + fields))
         )
 
     class Meta:

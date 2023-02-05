@@ -130,7 +130,7 @@ class ConfigurationForm(BaseVehicleForm,
         """
         columns = []
         for field in self.parental_fields:
-            columns.append('<div class="col-2">')
+            columns.append('<div class="col-lg-2 col-xs-12">')
 
             if self[field].label:
                 columns.append(str(self[field].label_tag()))
@@ -143,10 +143,10 @@ class ConfigurationForm(BaseVehicleForm,
 
         return [
             Template(f'<h3>Сведения</h3>').render(Context({})),
-            Template(f'<div class="row">{"".join(columns)}</div>').render(Context({}))
+            Template(f'<div class="row" style="margin-bottom: 20px;">{"".join(columns)}</div>').render(Context({})),
         ]
 
-    def form_content(self, form_content=None, level=2) -> list[Union[SafeString, str]]:
+    def form_content(self, form_content=None, level=4) -> list[Union[SafeString, str]]:
         """
         Получить содержание формы.
         :param form_content: Из чего извлекать содержание формы.
@@ -167,6 +167,7 @@ class ConfigurationForm(BaseVehicleForm,
 
         form_content = []
         for legend, content in target.items():
+            print(legend, content)
             if legend:
                 tag = levels[level]
                 form_content.append(Template(f'<{tag}>{legend}</{tag}>').render(Context({})))
@@ -174,7 +175,7 @@ class ConfigurationForm(BaseVehicleForm,
             if isinstance(content, list):
                 tags = []
                 for field in content:
-                    tags.append('<div class="col-4">')
+                    tags.append('<div class="col-lg-4 col-xs-12">')
 
                     if self[field].label:
                         tags.append(str(self[field].label_tag()))

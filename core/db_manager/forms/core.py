@@ -115,8 +115,8 @@ WiperLength = make_class(
     'WiperLength',
     ['attributes', 'restrictions', 'wiper', 'length'],
     {
-        'min': get_model_choice_field(wiper_length_common_queryset, 'Минимальная'),
-        'max': get_model_choice_field(wiper_length_common_queryset, 'Максимальная'),
+        # 'min': get_model_choice_field(wiper_length_common_queryset, 'Минимальная'),
+        # 'max': get_model_choice_field(wiper_length_common_queryset, 'Максимальная'),
         'rec': get_model_choice_field(wiper_length_common_queryset, 'Рекомендуемая')
     },
     ['Дворник', 'Длина, мм'],
@@ -138,8 +138,8 @@ RimOffset = make_class(
     'RimOffset',
     ['attributes', 'restrictions', 'rim', 'offset'],
     {
-        'min': get_model_choice_field(rim_offset_queryset, 'Минимальный'),
-        'max': get_model_choice_field(rim_offset_queryset, 'Максимальный'),
+        # 'min': get_model_choice_field(rim_offset_queryset, 'Минимальный'),
+        # 'max': get_model_choice_field(rim_offset_queryset, 'Максимальный'),
         'rec': get_model_choice_field(rim_offset_queryset, 'Рекомендуемый'),
     },
     ['Диски', 'Вынос'],
@@ -160,8 +160,8 @@ RimDiameter = make_class(
     'RimDiameter',
     ['attributes', 'restrictions', 'rim', 'diameter'],
     {
-        'min': get_model_choice_field(rim_diameter_queryset, 'Минимальный'),
-        'max': get_model_choice_field(rim_diameter_queryset, 'Максимальный'),
+        # 'min': get_model_choice_field(rim_diameter_queryset, 'Минимальный'),
+        # 'max': get_model_choice_field(rim_diameter_queryset, 'Максимальный'),
         'rec': get_model_choice_field(rim_diameter_queryset, 'Рекомендуемый')
     },
     ['Диски', 'Диаметр'],
@@ -182,8 +182,8 @@ RimWidth = make_class(
     'RimWidth',
     ['attributes', 'restrictions', 'rim', 'width'],
     {
-        'min': get_model_choice_field(rim_width_queryset, 'Минимальная'),
-        'max': get_model_choice_field(rim_width_queryset, 'Максимальная'),
+        # 'min': get_model_choice_field(rim_width_queryset, 'Минимальная'),
+        # 'max': get_model_choice_field(rim_width_queryset, 'Максимальная'),
         'rec': get_model_choice_field(rim_width_queryset, 'Рекомендуемая')
     },
     ['Диски', 'Ширина'],
@@ -194,8 +194,8 @@ TireDiameter = make_class(
     'TireDiameter',
     ['attributes', 'restrictions', 'tire', 'diameter'],
     {
-        'min': get_model_choice_field(tire_diameter_queryset, 'Минимальный'),
-        'max': get_model_choice_field(tire_diameter_queryset, 'Максимальный'),
+        # 'min': get_model_choice_field(tire_diameter_queryset, 'Минимальный'),
+        # 'max': get_model_choice_field(tire_diameter_queryset, 'Максимальный'),
         'rec': get_model_choice_field(tire_diameter_queryset, 'Рекомендуемый')
     },
     ['Шины', 'Диаметр'],
@@ -206,8 +206,8 @@ TireHeight = make_class(
     'TireHeight',
     ['attributes', 'restrictions', 'tire', 'height'],
     {
-        'min': get_model_choice_field(tire_height_queryset, 'Минимальная'),
-        'max': get_model_choice_field(tire_height_queryset, 'Максимальная'),
+        # 'min': get_model_choice_field(tire_height_queryset, 'Минимальная'),
+        # 'max': get_model_choice_field(tire_height_queryset, 'Максимальная'),
         'rec': get_model_choice_field(tire_height_queryset, 'Рекомендуемая')
     },
     ['Шины', 'Высота профиля, %'],
@@ -218,8 +218,8 @@ TireWidth = make_class(
     'TireWidth',
     ['attributes', 'restrictions', 'tire', 'width'],
     {
-        'min': get_model_choice_field(tire_width_queryset, 'Минимальная'),
-        'max': get_model_choice_field(tire_width_queryset, 'Максимальная'),
+        # 'min': get_model_choice_field(tire_width_queryset, 'Минимальная'),
+        # 'max': get_model_choice_field(tire_width_queryset, 'Максимальная'),
         'rec': get_model_choice_field(tire_width_queryset, 'Рекомендуемая')
     },
     ['Шины', 'Ширина'],

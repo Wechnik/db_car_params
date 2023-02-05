@@ -8,29 +8,29 @@
             {% for content in form.parental_form_content %}
                 {{ content }}
             {% endfor %}
-            <ul class="nav nav-tabs">
+            <ul class="nav nav-tabs" style="margin-bottom: 20px;">
                 {% for config in config_list %}
                     <li class="nav-item">
                         <a
-                                style="color: white"
-                                href="{% url 'edit_configuration' config.id %}"
+                            style="color: white"
+                            href="{% url 'edit_configuration' config.id %}"
 
-                                {% if config.selected == True %}
-                                class="nav-link active"
-                                {% else %}
-                                class="nav-link"
-                                {% endif %}
+                            {% if config.selected == True %}
+                            class="nav-link active"
+                            {% else %}
+                            class="nav-link"
+                            {% endif %}
                         >{{ config.name }}</a>
                     </li>
                 {% endfor %}
-                <li class="nav-item" style="margin-left: 10px;">
+                <li class="nav-item">
                     <a
-                            style="color: white" href="{% url 'add_configuration' generation.id %}"
-                            {% if select_plus %}
-                                class="nav-link active"
-                            {% else %}
-                                class="nav-link"
-                            {% endif %}
+                        style="color: white" href="{% url 'add_configuration' generation.id %}"
+                        {% if select_plus %}
+                            class="nav-link active"
+                        {% else %}
+                            class="nav-link"
+                        {% endif %}
                     >
                         {% if select_plus %}
                             Новая комплектация (не сохранено)

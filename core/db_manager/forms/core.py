@@ -115,20 +115,23 @@ WiperLength = make_class(
     'WiperLength',
     ['attributes', 'restrictions', 'wiper', 'length'],
     {
-        # 'min': get_model_choice_field(wiper_length_common_queryset, 'Минимальная'),
-        # 'max': get_model_choice_field(wiper_length_common_queryset, 'Максимальная'),
         'rec': get_model_choice_field(wiper_length_common_queryset, 'Рекомендуемая')
     },
     ['Дворник', 'Длина, мм'],
 )
 
-oil_queryset = get_model_choice_field_queryset(ParamsValue.Type.OIL_TYPE)
 Oil = make_class(
     'Oil',
     ['attributes', 'restrictions', 'oil'],
     {
-        'type': get_model_choice_field(oil_queryset, 'Рекомендуемый тип'),
-        'viscosity': get_model_choice_field(oil_queryset, 'Рекомендуемая вязкость'),
+        'type': get_model_choice_field(
+            get_model_choice_field_queryset(ParamsValue.Type.OIL_TYPE),
+            'Рекомендуемый тип'
+        ),
+        'viscosity': get_model_choice_field(
+            get_model_choice_field_queryset(ParamsValue.Type.OIL_VISCOSITY),
+            'Рекомендуемая вязкость'
+        ),
     },
     'Масло'
 )

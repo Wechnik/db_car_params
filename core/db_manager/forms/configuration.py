@@ -167,7 +167,6 @@ class ConfigurationForm(BaseVehicleForm,
 
         form_content = []
         for legend, content in target.items():
-            print(legend, content)
             if legend:
                 tag = levels[level]
                 form_content.append(Template(f'<{tag}>{legend}</{tag}>').render(Context({})))

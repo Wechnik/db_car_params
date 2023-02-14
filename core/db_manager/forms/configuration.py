@@ -169,12 +169,15 @@ class ConfigurationForm(BaseVehicleForm,
         for legend, content in target.items():
             if legend:
                 tag = levels[level]
-                form_content.append(Template(f'<{tag}>{legend}</{tag}>').render(Context({})))
+                form_content.append(
+                    Template(f'<{tag} style="margin-top: {25 if level == 4 else 10}px">{legend}</{tag}>')
+                    .render(Context({}))
+                )
 
             if isinstance(content, list):
                 tags = []
                 for field in content:
-                    tags.append('<div class="col-lg-4 col-xs-12">')
+                    tags.append('<div class="col-lg-2 col-xs-12">')
 
                     if self[field].label:
                         tags.append(str(self[field].label_tag()))

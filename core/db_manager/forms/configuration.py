@@ -23,7 +23,7 @@ class CustomField(ModelChoiceField):
 
 class CustomSelect(Select):
     def create_option(self, name, value, label, selected, index, subindex=None, attrs=None):
-        option = super().create_option(name, value, label, selected, index, subindex, attrs)
+        option = super().create_option(name, value, value.instance.name if value else value, selected, index, subindex, attrs)
         if value:
             option['attrs']['data-parent'] = value.instance.parent.id
         return option

@@ -270,3 +270,31 @@ $('.menu_button').click(function () {
     $(this).toggleClass('active');
     $('.menu_button').not(this).removeClass('active');
 })
+
+function toggleShow(option, show) {
+    $(option).toggle(show);
+    if (show) {
+        if ($(option).parent('span.toggleOption').length)
+            $(option).unwrap();
+    } else {
+        if ($(option).parent('span.toggleOption').length == 0)
+            $(option).wrap('<span class="toggleOption" style="display: none;" />');
+    }
+}
+
+function onSelectChange(obj) {
+    const select = $(`select[name="${obj.getAttribute('data-child')}"]`)[0]
+    select.disabled = !Boolean(obj.value);
+
+    Array.from(select.querySelectorAll('option')).forEach((option) => {
+        if (!Boolean(option.value))
+            option.selected = 'selected';
+        toggleShow(
+            option,
+            Boolean(option.getAttribute('data-parent') == obj.value | !Boolean(option.value))
+        );
+    });
+
+    if (select.getAttribute('data-child'))
+        select.onchange();
+}

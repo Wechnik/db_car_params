@@ -1,6 +1,6 @@
 from typing import Union
 
-from django.forms import ModelChoiceField
+from django.forms import ModelChoiceField, Select
 from django.forms.models import ModelChoiceIterator
 from django.template import Template, Context
 from django.utils.safestring import SafeString
@@ -21,6 +21,14 @@ class CustomField(ModelChoiceField):
     iterator = Iterator
 
 
+class CustomSelect(Select):
+    def create_option(self, name, value, label, selected, index, subindex=None, attrs=None):
+        option = super().create_option(name, value, label, selected, index, subindex, attrs)
+        if value:
+            option['attrs']['data-parent'] = value.instance.parent.id
+        return option
+
+
 def get_id_from_obj(obj):
     return obj.id if obj is not None else None
 
@@ -34,19 +42,22 @@ class ConfigurationForm(BaseVehicleForm,
         label='Брэнд',
         queryset=Vehicle.objects.filter(_type=Vehicle.Type.BRAND.value),
         to_field_name='id',
-        required=True
+        required=True,
+        widget=Select(attrs={'onChange': 'onSelectChange(this);', 'data-child': 'model'}),
     )
-    model = CustomField(
+    model = ModelChoiceField(
         label='Модель',
         queryset=Vehicle.objects.filter(_type=Vehicle.Type.MODEL.value),
         to_field_name='id',
-        required=True
+        required=True,
+        widget=CustomSelect(attrs={'onChange': 'onSelectChange(this);', 'data-child': 'generation'})
     )
-    generation = CustomField(
+    generation = ModelChoiceField(
         label='Поколение',
         queryset=Vehicle.objects.filter(_type=Vehicle.Type.GENERATION.value),
         to_field_name='id',
-        required=True
+        required=True,
+        widget=CustomSelect(),
     )
     start_year = ModelChoiceField(
         label='Начало',
@@ -69,7 +80,7 @@ class ConfigurationForm(BaseVehicleForm,
             'description': 'Описание',
         }
 
-    required = ('name',)
+    required = ('name', 'brand', 'model', 'generation')
 
     template_name_div = 'configuration/div.html'
 

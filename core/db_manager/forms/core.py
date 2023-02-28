@@ -80,11 +80,9 @@ def make_class(class_name: str, path: list[str], annotations: dict[str, tuple[ty
     })
 
 
-def get_model_choice_field_queryset(type_: int, cast_type: str = None) -> QuerySet:
+def get_model_choice_field_queryset(type_: int, sorter: callable = None) -> QuerySet:
     queryset = ParamsValue.objects.filter(type=type_)
-    if cast_type:
-        return queryset.extra(select={'casted_value': f'CAST(value AS {cast_type})'}).order_by('casted_value')
-    return queryset.order_by('value')
+    return sorter(queryset) if sorter else queryset.order_by('value')
 
 
 class Iterator(ModelChoiceIterator):
@@ -110,7 +108,32 @@ def get_model_choice_field(queryset: QuerySet, label: str = None) -> tuple[type,
     })
 
 
-wiper_length_common_queryset = get_model_choice_field_queryset(ParamsValue.Type.WIPERS_LENGTH, 'FLOAT')
+class Sorter:
+
+    @staticmethod
+    def sort_diameter(query_set: QuerySet) -> QuerySet:
+        """"""
+        return (query_set
+                .extra(select={'float_value': 'regexp_replace(value, \'[^-0-9.]\', \'\', \'g\')::FLOAT'})
+                .order_by('float_value'))
+
+    @staticmethod
+    def sort_drilling(query_set: QuerySet) -> QuerySet:
+        """"""
+        return (query_set
+                .extra(select={'float_value': 'regexp_split_to_array(value, \'[^-0-9.]\')::FLOAT[]'})
+                .order_by('float_value'))
+
+    @staticmethod
+    def sort_number(query_set: QuerySet) -> QuerySet:
+        """"""
+        try:
+            return query_set.extra(select={'float_value': 'value::FLOAT'}).order_by('float_value')
+        except Exception:
+            return query_set.order_by('value')
+
+
+wiper_length_common_queryset = get_model_choice_field_queryset(ParamsValue.Type.WIPERS_LENGTH, Sorter.sort_number)
 WiperLength = make_class(
     'WiperLength',
     ['attributes', 'restrictions', 'wiper', 'length'],
@@ -136,7 +159,7 @@ Oil = make_class(
     'Масло'
 )
 
-rim_offset_queryset = get_model_choice_field_queryset(ParamsValue.Type.WHEEL_DEPARTURE, 'FLOAT')
+rim_offset_queryset = get_model_choice_field_queryset(ParamsValue.Type.WHEEL_DEPARTURE, Sorter.sort_number)
 RimOffset = make_class(
     'RimOffset',
     ['attributes', 'restrictions', 'rim', 'offset'],
@@ -146,7 +169,8 @@ RimOffset = make_class(
     ['Диски'],
 )
 
-rim_center_hole_diameter_queryset = get_model_choice_field_queryset(ParamsValue.Type.WHEEL_CH_DIAMETER)
+rim_center_hole_diameter_queryset = get_model_choice_field_queryset(ParamsValue.Type.WHEEL_CH_DIAMETER,
+                                                                    Sorter.sort_number)
 RimCenterHoleDiameter = make_class(
     'RimCenterHoleDiameter',
     ['attributes', 'restrictions', 'rim', 'center_hole_diameter'],
@@ -156,7 +180,7 @@ RimCenterHoleDiameter = make_class(
     ['Диски'],
 )
 
-rim_diameter_queryset = get_model_choice_field_queryset(ParamsValue.Type.WHEEL_DIAMETER)
+rim_diameter_queryset = get_model_choice_field_queryset(ParamsValue.Type.WHEEL_DIAMETER, Sorter.sort_diameter)
 RimDiameter = make_class(
     'RimDiameter',
     ['attributes', 'restrictions', 'rim', 'diameter'],
@@ -166,7 +190,7 @@ RimDiameter = make_class(
     'Диски',
 )
 
-rim_drilling_queryset = get_model_choice_field_queryset(ParamsValue.Type.WHEEL_DRILLING)
+rim_drilling_queryset = get_model_choice_field_queryset(ParamsValue.Type.WHEEL_DRILLING, Sorter.sort_drilling)
 RimDrilling = make_class(
     'RimDrilling',
     ['attributes', 'restrictions', 'rim', 'drilling'],
@@ -176,7 +200,7 @@ RimDrilling = make_class(
     'Диски',
 )
 
-rim_width_queryset = get_model_choice_field_queryset(ParamsValue.Type.WHEEL_WIDTH, 'FLOAT')
+rim_width_queryset = get_model_choice_field_queryset(ParamsValue.Type.WHEEL_WIDTH, Sorter.sort_number)
 RimWidth = make_class(
     'RimWidth',
     ['attributes', 'restrictions', 'rim', 'width'],
@@ -186,7 +210,7 @@ RimWidth = make_class(
     'Диски',
 )
 
-tire_diameter_queryset = get_model_choice_field_queryset(ParamsValue.Type.TIRE_DIAMETER, 'FLOAT')
+tire_diameter_queryset = get_model_choice_field_queryset(ParamsValue.Type.TIRE_DIAMETER, Sorter.sort_number)
 TireDiameter = make_class(
     'TireDiameter',
     ['attributes', 'restrictions', 'tire', 'diameter'],
@@ -196,7 +220,7 @@ TireDiameter = make_class(
     'Шины',
 )
 
-tire_height_queryset = get_model_choice_field_queryset(ParamsValue.Type.TIRE_INCH_HEIGHT, 'FLOAT')
+tire_height_queryset = get_model_choice_field_queryset(ParamsValue.Type.TIRE_INCH_HEIGHT, Sorter.sort_number)
 TireHeight = make_class(
     'TireHeight',
     ['attributes', 'restrictions', 'tire', 'height'],
@@ -206,7 +230,7 @@ TireHeight = make_class(
     'Шины',
 )
 
-tire_width_queryset = get_model_choice_field_queryset(ParamsValue.Type.TIRE_METRIC_WIDTH, 'FLOAT')
+tire_width_queryset = get_model_choice_field_queryset(ParamsValue.Type.TIRE_METRIC_WIDTH, Sorter.sort_number)
 TireWidth = make_class(
     'TireWidth',
     ['attributes', 'restrictions', 'tire', 'width'],

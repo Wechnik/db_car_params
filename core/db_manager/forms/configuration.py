@@ -43,7 +43,7 @@ class ConfigurationForm(BaseVehicleForm,
         queryset=Vehicle.objects.filter(_type=Vehicle.Type.BRAND.value),
         to_field_name='id',
         required=True,
-        widget=Select(attrs={'onChange': 'onSelectChange(this);', 'data-child': 'model'}),
+        widget=Select(attrs={'onChange': 'initByChain(this, true);', 'data-child': 'model'}),
     )
     model = ModelChoiceField(
         label='Модель',

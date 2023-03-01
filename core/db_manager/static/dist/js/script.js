@@ -298,3 +298,35 @@ function onSelectChange(obj) {
     if (select.getAttribute('data-child'))
         select.onchange();
 }
+
+function toggleShow(option, show) {
+    $(option).toggle(show);
+    if (show) {
+        if ($(option).parent('span.toggleOption').length)
+            $(option).unwrap();
+    } else {
+        if ($(option).parent('span.toggleOption').length == 0)
+            $(option).wrap('<span class="toggleOption" style="display: none;" />');
+    }
+}
+
+function initByChain(obj, chooseEmtpy) {
+    const childSelect = $(`select[name="${obj.getAttribute('data-child')}"]`)[0]
+    childSelect.disabled = !Boolean(obj.value);
+
+    Array.from(childSelect.querySelectorAll('option')).forEach((option) => {
+        if (!Boolean(option.value) & chooseEmtpy)
+            option.selected = 'selected';
+        toggleShow(
+            option,
+            Boolean(option.getAttribute('data-parent') == obj.value | !Boolean(option.value))
+        );
+    });
+
+    if (childSelect.getAttribute('data-child'))
+        initByChain(childSelect, chooseEmtpy);
+}
+
+$(document).ready(function () {
+    initByChain(($('select[name="brand"]')[0]), false);
+})

@@ -6,7 +6,6 @@ from db_manager.models import Vehicle
 
 class BaseVehicleForm(ModelFormBase):
     def __init__(self, *args, **kwargs):
-        self.field_groups = {}
         ModelFormBase.__init__(self, *args, **kwargs)
         for visible in self.visible_fields():
             visible.field.widget.attrs['class'] = 'form-control'

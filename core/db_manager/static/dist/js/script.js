@@ -329,4 +329,6 @@ function initByChain(obj, chooseEmtpy) {
 
 $(document).ready(function () {
     initByChain(($('select[name="brand"]')[0]), false);
+    initByChain(($('select[name="attributes__restrictions__rim__drilling__rec"]')[0]), false);
+    initByChain(($('select[name="attributes__restrictions__tire__diameter__rec"]')[0]), false);
 })

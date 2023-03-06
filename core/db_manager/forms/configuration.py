@@ -5,9 +5,9 @@ from django.forms.models import ModelChoiceIterator
 from django.template import Template, Context
 from django.utils.safestring import SafeString
 
-from db_manager.forms.core import cleaned_data_to_json, WiperLength, Oil, RimOffset, \
-    RimCenterHoleDiameter, RimDiameter, RimDrilling, RimWidth, TireDiameter, TireHeight, TireWidth
+from db_manager.forms.core import cleaned_data_to_json, get_model_choice_field, get_model_choice_field_queryset, Sorter
 from db_manager.forms.crud_forms import BaseVehicleForm
+from db_manager.helpers import deepget
 from db_manager.models import Vehicle, ParamsValue
 from db_manager.models.vehicle.attributes import Attributes
 
@@ -23,9 +23,20 @@ class CustomField(ModelChoiceField):
 
 class CustomSelect(Select):
     def create_option(self, name, value, label, selected, index, subindex=None, attrs=None):
-        option = super().create_option(name, value, value.instance.name if value else value, selected, index, subindex, attrs)
+        option = super().create_option(name, value, value.instance.name if value else value, selected, index, subindex,
+                                       attrs)
         if value:
             option['attrs']['data-parent'] = value.instance.parent.id
+        return option
+
+
+class CustomParamSelect(Select):
+    def create_option(self, name, value, label, selected, index, subindex=None, attrs=None):
+        option = super().create_option(name, value, value.instance.value if value else value, selected, index, subindex,
+                                       attrs)
+        if value and value.instance.parent:
+            option['attrs']['data-parent'] = value.instance.parent.id
+
         return option
 
 
@@ -33,11 +44,8 @@ def get_id_from_obj(obj):
     return obj.id if obj is not None else None
 
 
-class ConfigurationForm(BaseVehicleForm,
-                        RimDiameter, RimDrilling, RimWidth, RimCenterHoleDiameter, RimOffset,
-                        TireDiameter, TireWidth, TireHeight,
-                        WiperLength,
-                        Oil):
+
+class ConfigurationForm(BaseVehicleForm):
     brand = CustomField(
         label='Брэнд',
         queryset=Vehicle.objects.filter(_type=Vehicle.Type.BRAND.value),
@@ -59,6 +67,7 @@ class ConfigurationForm(BaseVehicleForm,
         required=True,
         widget=CustomSelect(),
     )
+
     start_year = ModelChoiceField(
         label='Начало',
         queryset=ParamsValue.objects.filter(type=ParamsValue.Type.YEAR).order_by('value'),
@@ -71,6 +80,88 @@ class ConfigurationForm(BaseVehicleForm,
     )
 
     parental_fields = ['brand', 'model', 'generation', 'start_year', 'end_year']
+
+    # Диски
+
+    attributes__restrictions__rim__drilling__rec = ModelChoiceField(
+        label='Сверловка',
+        queryset=get_model_choice_field_queryset(ParamsValue.Type.WHEEL_DRILLING, Sorter.sort_drilling),
+        to_field_name='id',
+        widget=CustomParamSelect(attrs={
+            'onChange': 'onSelectChange(this);',
+            'data-child': 'attributes__restrictions__rim__diameter__rec'
+        })
+    )
+
+    attributes__restrictions__rim__diameter__rec = ModelChoiceField(
+        label='Диаметр',
+        queryset=get_model_choice_field_queryset(ParamsValue.Type.WHEEL_DIAMETER, Sorter.sort_diameter),
+        to_field_name='id',
+        widget=CustomParamSelect(attrs={
+            'onChange': 'onSelectChange(this);',
+            'data-child': 'attributes__restrictions__rim__width__rec'
+        })
+    )
+
+    attributes__restrictions__rim__width__rec = ModelChoiceField(
+        label='Ширина',
+        queryset=get_model_choice_field_queryset(ParamsValue.Type.WHEEL_WIDTH, Sorter.sort_number),
+        to_field_name='id',
+        widget=CustomParamSelect(attrs={'onChange': 'onSelectChange(this);'})
+    )
+
+    attributes__restrictions__rim__offset__rec = get_model_choice_field(
+        get_model_choice_field_queryset(ParamsValue.Type.WHEEL_DEPARTURE, Sorter.sort_number),
+        'Вынос'
+    )
+
+    attributes__restrictions__rim__center_hole_diameter__rec = get_model_choice_field(
+        get_model_choice_field_queryset(ParamsValue.Type.WHEEL_CH_DIAMETER, Sorter.sort_number),
+        'Диаметр ЦО'
+    )
+
+    # Шины
+
+    attributes__restrictions__tire__diameter__rec = ModelChoiceField(
+        label='Диаметр',
+        queryset=get_model_choice_field_queryset(ParamsValue.Type.TIRE_DIAMETER, Sorter.sort_number),
+        to_field_name='id',
+        widget=CustomParamSelect(attrs={
+            'onChange': 'onSelectChange(this);',
+            'data-child': 'attributes__restrictions__tire__width__rec'
+        })
+    )
+
+    attributes__restrictions__tire__width__rec = ModelChoiceField(
+        label='Ширина',
+        queryset=get_model_choice_field_queryset(ParamsValue.Type.TIRE_METRIC_WIDTH, Sorter.sort_number),
+        to_field_name='id',
+        widget=CustomParamSelect(attrs={'onChange': 'onSelectChange(this);'})
+    )
+
+    attributes__restrictions__tire__height__rec = get_model_choice_field(
+        get_model_choice_field_queryset(ParamsValue.Type.TIRE_INCH_HEIGHT, Sorter.sort_number),
+        'Высота профиля, %'
+    )
+
+    # Дворник
+
+    attributes__restrictions__wiper__length__rec = get_model_choice_field(
+        get_model_choice_field_queryset(ParamsValue.Type.WIPERS_LENGTH, Sorter.sort_number),
+        'Длина, мм'
+    )
+
+    # Масло
+
+    attributes__restrictions__oil__type = get_model_choice_field(
+        get_model_choice_field_queryset(ParamsValue.Type.OIL_TYPE),
+        'Тип'
+    )
+
+    attributes__restrictions__oil__viscosity = get_model_choice_field(
+        get_model_choice_field_queryset(ParamsValue.Type.OIL_VISCOSITY),
+        'Вязкость'
+    )
 
     class Meta:
         model = Vehicle
@@ -106,8 +197,25 @@ class ConfigurationForm(BaseVehicleForm,
         self.fields['generation'].initial = parent.id
         self.fields['model'].initial = parent.parent.id
         self.fields['brand'].initial = parent.parent.parent.id
+
         self.fields['start_year'].initial = parent.attributes.years_of_production.start
         self.fields['end_year'].initial = parent.attributes.years_of_production.end
+
+        attribute_fields = [
+            'attributes__restrictions__oil__type',
+            'attributes__restrictions__oil__viscosity',
+            'attributes__restrictions__wiper__length__rec',
+            'attributes__restrictions__tire__diameter__rec',
+            'attributes__restrictions__tire__height__rec',
+            'attributes__restrictions__tire__width__rec',
+            'attributes__restrictions__rim__offset__rec',
+            'attributes__restrictions__rim__center_hole_diameter__rec',
+            'attributes__restrictions__rim__diameter__rec',
+            'attributes__restrictions__rim__drilling__rec',
+            'attributes__restrictions__rim__width__rec',
+        ]
+        for attribute_field in attribute_fields:
+            self.fields[attribute_field].initial = deepget(self.instance.attrs, attribute_field.split('__')[1:])
 
         for base_type in type(self).mro():
             if hasattr(base_type, 'fill_initial'):
@@ -120,14 +228,30 @@ class ConfigurationForm(BaseVehicleForm,
                 else:
                     yield v
 
+        self.field_groups = {
+            'Диски': [
+                'attributes__restrictions__rim__drilling__rec',
+                'attributes__restrictions__rim__diameter__rec',
+                'attributes__restrictions__rim__width__rec',
+                'attributes__restrictions__rim__offset__rec',
+                'attributes__restrictions__rim__center_hole_diameter__rec',
+            ],
+            'Шины': [
+                'attributes__restrictions__tire__diameter__rec',
+                'attributes__restrictions__tire__width__rec',
+                'attributes__restrictions__tire__height__rec',
+            ],
+            'Дворник': ['attributes__restrictions__wiper__length__rec'],
+            'Масло': ['attributes__restrictions__oil__viscosity', 'attributes__restrictions__oil__type'],
+        }
+
         grouped_fields = []
         for field_group in NestedDictValues(self.field_groups):
             grouped_fields.extend(field_group)
 
-        self.add_field_group(
-            'Параметры',
-            [field for field in self.fields if field not in grouped_fields + self.parental_fields]
-        )
+        self.field_groups['Параметры'] = [
+            field for field in self.fields if field not in grouped_fields + self.parental_fields
+        ]
 
         for field in self.fields:
             if field not in self.required:

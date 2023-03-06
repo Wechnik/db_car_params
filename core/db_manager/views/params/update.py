@@ -1,9 +1,9 @@
 from django.shortcuts import redirect
 from django.views.generic import UpdateView
 
-from db_manager.forms.params_value_form import BaseParamsForm
 from db_manager.models import ParamsValue
 from db_manager.views.abstract import BaseLoginRequiredMixin
+from db_manager.forms.params_value_form import BaseParamsForm, get_base_params_w_children_form
 
 
 class BaseParamsValueUpdateView(BaseLoginRequiredMixin, UpdateView):
@@ -28,6 +28,7 @@ class BaseParamsValueUpdateView(BaseLoginRequiredMixin, UpdateView):
 class TireDiameterUpdateView(BaseParamsValueUpdateView):
     _url = 'tire_diameter'
     _name = 'диаметр шин'
+    form_class = get_base_params_w_children_form('Доступная ширина', ParamsValue.Type.TIRE_INCH_WIDTH)
 
 
 class TireMetricWidthUpdateView(BaseParamsValueUpdateView):
@@ -58,11 +59,13 @@ class WheelWidthUpdateView(BaseParamsValueUpdateView):
 class WheelDiameterUpdateView(BaseParamsValueUpdateView):
     _url = 'wheel_diameter'
     _name = 'диаметр диска'
+    form_class = get_base_params_w_children_form('Доступная ширина', ParamsValue.Type.WHEEL_WIDTH)
 
 
 class WheelDrillingUpdateView(BaseParamsValueUpdateView):
     _url = 'wheel_drilling'
     _name = 'сверловка диска'
+    form_class = get_base_params_w_children_form('Доступный диаметр', ParamsValue.Type.WHEEL_DIAMETER)
 
 
 class WheelDepartureUpdateView(BaseParamsValueUpdateView):

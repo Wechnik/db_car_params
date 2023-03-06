@@ -1,7 +1,7 @@
 from django.shortcuts import redirect
 from django.views.generic import CreateView
 
-from db_manager.forms.params_value_form import BaseParamsForm
+from db_manager.forms.params_value_form import BaseParamsForm, get_base_params_w_children_form
 from db_manager.models import ParamsValue
 from db_manager.views.abstract import BaseLoginRequiredMixin
 
@@ -29,6 +29,7 @@ class TireDiameterCreateView(BaseParamsValueCreateView):
 
     _url = 'tire_diameter'
     _name = 'диаметр шин'
+    form_class = get_base_params_w_children_form('Доступная ширина', ParamsValue.Type.TIRE_INCH_WIDTH)
 
     def form_valid(self, form):
         form.instance.type = 0
@@ -89,6 +90,7 @@ class WheelDiameterCreateView(BaseParamsValueCreateView):
 
     _url = 'wheel_diameter'
     _name = 'диаметр диска'
+    form_class = get_base_params_w_children_form('Доступная ширина', ParamsValue.Type.WHEEL_WIDTH)
 
     def form_valid(self, form):
         form.instance.type = 6
@@ -99,6 +101,7 @@ class WheelDrillingCreateView(BaseParamsValueCreateView):
 
     _url = 'wheel_drilling'
     _name = 'сверловка диска'
+    form_class = get_base_params_w_children_form('Доступный диаметр', ParamsValue.Type.WHEEL_DIAMETER)
 
     def form_valid(self, form):
         form.instance.type = 7

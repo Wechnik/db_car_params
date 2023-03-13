@@ -282,53 +282,32 @@ function toggleShow(option, show) {
     }
 }
 
-function onSelectChange(obj) {
-    const select = $(`select[name="${obj.getAttribute('data-child')}"]`)[0]
-    select.disabled = !Boolean(obj.value);
-
-    Array.from(select.querySelectorAll('option')).forEach((option) => {
-        if (!Boolean(option.value))
-            option.selected = 'selected';
-        toggleShow(
-            option,
-            Boolean(option.getAttribute('data-parent') == obj.value | !Boolean(option.value))
-        );
-    });
-
-    if (select.getAttribute('data-child'))
-        select.onchange();
-}
-
-function toggleShow(option, show) {
-    $(option).toggle(show);
-    if (show) {
-        if ($(option).parent('span.toggleOption').length)
-            $(option).unwrap();
-    } else {
-        if ($(option).parent('span.toggleOption').length == 0)
-            $(option).wrap('<span class="toggleOption" style="display: none;" />');
-    }
-}
-
-function initByChain(obj, chooseEmtpy) {
+function onSelectChange(obj, chooseEmpty = true) {
     const childSelect = $(`select[name="${obj.getAttribute('data-child')}"]`)[0]
     childSelect.disabled = !Boolean(obj.value);
 
+    let children = obj.options[obj.selectedIndex].getAttribute('data-children');
+    if (children) {
+        children = children.split(',').map(Number)
+    } else {
+        children = [];
+    }
     Array.from(childSelect.querySelectorAll('option')).forEach((option) => {
-        if (!Boolean(option.value) & chooseEmtpy)
+        if (!Boolean(option.value) & chooseEmpty)
             option.selected = 'selected';
+
         toggleShow(
             option,
-            Boolean(option.getAttribute('data-parent') == obj.value | !Boolean(option.value))
+            Boolean(children.includes(Number(option.value)) | !Boolean(option.value))
         );
     });
 
     if (childSelect.getAttribute('data-child'))
-        initByChain(childSelect, chooseEmtpy);
+        onSelectChange(childSelect, chooseEmpty);
 }
 
 $(document).ready(function () {
-    initByChain(($('select[name="brand"]')[0]), false);
-    initByChain(($('select[name="attributes__restrictions__rim__drilling__rec"]')[0]), false);
-    initByChain(($('select[name="attributes__restrictions__tire__diameter__rec"]')[0]), false);
+    onSelectChange(($('select[name="brand"]')[0]), false);
+    onSelectChange(($('select[name="attributes__restrictions__rim__drilling__rec"]')[0]), false);
+    onSelectChange(($('select[name="attributes__restrictions__tire__diameter__rec"]')[0]), false);
 })

@@ -25,7 +25,7 @@ class ParamsValue(models.Model):
 
     type = models.IntegerField(choices=Type.choices)
     value = models.CharField(max_length=100)
-    parent = models.ForeignKey('self', null=True, blank=True, on_delete=models.CASCADE)
+    child = models.ManyToManyField('self', null=True, blank=True, symmetrical=False)
 
     def __str__(self):
         return self.value

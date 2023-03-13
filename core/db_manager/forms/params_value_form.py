@@ -30,11 +30,11 @@ def get_base_params_w_children_form(label: str, child_param_type: ParamsValue.Ty
 
         def __init__(self, *args, **kwargs):
             super().__init__(*args, **kwargs)
-            self.fields['children'].initial = ParamsValue.objects.filter(type=child_param_type, parent=self.instance.id)
+            self.fields['children'].initial = self.instance.child.all()
 
         def save(self, commit=True):
-            ParamsValue.objects.filter(type=child_param_type, parent=self.instance.id).update(parent=None)
-            self.cleaned_data.get('children').update(parent=self.instance.id)
+            self.instance.child.clear()
+            self.instance.child.add(*(self.cleaned_data.get('children') or []))
             return super().save(commit=commit)
 
     return BaseParamsWChildrenForm

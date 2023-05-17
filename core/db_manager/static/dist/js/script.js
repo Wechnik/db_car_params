@@ -306,8 +306,16 @@ function onSelectChange(obj, chooseEmpty = true) {
         onSelectChange(childSelect, chooseEmpty);
 }
 
+function toggleHideClass(obj, className) {
+    for (let el of document.querySelectorAll(`.${className}`)) el.style.display = ((obj.checked) ? '' : 'none');
+}
+
 $(document).ready(function () {
     onSelectChange(($('select[name="brand"]')[0]), false);
     onSelectChange(($('select[name="attributes__restrictions__rim__drilling__rec"]')[0]), false);
+    onSelectChange(($('select[name="attributes__restrictions__rear_rim__drilling__rec"]')[0]), false);
     onSelectChange(($('select[name="attributes__restrictions__tire__diameter__rec"]')[0]), false);
+    onSelectChange(($('select[name="attributes__restrictions__rear_tire__diameter__rec"]')[0]), false);
+    toggleHideClass(($('input[name="attributes__restrictions__different_rims"]')[0]), 'rearRims');
+    toggleHideClass(($('input[name="attributes__restrictions__different_tires"]')[0]), 'rearTires');
 })

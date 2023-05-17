@@ -110,7 +110,11 @@ class Restrictions(BaseAttribute):
     """Ограничение."""
 
     tire: Tire
+    different_tires: bool
+    rear_tire: Tire
     rim: Rim
+    different_rims: bool
+    rear_rim: Rim
     oil: Oil
     wiper: Wiper
 

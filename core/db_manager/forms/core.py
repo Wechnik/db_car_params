@@ -28,6 +28,7 @@ class Iterator(ModelChoiceIterator):
         )
 
 
+# Todo: Зачем это? Почему просто не используем ModelChoiceField?
 class CustomField(ModelChoiceField):
     iterator = Iterator
 

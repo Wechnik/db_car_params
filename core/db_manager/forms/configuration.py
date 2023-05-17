@@ -316,6 +316,8 @@ class ConfigurationForm(BaseVehicleForm):
             for v in d.values():
                 if isinstance(v, dict):
                     yield from NestedDictValues(v)
+                elif isinstance(v, tuple):
+                    yield v[1]
                 else:
                     yield v
 

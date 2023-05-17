@@ -1,5 +1,5 @@
 from django.db.models import QuerySet
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, QueryDict
 from django.urls import reverse
 from django.views.generic import UpdateView
 
@@ -12,6 +12,19 @@ class ConfigurationUpdateView(BaseLoginRequiredMixin, UpdateView):
     form_class = ConfigurationForm
     template_name = 'configuration/create.html'
     queryset = Vehicle.objects.all()
+
+    def post(self, request, *args, **kwargs):
+        # Для полей, связанных с задними колесами/дисками приходит несколько значений.
+        # Первое - действительное, второе - пустое. Почему - непонятно. Для передних все ок.
+        # QueryDict работает таким образом, что если значений несколько - берет последнее.
+        # Получается, что всегда берется пустое. Это временный костыль - вручную берем первое, пока не исправим причину.
+        query_dict = QueryDict(mutable=True)
+        query_dict.update({
+            key: values[0]
+            for key, values in dict(request.POST).items()
+        })
+        request.POST = query_dict
+        return super().post(request, *args, **kwargs)
 
     def get(self, request, *args, **kwargs):
         try:

@@ -330,7 +330,7 @@ class ConfigurationForm(BaseVehicleForm):
                 'attributes__restrictions__rim__center_hole_diameter__rec',
                 'attributes__restrictions__different_rims',
             ],
-            ('Задние диски', 'rearRims',): (
+            ('Задние диски', 'rearRims'): (
                 'rearRims',
                 [
                     'attributes__restrictions__rear_rim__drilling__rec',

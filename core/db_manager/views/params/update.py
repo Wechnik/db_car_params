@@ -96,3 +96,23 @@ class WipersLengthUpdateView(BaseParamsValueUpdateView):
 class YearUpdateView(BaseParamsValueUpdateView):
     _url = 'year'
     _name = 'год'
+
+
+class BatteryCapacityUpdateView(BaseParamsValueUpdateView):
+    _url = 'battery_capacity'
+    _name = 'емкость аккумулятора'
+
+
+class BatteryDimensionsUpdateView(BaseParamsValueUpdateView):
+    _url = 'battery_dimensions'
+    _name = 'габариты аккумулятора'
+
+
+class BatteryStartingCurrentUpdateView(BaseParamsValueUpdateView):
+    _url = 'battery_starting_current'
+    _name = 'пусковой ток аккумулятора'
+
+
+class BatteryPolarityUpdateView(BaseParamsValueUpdateView):
+    _url = 'battery_polarity'
+    _name = 'полярность аккумулятора'

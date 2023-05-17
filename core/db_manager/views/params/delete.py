@@ -69,3 +69,19 @@ class WipersLengthDeleteView(BaseParamsValueDeleteView):
 
 class YearDeleteView(BaseParamsValueDeleteView):
     success_url = reverse_lazy('year')
+
+
+class BatteryCapacityDeleteView(BaseParamsValueDeleteView):
+    success_url = reverse_lazy('battery_capacity')
+
+
+class BatteryDimensionsDeleteView(BaseParamsValueDeleteView):
+    success_url = reverse_lazy('battery_dimensions')
+
+
+class BatteryStartingCurrentDeleteView(BaseParamsValueDeleteView):
+    success_url = reverse_lazy('battery_starting_current')
+
+
+class BatteryPolarityDeleteView(BaseParamsValueDeleteView):
+    success_url = reverse_lazy('battery_polarity')

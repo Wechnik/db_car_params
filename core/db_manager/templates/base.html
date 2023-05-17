@@ -233,6 +233,41 @@
                         </a>
                     </li>
                     <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon fas fa-edit"></i>
+                            <p>
+                                Аккумуляторы
+                                <i class="fas fa-angle-left right"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview" style="display: none;">
+                            <li class="nav-item">
+                                <a href="{% url 'battery_capacity' %}" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Емкость</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{% url 'battery_starting_current' %}" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Пусковой ток</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{% url 'battery_dimensions' %}" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Габариты</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{% url 'battery_polarity' %}" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Полярность</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
                         <a href="{% url 'year' %}" class="nav-link">
                             <i class="nav-icon far fa-image"></i>
                             <p>

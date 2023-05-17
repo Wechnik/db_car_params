@@ -27,7 +27,9 @@ from db_manager.views.params.create import (OilTypeCreateView,
                                             WheelDiameterCreateView,
                                             WheelDrillingCreateView,
                                             WheelWidthCreateView,
-                                            WipersLengthCreateView, YearCreateView)
+                                            WipersLengthCreateView, YearCreateView, BatteryCapacityCreateView,
+                                            BatteryPolarityCreateView, BatteryStartingCurrentCreateView,
+                                            BatteryDimensionsCreateView)
 from db_manager.views.params.delete import (OilTypeDeleteView,
                                             OilViscosityDeleteView,
                                             TireDiameterDeleteView,
@@ -40,7 +42,9 @@ from db_manager.views.params.delete import (OilTypeDeleteView,
                                             WheelDiameterDeleteView,
                                             WheelDrillingDeleteView,
                                             WheelWidthDeleteView,
-                                            WipersLengthDeleteView, YearDeleteView)
+                                            WipersLengthDeleteView, YearDeleteView, BatteryStartingCurrentDeleteView,
+                                            BatteryDimensionsDeleteView, BatteryCapacityDeleteView,
+                                            BatteryPolarityDeleteView)
 from db_manager.views.params.index import (OilTypeView, OilViscosityView,
                                            TireDiameterView,
                                            TireInchHeightView,
@@ -51,7 +55,8 @@ from db_manager.views.params.index import (OilTypeView, OilViscosityView,
                                            WheelDepartureView,
                                            WheelDiameterView,
                                            WheelDrillingView, WheelWidthView,
-                                           WipersLengthView, YearView)
+                                           WipersLengthView, YearView, BatteryPolarityView, BatteryStartingCurrentView,
+                                           BatteryDimensionsView, BatteryCapacityView)
 from db_manager.views.params.update import (OilTypeUpdateView,
                                             OilViscosityUpdateView,
                                             TireDiameterUpdateView,
@@ -64,7 +69,9 @@ from db_manager.views.params.update import (OilTypeUpdateView,
                                             WheelDiameterUpdateView,
                                             WheelDrillingUpdateView,
                                             WheelWidthUpdateView,
-                                            WipersLengthUpdateView, YearUpdateView)
+                                            WipersLengthUpdateView, YearUpdateView, BatteryStartingCurrentUpdateView,
+                                            BatteryDimensionsUpdateView, BatteryCapacityUpdateView,
+                                            BatteryPolarityUpdateView)
 from db_manager.views.update import BrandUpdateView, ModelUpdateView
 
 crud_vehicle = [
@@ -217,6 +224,34 @@ crud_year = [
     path('<int:pk>/delete/', YearDeleteView.as_view(), name='delete_year'),
 ]
 
+crud_battery_capacity = [
+    path('', BatteryCapacityView.as_view(), name='battery_capacity'),
+    path('new/', BatteryCapacityCreateView.as_view(), name='create_battery_capacity'),
+    path('<int:pk>/edit/', BatteryCapacityUpdateView.as_view(), name='edit_battery_capacity'),
+    path('<int:pk>/delete/', BatteryCapacityDeleteView.as_view(), name='delete_battery_capacity'),
+]
+
+crud_battery_dimensions = [
+    path('', BatteryDimensionsView.as_view(), name='battery_dimensions'),
+    path('new/', BatteryDimensionsCreateView.as_view(), name='create_battery_dimensions'),
+    path('<int:pk>/edit/', BatteryDimensionsUpdateView.as_view(), name='edit_battery_dimensions'),
+    path('<int:pk>/delete/', BatteryDimensionsDeleteView.as_view(), name='delete_battery_dimensions'),
+]
+
+crud_battery_starting_current = [
+    path('', BatteryStartingCurrentView.as_view(), name='battery_starting_current'),
+    path('new/', BatteryStartingCurrentCreateView.as_view(), name='create_battery_starting_current'),
+    path('<int:pk>/edit/', BatteryStartingCurrentUpdateView.as_view(), name='edit_battery_starting_current'),
+    path('<int:pk>/delete/', BatteryStartingCurrentDeleteView.as_view(), name='delete_battery_starting_current'),
+]
+
+crud_battery_polarity = [
+    path('', BatteryPolarityView.as_view(), name='battery_polarity'),
+    path('new/', BatteryPolarityCreateView.as_view(), name='create_battery_polarity'),
+    path('<int:pk>/edit/', BatteryPolarityUpdateView.as_view(), name='edit_battery_polarity'),
+    path('<int:pk>/delete/', BatteryPolarityDeleteView.as_view(), name='delete_battery_polarity'),
+]
+
 urlpatterns = [
     path('', IndexView.as_view(), name='index'),
     path('alt/', VehiclesAlt.as_view(), name='index_alt'),
@@ -242,6 +277,11 @@ urlpatterns = [
 
     path('oil_type/', include(crud_oil_type)),
     path('oil_viscosity/', include(crud_oil_viscosity)),
+
+    path('battery_capacity/', include(crud_battery_capacity)),
+    path('battery_dimensions/', include(crud_battery_dimensions)),
+    path('battery_starting_current/', include(crud_battery_starting_current)),
+    path('battery_polarity/', include(crud_battery_polarity)),
 
     path('wipers_length/', include(crud_wipers_length)),
 

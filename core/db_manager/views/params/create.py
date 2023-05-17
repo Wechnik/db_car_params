@@ -164,3 +164,39 @@ class YearCreateView(BaseParamsValueCreateView):
     def form_valid(self, form):
         form.instance.type = 13
         return super().form_valid(form)
+
+
+class BatteryCapacityCreateView(BaseParamsValueCreateView):
+    _url = 'battery_capacity'
+    _name = 'емкость аккумулятора'
+
+    def form_valid(self, form):
+        form.instance.type = 14
+        return super().form_valid(form)
+
+
+class BatteryDimensionsCreateView(BaseParamsValueCreateView):
+    _url = 'battery_dimensions'
+    _name = 'габариты аккумулятора'
+
+    def form_valid(self, form):
+        form.instance.type = 15
+        return super().form_valid(form)
+
+
+class BatteryStartingCurrentCreateView(BaseParamsValueCreateView):
+    _url = 'battery_starting_current'
+    _name = 'пусковой ток аккумулятора'
+
+    def form_valid(self, form):
+        form.instance.type = 16
+        return super().form_valid(form)
+
+
+class BatteryPolarityCreateView(BaseParamsValueCreateView):
+    _url = 'battery_polarity'
+    _name = 'полярность аккумулятора'
+
+    def form_valid(self, form):
+        form.instance.type = 17
+        return super().form_valid(form)

@@ -135,3 +135,27 @@ class YearView(BaseParamsView):
     title = 'Год'
     type_param = 13
     type_view = '_year'
+
+
+class BatteryCapacityView(BaseParamsView):
+    title = 'Емкость аккумулятора'
+    type_param = 14
+    type_view = '_battery_capacity'
+
+
+class BatteryDimensionsView(BaseParamsView):
+    title = 'Габариты аккумулятора'
+    type_param = 15
+    type_view = '_battery_dimensions'
+
+
+class BatteryStartingCurrentView(BaseParamsView):
+    title = 'Пусковой ток аккумулятора'
+    type_param = 16
+    type_view = '_battery_starting_current'
+
+
+class BatteryPolarityView(BaseParamsView):
+    title = 'Полярность аккумулятора'
+    type_param = 17
+    type_view = '_battery_polarity'

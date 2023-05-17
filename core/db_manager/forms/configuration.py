@@ -121,7 +121,7 @@ class ConfigurationForm(BaseVehicleForm):
     )
 
     attributes__restrictions__rear_rim__drilling__rec = ModelChoiceField(
-        label='Сверловка 2',
+        label='Сверловка',
         queryset=get_model_choice_field_queryset(ParamsValue.Type.WHEEL_DRILLING, Sorter.sort_drilling),
         to_field_name='id',
         widget=ParamSelect(attrs={

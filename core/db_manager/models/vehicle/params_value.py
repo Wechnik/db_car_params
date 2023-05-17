@@ -22,6 +22,10 @@ class ParamsValue(models.Model):
         OIL_VISCOSITY = 11
         WIPERS_LENGTH = 12
         YEAR = 13
+        BATTERY_CAPACITY = 14
+        BATTERY_DIMENSIONS = 15
+        BATTERY_STARTING_CURRENT = 16
+        BATTERY_POLARITY = 17
 
     type = models.IntegerField(choices=Type.choices)
     value = models.CharField(max_length=100)

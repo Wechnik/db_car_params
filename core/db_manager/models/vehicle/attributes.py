@@ -106,6 +106,16 @@ class Rim(BaseAttribute):
 
 
 @dataclass
+class Battery(BaseAttribute):
+    """Аккумулятор."""
+
+    capacity: int
+    dimensions: str
+    polarity: str
+    starting_current: int
+
+
+@dataclass
 class Restrictions(BaseAttribute):
     """Ограничение."""
 
@@ -117,6 +127,7 @@ class Restrictions(BaseAttribute):
     rear_rim: Rim
     oil: Oil
     wiper: Wiper
+    battery: Battery
 
 
 @dataclass

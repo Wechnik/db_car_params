@@ -229,6 +229,28 @@ class ConfigurationForm(BaseVehicleForm):
         'Вязкость'
     )
 
+    # Аккумулятор
+
+    attributes__restrictions__battery__capacity = get_model_choice_field(
+        get_model_choice_field_queryset(ParamsValue.Type.BATTERY_CAPACITY, Sorter.sort_number),
+        'Емкость'
+    )
+
+    attributes__restrictions__battery__polarity = get_model_choice_field(
+        get_model_choice_field_queryset(ParamsValue.Type.BATTERY_POLARITY),
+        'Полярность'
+    )
+
+    attributes__restrictions__battery__dimensions = get_model_choice_field(
+        get_model_choice_field_queryset(ParamsValue.Type.BATTERY_DIMENSIONS),
+        'Габариты'
+    )
+
+    attributes__restrictions__battery__starting_current = get_model_choice_field(
+        get_model_choice_field_queryset(ParamsValue.Type.BATTERY_STARTING_CURRENT, Sorter.sort_number),
+        'Пусковой ток'
+    )
+
     class Meta:
         model = Vehicle
         fields = ['name', 'description']
@@ -304,6 +326,10 @@ class ConfigurationForm(BaseVehicleForm):
             'attributes__restrictions__rear_tire__diameter__rec',
             'attributes__restrictions__rear_tire__width__rec',
             'attributes__restrictions__rear_tire__height__rec',
+            'attributes__restrictions__battery__capacity',
+            'attributes__restrictions__battery__polarity',
+            'attributes__restrictions__battery__dimensions',
+            'attributes__restrictions__battery__starting_current',
         ]
         for attribute_field in attribute_fields:
             self.fields[attribute_field].initial = deepget(self.instance.attrs, attribute_field.split('__')[1:])
@@ -361,6 +387,12 @@ class ConfigurationForm(BaseVehicleForm):
                 'attributes__restrictions__oil__viscosity',
                 'attributes__restrictions__oil__type',
             ],
+            'Аккумулятор': [
+                'attributes__restrictions__battery__capacity',
+                'attributes__restrictions__battery__polarity',
+                'attributes__restrictions__battery__dimensions',
+                'attributes__restrictions__battery__starting_current',
+            ]
         }
 
         grouped_fields = []

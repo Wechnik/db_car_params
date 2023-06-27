@@ -1,5 +1,3 @@
-__all__ = ['BaseVehicleUpdateView']
-
 from django.shortcuts import redirect
 from django.views.generic.edit import UpdateView
 

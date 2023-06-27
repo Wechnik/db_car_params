@@ -6,72 +6,102 @@ from db_manager.views.configuration.delete import ConfigurationDeleteView
 from db_manager.views.configuration.detail import ConfigurationDetailView
 from db_manager.views.configuration.update import ConfigurationUpdateView
 from db_manager.views.create import BrandCreateView, ModelCreateView
-from db_manager.views.delete import (BrandDeleteView, GenerationDeleteView,
-                                     ModelDeleteView)
+from db_manager.views.delete import (
+    BrandDeleteView,
+    GenerationDeleteView,
+    ModelDeleteView
+)
+from db_manager.views.dependencies.detail import WheelDependenciesListView
 from db_manager.views.detail import BrandDetailView, ModelDetailView
 from db_manager.views.generation.copy import CopyView
 from db_manager.views.generation.create import GenerationCreateView
 from db_manager.views.generation.detail import GenerationDetailView
 from db_manager.views.generation.update import GenerationUpdateView
-from db_manager.views.index import (BrandView, GenerationView, ModelView,
-                                    VehiclesAlt)
-from db_manager.views.params.create import (OilTypeCreateView,
-                                            OilViscosityCreateView,
-                                            TireDiameterCreateView,
-                                            TireInchHeightCreateView,
-                                            TireInchWidthCreateView,
-                                            TireMetricProfileCreateView,
-                                            TireMetricWidthCreateView,
-                                            WheelCHDiameterCreateView,
-                                            WheelDepartureCreateView,
-                                            WheelDiameterCreateView,
-                                            WheelDrillingCreateView,
-                                            WheelWidthCreateView,
-                                            WipersLengthCreateView, YearCreateView, BatteryCapacityCreateView,
-                                            BatteryPolarityCreateView, BatteryStartingCurrentCreateView,
-                                            BatteryDimensionsCreateView)
-from db_manager.views.params.delete import (OilTypeDeleteView,
-                                            OilViscosityDeleteView,
-                                            TireDiameterDeleteView,
-                                            TireInchHeightDeleteView,
-                                            TireInchWidthDeleteView,
-                                            TireMetricProfileDeleteView,
-                                            TireMetricWidthDeleteView,
-                                            WheelCHDiameterDeleteView,
-                                            WheelDepartureDeleteView,
-                                            WheelDiameterDeleteView,
-                                            WheelDrillingDeleteView,
-                                            WheelWidthDeleteView,
-                                            WipersLengthDeleteView, YearDeleteView, BatteryStartingCurrentDeleteView,
-                                            BatteryDimensionsDeleteView, BatteryCapacityDeleteView,
-                                            BatteryPolarityDeleteView)
-from db_manager.views.params.index import (OilTypeView, OilViscosityView,
-                                           TireDiameterView,
-                                           TireInchHeightView,
-                                           TireInchWidthView,
-                                           TireMetricProfileView,
-                                           TireMetricWidthView,
-                                           WheelCHDiameterView,
-                                           WheelDepartureView,
-                                           WheelDiameterView,
-                                           WheelDrillingView, WheelWidthView,
-                                           WipersLengthView, YearView, BatteryPolarityView, BatteryStartingCurrentView,
-                                           BatteryDimensionsView, BatteryCapacityView)
-from db_manager.views.params.update import (OilTypeUpdateView,
-                                            OilViscosityUpdateView,
-                                            TireDiameterUpdateView,
-                                            TireInchHeightUpdateView,
-                                            TireInchWidthUpdateView,
-                                            TireMetricProfileUpdateView,
-                                            TireMetricWidthUpdateView,
-                                            WheelCHDiameterUpdateView,
-                                            WheelDepartureUpdateView,
-                                            WheelDiameterUpdateView,
-                                            WheelDrillingUpdateView,
-                                            WheelWidthUpdateView,
-                                            WipersLengthUpdateView, YearUpdateView, BatteryStartingCurrentUpdateView,
-                                            BatteryDimensionsUpdateView, BatteryCapacityUpdateView,
-                                            BatteryPolarityUpdateView)
+from db_manager.views.index import (
+    BrandView,
+    GenerationView,
+    ModelView,
+    VehiclesAlt,
+)
+from db_manager.views.params.create import (
+    OilTypeCreateView,
+    OilViscosityCreateView,
+    TireDiameterCreateView,
+    TireInchHeightCreateView,
+    TireInchWidthCreateView,
+    TireMetricProfileCreateView,
+    TireMetricWidthCreateView,
+    WheelCHDiameterCreateView,
+    WheelDepartureCreateView,
+    WheelDiameterCreateView,
+    WheelDrillingCreateView,
+    WheelWidthCreateView,
+    WipersLengthCreateView,
+    YearCreateView,
+    BatteryCapacityCreateView,
+    BatteryPolarityCreateView,
+    BatteryStartingCurrentCreateView,
+    BatteryDimensionsCreateView
+)
+from db_manager.views.params.delete import (
+    OilTypeDeleteView,
+    OilViscosityDeleteView,
+    TireDiameterDeleteView,
+    TireInchHeightDeleteView,
+    TireInchWidthDeleteView,
+    TireMetricProfileDeleteView,
+    TireMetricWidthDeleteView,
+    WheelCHDiameterDeleteView,
+    WheelDepartureDeleteView,
+    WheelDiameterDeleteView,
+    WheelDrillingDeleteView,
+    WheelWidthDeleteView,
+    WipersLengthDeleteView,
+    YearDeleteView,
+    BatteryStartingCurrentDeleteView,
+    BatteryDimensionsDeleteView,
+    BatteryCapacityDeleteView,
+    BatteryPolarityDeleteView
+)
+from db_manager.views.params.index import (
+    OilTypeView, OilViscosityView,
+    TireDiameterView,
+    TireInchHeightView,
+    TireInchWidthView,
+    TireMetricProfileView,
+    TireMetricWidthView,
+    WheelCHDiameterView,
+    WheelDepartureView,
+    WheelDiameterView,
+    WheelDrillingView,
+    WheelWidthView,
+    WipersLengthView,
+    YearView,
+    BatteryPolarityView,
+    BatteryStartingCurrentView,
+    BatteryDimensionsView,
+    BatteryCapacityView,
+)
+from db_manager.views.params.update import (
+    OilTypeUpdateView,
+    OilViscosityUpdateView,
+    TireDiameterUpdateView,
+    TireInchHeightUpdateView,
+    TireInchWidthUpdateView,
+    TireMetricProfileUpdateView,
+    TireMetricWidthUpdateView,
+    WheelCHDiameterUpdateView,
+    WheelDepartureUpdateView,
+    WheelDiameterUpdateView,
+    WheelDrillingUpdateView,
+    WheelWidthUpdateView,
+    WipersLengthUpdateView,
+    YearUpdateView,
+    BatteryStartingCurrentUpdateView,
+    BatteryDimensionsUpdateView,
+    BatteryCapacityUpdateView,
+    BatteryPolarityUpdateView,
+)
 from db_manager.views.update import BrandUpdateView, ModelUpdateView
 
 crud_vehicle = [
@@ -186,7 +216,6 @@ crud_wheel_departure = [
     path('<int:pk>/delete/', WheelDepartureDeleteView.as_view(), name='delete_wheel_departure'),
 ]
 
-
 crud_wheel_ch_diameter = [
     path('', WheelCHDiameterView.as_view(), name='wheel_ch_diameter'),
     path('new/', WheelCHDiameterCreateView.as_view(), name='create_wheel_ch_diameter'),
@@ -194,6 +223,10 @@ crud_wheel_ch_diameter = [
     path('<int:pk>/delete/', WheelCHDiameterDeleteView.as_view(), name='delete_wheel_ch_diameter'),
 ]
 
+crud_wheel_dependencies = [
+    path('', WheelDependenciesListView.as_view(), name='wheel_dependencies'),
+    # path('<int:pk>/edit/', WheelDependenciesUpdateView.as_view(), name='edit_wheel_dependencies'),
+]
 
 crud_oil_type = [
     path('', OilTypeView.as_view(), name='oil_type'),
@@ -274,6 +307,7 @@ urlpatterns = [
     path('wheel_drilling/', include(crud_wheel_drilling)),
     path('wheel_departure/', include(crud_wheel_departure)),
     path('wheel_ch_diameter/', include(crud_wheel_ch_diameter)),
+    path('wheel_dependencies/', include(crud_wheel_dependencies)),
 
     path('oil_type/', include(crud_oil_type)),
     path('oil_viscosity/', include(crud_oil_viscosity)),

@@ -310,7 +310,76 @@ function toggleHideClass(obj, className) {
     for (let el of document.querySelectorAll(`.${className}`)) el.style.display = ((obj.checked) ? '' : 'none');
 }
 
+
+function onCheckParam(checkBox) {
+    let selected = document.querySelector(`input.${checkBox.className}[data-selected=true]`);
+    console.log(selected)
+    if (!checkBox.disabled) {
+        setColumn(
+            checkBox.className,
+            false,
+            ((!!selected && (checkBox.id === selected.id)) ? null : selected.id),
+            getChecked(checkBox.className)
+        );
+    }
+}
+
+function getChecked(className) {
+    let arr = [];
+    for (let checkBox of document.querySelectorAll(`input.${className}:checked`)) {
+        arr.push(checkBox.id)
+    }
+    return ((!!arr) ? arr.join() : null);
+}
+
+function onSelectParam(label) {
+    let checkBox = document.getElementById(label.getAttribute('data-for'));
+    if ((checkBox.checked && !checkBox.disabled) || label.className === 'root_params') {
+        setColumn(
+            label.className,
+            false,
+            checkBox.id,
+            getChecked(label.className)
+        );
+    }
+}
+
+function setCheckBox(checkBox, disabled, checked) {
+    checkBox.disabled = disabled;
+    checkBox.checked = checked;
+}
+
+function setSelection(checkBox, selected) {
+    checkBox.setAttribute('data-selected', selected);
+    checkBox.parentElement.style.backgroundColor = ((selected) ? 'thistle' : 'unset');
+}
+
+
+function setColumn(className, disabled, selected, checked) {
+    let childClassName = null;
+    let checkedChildren = null;
+    checked = ((checked) ? checked.split(',').map(Number) : []);
+    for (let checkBox of document.querySelectorAll(`input.${className}`)) {
+        setCheckBox(
+            checkBox,
+            disabled,
+            (!disabled && checked.includes(Number(checkBox.id)))
+        );
+
+        let curCBSelected = (!disabled && (selected === checkBox.id))
+        setSelection(checkBox, curCBSelected);
+
+        childClassName = checkBox.parentElement.parentElement.getAttribute('data-child');
+        checkedChildren = ((curCBSelected) ? checkBox.getAttribute('data-children') : checkedChildren);
+    }
+
+    if (childClassName) setColumn(childClassName, !selected, null, checkedChildren)
+}
+
+
 $(document).ready(function () {
+    setColumn('root_params', false, null, null);
+
     onSelectChange(($('select[name="brand"]')[0]), false);
     onSelectChange(($('select[name="attributes__restrictions__rim__drilling__rec"]')[0]), false);
     onSelectChange(($('select[name="attributes__restrictions__rear_rim__drilling__rec"]')[0]), false);

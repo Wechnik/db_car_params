@@ -31,6 +31,10 @@ class ParamsValue(models.Model):
     value = models.CharField(max_length=100)
     child = models.ManyToManyField('self', null=True, blank=True, symmetrical=False)
 
+    @property
+    def data_children(self) -> str:
+        return ','.join([str(child.id) for child in self.child.all()])
+
     def __str__(self):
         return self.value
 

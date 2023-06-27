@@ -1,10 +1,3 @@
-__all__ = [
-    'IndexView',
-    'BrandView',
-    'ModelView',
-    'GenerationView',
-]
-
 from db_manager.models import Vehicle, ParamsValue
 from django.shortcuts import render
 from django.views.generic.base import View

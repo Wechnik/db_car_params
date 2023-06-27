@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class='post-entry'></div>
+    <form action="" method="post"
+          onsubmit="document.getElementById('submit').disabled=true; processFormData();">{% csrf_token %}
+        <div class="row">
+            <div class="col-lg-4 col-xs-12" >
+                <h5>Сверловка</h5>
+                <ul style="list-style-type: none;" data-child="level_1_param" data-is-root="true">
+                    {% for param in root_params %}
+                        <li>
+                            <input type="checkbox" class="root_params" id="{{ param.id }}" value="1"
+                                   title="{{ param.value }}"
+                                   {% if param.data_children %}data-children="{{ param.data_children }}"{% endif %}
+                                   data-child="level_1_param"
+                                   onclick="onCheckParam(this);"
+                            />
+                            <label class="root_params" onclick="onSelectParam(this)" data-for="{{ param.id }}">{{ param.value }}</label>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <div class="col-lg-4 col-xs-12">
+                <h5>Диаметр</h5>
+                <ul style="list-style-type: none;" data-child="level_2_param">
+                    {% for param in level_1_params %}
+                        <li>
+                            <input type="checkbox" class="level_1_param" id="{{ param.id }}" value="1"
+                                   title="{{ param.value }}"
+                                   {% if param.data_children %}data-children="{{ param.data_children }}"{% endif %}
+                                   onclick="onCheckParam(this);"
+                            />
+                            <label class="level_1_param" onclick="onSelectParam(this)" data-for="{{ param.id }}">{{ param.value }}</label>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <div class="col-lg-4 col-xs-12">
+                <h5>Ширина</h5>
+                <ul style="list-style-type: none;">
+                    {% for param in level_2_params %}
+                        <li>
+                            <input type="checkbox" class="level_2_param" id="{{ param.id }}" value="1"
+                                   title="{{ param.value }}"
+                                   onclick="onCheckParam(this);"
+                            />
+                            <label class="level_2_param" onclick="onSelectParam(this)" data-for="{{ param.id }}">{{ param.value }}</label>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+
+
+        <input id="submit" style="margin-bottom: 30px; margin-top: 30px" class="btn btn-outline-success"
+               type="submit" value="Сохранить"/>
+    </form>
+{% endblock content %}

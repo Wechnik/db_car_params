@@ -11,7 +11,9 @@ from db_manager.views.delete import (
     GenerationDeleteView,
     ModelDeleteView
 )
-from db_manager.views.dependencies.detail import WheelDependenciesListView
+from db_manager.views.dependencies.wheel import WheelDependenciesListView
+
+from db_manager.views.dependencies.tire import TireDependenciesListView
 from db_manager.views.detail import BrandDetailView, ModelDetailView
 from db_manager.views.generation.copy import CopyView
 from db_manager.views.generation.create import GenerationCreateView
@@ -227,13 +229,16 @@ crud_wheel_dependencies = [
     path('', WheelDependenciesListView.as_view(), name='wheel_dependencies'),
 ]
 
+crud_tire_dependencies = [
+    path('', TireDependenciesListView.as_view(), name='tire_dependencies'),
+]
+
 crud_oil_type = [
     path('', OilTypeView.as_view(), name='oil_type'),
     path('new/', OilTypeCreateView.as_view(), name='create_oil_type'),
     path('<int:pk>/edit/', OilTypeUpdateView.as_view(), name='edit_oil_type'),
     path('<int:pk>/delete/', OilTypeDeleteView.as_view(), name='delete_oil_type'),
 ]
-
 
 crud_oil_viscosity = [
     path('', OilViscosityView.as_view(), name='oil_viscosity'),
@@ -300,6 +305,7 @@ urlpatterns = [
     path('tire_metric_profile/', include(crud_tire_metric_profile)),
     path('tire_inch_width/', include(crud_tire_inch_width)),
     path('tire_inch_height/', include(crud_tire_inch_height)),
+    path('tire_dependencies/', include(crud_tire_dependencies)),
 
     path('wheel_width/', include(crud_wheel_width)),
     path('wheel_diameter/', include(crud_wheel_diameter)),

@@ -1,3 +1,7 @@
+import json
+
+from django.http import HttpResponseRedirect
+from django.urls import reverse
 from django.views.generic import ListView
 
 from db_manager.forms.core import Sorter
@@ -19,3 +23,14 @@ class WheelDependenciesListView(BaseLoginRequiredMixin, ListView):
 
     def get_queryset(self):
         return ParamsValue.objects.prefetch_related('child')
+
+    def post(self, request):
+        parents_and_children: dict = json.loads(request.POST.get('dataJson'))
+        for parent_id, children in parents_and_children.items():
+            parent = ParamsValue.objects.get(id=parent_id)
+            parent.child.clear()
+            if children:
+                for child_id in children:
+                    parent.child.add(child_id)
+
+        return HttpResponseRedirect(reverse('wheel_dependencies'))

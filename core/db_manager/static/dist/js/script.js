@@ -312,13 +312,28 @@ function toggleHideClass(obj, className) {
 
 
 function onCheckParam(checkBox) {
+    let parent = document.querySelector(`[data-child='${checkBox.className}'] [data-selected=true]`);
+    if (!!parent) {
+        let children = parent.getAttribute('data-children')
+        children = ((children) ? children.split(',').map(Number) : [])
+
+        if (checkBox.checked) children.push(checkBox.id)
+        else {
+            let index = children.indexOf(checkBox.id);
+            children.splice(index, 1);
+        }
+
+        parent.setAttribute('data-children', children)
+    }
+
     let selected = document.querySelector(`input.${checkBox.className}[data-selected=true]`);
-    console.log(selected)
+    let selected_id = (!!selected) ? selected.id : null
+
     if (!checkBox.disabled) {
         setColumn(
             checkBox.className,
             false,
-            ((!!selected && (checkBox.id === selected.id)) ? null : selected.id),
+            ((!!selected && (checkBox.id === selected_id)) ? null : selected_id),
             getChecked(checkBox.className)
         );
     }
@@ -388,3 +403,25 @@ $(document).ready(function () {
     toggleHideClass(($('input[name="attributes__restrictions__different_rims"]')[0]), 'rearRims');
     toggleHideClass(($('input[name="attributes__restrictions__different_tires"]')[0]), 'rearTires');
 })
+
+
+function submitForm(e) {
+    e.preventDefault();
+
+    let data = {}
+    for (let checkBox of document.querySelectorAll('input[type=checkbox]')) {
+        let children = checkBox.getAttribute('data-children')
+        data[checkBox.id] = ((children) ? children.split(',').map(Number) : [])
+    }
+
+    fetch(document.URL, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: [
+            `csrfmiddlewaretoken=${document.querySelector('input[name="csrfmiddlewaretoken"]').value}`,
+            'dataJson=' + JSON.stringify(data)
+        ].join("&")
+    })
+}

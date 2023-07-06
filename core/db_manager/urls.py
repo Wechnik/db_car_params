@@ -225,7 +225,6 @@ crud_wheel_ch_diameter = [
 
 crud_wheel_dependencies = [
     path('', WheelDependenciesListView.as_view(), name='wheel_dependencies'),
-    # path('<int:pk>/edit/', WheelDependenciesUpdateView.as_view(), name='edit_wheel_dependencies'),
 ]
 
 crud_oil_type = [

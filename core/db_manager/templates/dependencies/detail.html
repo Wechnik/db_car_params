@@ -15,6 +15,7 @@
                                    {% if param.data_children %}data-children="{{ param.data_children }}"{% endif %}
                                    data-child="level_1_param"
                                    onclick="onCheckParam(this);"
+                                   style="visibility: hidden"
                             />
                             <label class="root_params" onclick="onSelectParam(this)" data-for="{{ param.id }}">{{ param.value }}</label>
                         </li>
